@@ -1,0 +1,107 @@
+{
+  "started": "2026-09-10T14:20:50",
+  "build": [
+    "version: 0.4.0-dev (build 586, commit 434ddbb)",
+    "built with GNU 16.2.1 for Linux x86_64"
+  ],
+  "power": [
+    "GPU[0]\t\t: Max Graphics Package Power (W): 250.0",
+    "GPU[1]\t\t: Max Graphics Package Power (W): 250.0"
+  ],
+  "harness": "phase1_turbo_ab.py; prod line with only -m/-np swapped; MTP n_max=2",
+  "models": {
+    "unleashed-ud-q4_k_m": {
+      "file": "/mnt/models/llm/qwen3.8-27b-unleashed-outsourc-e/qwen3.8-27b-unleashed-outsourc-e-ud-q4_k_m.gguf",
+      "size_bytes": 16519489376,
+      "np1_load_s": 24.1,
+      "np1_vram_gib": 26.54,
+      "np1_sanity": [
+        "The three primary colors are red, blue, and yellow.",
+        "stop"
+      ],
+      "np2_load_s": 6.0,
+      "np2_vram_gib_idle": 26.98,
+      "np2_sanity": [
+        "The three primary colors are red, blue, and yellow.",
+        "stop"
+      ],
+      "np2_predictable": {
+        "tok": 2048,
+        "reasoning_chunks": 2048,
+        "content_chunks": 0,
+        "completion_tokens": 2048,
+        "tok_s": 53.15,
+        "ttft": 0.5,
+        "wall": 39.03,
+        "content_head": "",
+        "accept": {
+          "pooled": 0.58,
+          "mean_len": 2.16,
+          "n": 1
+        }
+      },
+      "np2_creative": {
+        "tok": 2048,
+        "reasoning_chunks": 2048,
+        "content_chunks": 0,
+        "completion_tokens": 2048,
+        "tok_s": 48.12,
+        "ttft": 0.4,
+        "wall": 42.96,
+        "content_head": "",
+        "accept": {
+          "pooled": 0.484,
+          "mean_len": 1.97,
+          "n": 1
+        }
+      },
+      "np2_prefill42k": {
+        "prompt_tokens": 38724,
+        "ttft_s": 46.547,
+        "prefill_tok_s": 831.93,
+        "completion_tokens": 632,
+        "decode_tok_s": 50.0,
+        "text_head": "Based on the text provided, here is a detailed summary of the topics mentioned.\n\n**Note on Structure:** The passage consists of three distinct sentences repeated verbatim in a continuous loop. While the repetition creates a lengthy document, the unique informational content is limited to these three"
+      },
+      "np2_bench_accept": {
+        "pooled": 0.725,
+        "mean_len": 2.45,
+        "n": 5
+      },
+      "np2_vram_gib_after": 27.24,
+      "np3_load_s": 9.1,
+      "np3_vram_gib_idle": 27.42,
+      "np3_conc": {
+        "n1": {
+          "per_stream": 50.9,
+          "aggregate": 50.9,
+          "ok": "1/1"
+        },
+        "n2": {
+          "per_stream": 27.99,
+          "aggregate": 55.98,
+          "ok": "2/2"
+        },
+        "n3": {
+          "per_stream": 19.6,
+          "aggregate": 57.43,
+          "ok": "3/3"
+        }
+      },
+      "np3_accept": {
+        "pooled": 0.572,
+        "mean_len": 2.15,
+        "n": 7
+      },
+      "np3_vram_gib_after": 27.46,
+      "np4_load_s": 6.0,
+      "np4_vram_gib": 27.88,
+      "np4_sanity": [
+        "The three primary colors are red, blue, and yellow.",
+        "stop"
+      ],
+      "disqualified_accept_lt_0.50": true
+    }
+  },
+  "restore_line": "~/benchmarks/engine_matrix/restore/llamaserver_cmd_production_mtp_n2_20260910_1420.txt"
+}

@@ -1,0 +1,294 @@
+{
+  "started": "2026-09-10T12:32:14",
+  "build": [
+    "version: 0.4.0-dev (build 586, commit 434ddbb)",
+    "built with GNU 16.2.1 for Linux x86_64"
+  ],
+  "power": [
+    "GPU[0]\t\t: Max Graphics Package Power (W): 250.0",
+    "GPU[1]\t\t: Max Graphics Package Power (W): 250.0"
+  ],
+  "harness": "phase1_turbo_ab.py; prod line with only -m/-np swapped; MTP n_max=2",
+  "models": {
+    "heretic-q4_k_s": {
+      "file": "/mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf",
+      "size_bytes": 15825299616,
+      "np1_load_s": 21.1,
+      "np1_vram_gib": 25.9,
+      "np1_sanity": [
+        "The three primary colors are red, blue, and yellow.",
+        "stop"
+      ],
+      "np2_load_s": 6.0,
+      "np2_vram_gib_idle": 26.33,
+      "np2_sanity": [
+        "The three primary colors are red, blue, and yellow.",
+        "stop"
+      ],
+      "np2_predictable": {
+        "tok": 2048,
+        "reasoning_chunks": 2048,
+        "content_chunks": 0,
+        "completion_tokens": 2048,
+        "tok_s": 68.01,
+        "ttft": 0.37,
+        "wall": 30.49,
+        "content_head": "",
+        "accept": {
+          "pooled": 0.794,
+          "mean_len": 2.59,
+          "n": 1
+        }
+      },
+      "np2_creative": {
+        "tok": 2048,
+        "reasoning_chunks": 2048,
+        "content_chunks": 0,
+        "completion_tokens": 2048,
+        "tok_s": 52.45,
+        "ttft": 0.39,
+        "wall": 39.44,
+        "content_head": "",
+        "accept": {
+          "pooled": 0.496,
+          "mean_len": 1.99,
+          "n": 1
+        }
+      },
+      "np2_prefill42k": {
+        "prompt_tokens": 38723,
+        "ttft_s": 45.313,
+        "prefill_tok_s": 854.56,
+        "completion_tokens": 586,
+        "decode_tok_s": 53.08,
+        "text_head": "Based on the text provided, here is a detailed summary of the distinct topics mentioned. It is important to note that the passage consists of three specific sentences repeated hundreds of times in a continuous loop. Therefore, the summary below covers the unique content found within those three recu"
+      },
+      "np2_bench_accept": {
+        "pooled": 0.731,
+        "mean_len": 2.46,
+        "n": 5
+      },
+      "np2_vram_gib_after": 26.59,
+      "np3_load_s": 9.1,
+      "np3_vram_gib_idle": 26.77,
+      "np3_conc": {
+        "n1": {
+          "per_stream": 61.51,
+          "aggregate": 61.51,
+          "ok": "1/1"
+        },
+        "n2": {
+          "per_stream": 41.93,
+          "aggregate": 78.63,
+          "ok": "2/2"
+        },
+        "n3": {
+          "per_stream": 22.38,
+          "aggregate": 65.3,
+          "ok": "3/3"
+        }
+      },
+      "np3_accept": {
+        "pooled": 0.668,
+        "mean_len": 2.34,
+        "n": 7
+      },
+      "np3_vram_gib_after": 26.81,
+      "np4_load_s": 6.0,
+      "np4_vram_gib": 27.23,
+      "np4_sanity": [
+        "The three primary colors are red, blue, and yellow.",
+        "stop"
+      ],
+      "disqualified_accept_lt_0.50": true
+    },
+    "turbo-mtp-q4_k_s": {
+      "file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf",
+      "size_bytes": 17537488416,
+      "np1_load_s": 21.1,
+      "np1_vram_gib": 27.49,
+      "np1_sanity": [
+        "Red, blue, and yellow.",
+        "stop"
+      ],
+      "np2_load_s": 6.0,
+      "np2_vram_gib_idle": 27.93,
+      "np2_sanity": [
+        "Red, blue, and yellow.",
+        "stop"
+      ],
+      "np2_predictable": {
+        "tok": 2046,
+        "reasoning_chunks": 335,
+        "content_chunks": 1711,
+        "completion_tokens": 2048,
+        "tok_s": 59.09,
+        "ttft": 0.33,
+        "wall": 34.96,
+        "content_head": "```python\n\"\"\"\nAdvanced Python Data Structures and Utilities\n==============================================\n\nThis module demonstrates five production-quality com",
+        "accept": {
+          "pooled": 0.839,
+          "mean_len": 2.68,
+          "n": 1
+        }
+      },
+      "np2_creative": {
+        "tok": 2046,
+        "reasoning_chunks": 314,
+        "content_chunks": 1732,
+        "completion_tokens": 2048,
+        "tok_s": 48.5,
+        "ttft": 0.49,
+        "wall": 42.68,
+        "content_head": "The light had not come on.\n\nElias Standish stood at the base of the iron spiral stairs, his hand against the cold metal, listening. Below him, where the sea sho",
+        "accept": {
+          "pooled": 0.6,
+          "mean_len": 2.2,
+          "n": 1
+        }
+      },
+      "np2_prefill42k": {
+        "prompt_tokens": 38725,
+        "ttft_s": 45.334,
+        "prefill_tok_s": 854.21,
+        "completion_tokens": 233,
+        "decode_tok_s": 47.57,
+        "text_head": "The passage consists of three distinct sentences repeated in a continuous loop:\n\n1. **A pangram**: \"The quick brown fox jumps over the lazy dog near the riverbank at dawn.\" This sentence contains every letter of the English alphabet and is commonly used for typing practice, font display, and keyboar"
+      },
+      "np2_bench_accept": {
+        "pooled": 0.711,
+        "mean_len": 2.42,
+        "n": 5
+      },
+      "np2_vram_gib_after": 28.18,
+      "np3_load_s": 12.1,
+      "np3_vram_gib_idle": 28.37,
+      "np3_conc": {
+        "n1": {
+          "per_stream": 54.68,
+          "aggregate": 54.68,
+          "ok": "1/1"
+        },
+        "n2": {
+          "per_stream": 38.21,
+          "aggregate": 76.26,
+          "ok": "2/2"
+        },
+        "n3": {
+          "per_stream": 21.82,
+          "aggregate": 64.99,
+          "ok": "3/3"
+        }
+      },
+      "np3_accept": {
+        "pooled": 0.738,
+        "mean_len": 2.48,
+        "n": 7
+      },
+      "np3_vram_gib_after": 28.4,
+      "np4_load_s": 6.0,
+      "np4_vram_gib": 28.82,
+      "np4_sanity": [
+        "Red, blue, and yellow.",
+        "stop"
+      ],
+      "disqualified_accept_lt_0.50": false
+    },
+    "turbo-mtp-iq4_xs": {
+      "file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-iq4_xs.gguf",
+      "size_bytes": 17033680416,
+      "np1_load_s": 18.1,
+      "np1_vram_gib": 27.06,
+      "np1_sanity": [
+        "Red, blue, and yellow.",
+        "stop"
+      ],
+      "np2_load_s": 6.0,
+      "np2_vram_gib_idle": 27.5,
+      "np2_sanity": [
+        "Red, blue, and yellow.",
+        "stop"
+      ],
+      "np2_predictable": {
+        "tok": 2046,
+        "reasoning_chunks": 347,
+        "content_chunks": 1699,
+        "completion_tokens": 2048,
+        "tok_s": 57.53,
+        "ttft": 0.36,
+        "wall": 35.93,
+        "content_head": "```python\n\"\"\"\ncomprehensive_utils.py\n\nA collection of production-quality Python utilities:\n  1. LRUCache with TTL expiry\n  2. Thread-safe bounded blocking queue",
+        "accept": {
+          "pooled": 0.851,
+          "mean_len": 2.7,
+          "n": 1
+        }
+      },
+      "np2_creative": {
+        "tok": 1806,
+        "reasoning_chunks": 360,
+        "content_chunks": 1446,
+        "completion_tokens": 1809,
+        "tok_s": 44.09,
+        "ttft": 0.4,
+        "wall": 41.37,
+        "content_head": "The stairs of the lighthouse had always been cold. Elias had counted them seventeen times in his first month, then stopped counting. Now, descending at seven o'",
+        "accept": {
+          "pooled": 0.534,
+          "mean_len": 2.07,
+          "n": 1
+        }
+      },
+      "np2_prefill42k": {
+        "prompt_tokens": 38724,
+        "ttft_s": 46.083,
+        "prefill_tok_s": 840.3,
+        "completion_tokens": 141,
+        "decode_tok_s": 47.35,
+        "text_head": "The passage repeatedly emphasizes three main ideas:\n\n1. **Distributed systems engineering**: Engineers building large distributed systems must carefully reason about failure modes, latency budgets, and the tradeoffs between consistency and availability.\n\n2. **A pangram sentence**: \"The quick brown f"
+      },
+      "np2_bench_accept": {
+        "pooled": 0.74,
+        "mean_len": 2.49,
+        "n": 5
+      },
+      "np2_vram_gib_after": 27.75,
+      "np3_load_s": 9.1,
+      "np3_vram_gib_idle": 27.94,
+      "np3_conc": {
+        "n1": {
+          "per_stream": 53.16,
+          "aggregate": 53.16,
+          "ok": "1/1"
+        },
+        "n2": {
+          "per_stream": 25.12,
+          "aggregate": 50.17,
+          "ok": "2/2"
+        },
+        "n3": {
+          "per_stream": 20.91,
+          "aggregate": 61.98,
+          "ok": "3/3"
+        }
+      },
+      "np3_accept": {
+        "pooled": 0.754,
+        "mean_len": 2.51,
+        "n": 7
+      },
+      "np3_vram_gib_after": 27.97,
+      "np4_load_s": 6.0,
+      "np4_vram_gib": 28.39,
+      "np4_sanity": [
+        "Red, blue, and yellow.",
+        "stop"
+      ],
+      "disqualified_accept_lt_0.50": false
+    }
+  },
+  "restore_line": "~/benchmarks/engine_matrix/restore/llamaserver_cmd_production_mtp_n2_20260910_1232.txt",
+  "finished": "2026-09-10T12:47:58",
+  "production_restored_s": 25.0,
+  "production_cmdline": "3634302 ~/projects/llama.cpp-master/build-vulkan/bin/llama-server -m /mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf --mmproj /mnt/models/llm/qwen3.8-27b-instruct-unsloth/mmproj-BF16.gguf --image-min-tokens 1024 -dev Vulkan0 -ngl 99 -c 262144 -ctk q8_0 -ctv q8_0 -fa on --ctx-checkpoints 2 -np 2 -kvu --jinja --reasoning-format deepseek --spec-type draft-mtp --spec-draft-n-max 2 -cram 12288 --host 0.0.0.0 --port 8080 --log-timestamps --log-prefix"
+}

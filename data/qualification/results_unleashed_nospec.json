@@ -1,0 +1,194 @@
+{
+  "started": "2026-09-10T14:26:50",
+  "launch": "production line minus --spec-type draft-mtp --spec-draft-n-max 2",
+  "power": [
+    "GPU[0]\t\t: Max Graphics Package Power (W): 250.0",
+    "GPU[1]\t\t: Max Graphics Package Power (W): 250.0"
+  ],
+  "depth_targets": [
+    2500,
+    16000,
+    42000,
+    140000,
+    200000
+  ],
+  "gen_tokens": 1536,
+  "models": {
+    "unleashed-ud-q4_k_m": {
+      "file": "/mnt/models/llm/qwen3.8-27b-unleashed-outsourc-e/qwen3.8-27b-unleashed-outsourc-e-ud-q4_k_m.gguf",
+      "np2_load_s": 6.0,
+      "np2_vram_gib": 24.75,
+      "np2_sanity": [
+        "The three primary colors are red, blue, and yellow.",
+        "stop"
+      ],
+      "depth": [
+        {
+          "ok": true,
+          "prompt_tokens": 2363,
+          "ttft_s": 2.461,
+          "prefill_tok_s": 960.21,
+          "completion_tokens": 917,
+          "decode_tok_s": 33.22,
+          "error": null,
+          "tail_distinct_word_ratio": 0.91,
+          "text_tail": " and repeated without variation, creating a rhythmic but disjointed text that juxtaposes academic analysis, technical precision, and simple descriptive imagery.",
+          "target": 2500
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 14789,
+          "ttft_s": 15.132,
+          "prefill_tok_s": 977.33,
+          "completion_tokens": 540,
+          "decode_tok_s": 32.34,
+          "error": null,
+          "tail_distinct_word_ratio": 0.84,
+          "text_tail": ".  The fox/dog sentence.\n\nThis cycle repeats dozens of times without variation, meaning no new information is introduced beyond the three topics outlined above.",
+          "target": 16000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 38725,
+          "ttft_s": 44.51,
+          "prefill_tok_s": 870.04,
+          "completion_tokens": 679,
+          "decode_tok_s": 30.82,
+          "error": null,
+          "tail_distinct_word_ratio": 0.82,
+          "text_tail": "ausal nature of historical transitions, the technical tradeoffs in distributed system engineering, and a brief narrative description of a fox and a dog at dawn.",
+          "target": 42000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 128938,
+          "ttft_s": 211.342,
+          "prefill_tok_s": 610.09,
+          "completion_tokens": 757,
+          "decode_tok_s": 26.19,
+          "error": null,
+          "tail_distinct_word_ratio": 0.85,
+          "text_tail": "complex, gradual nature of historical change; the precise reasoning required in distributed systems engineering; and the vivid, static image of the fox and dog.",
+          "target": 140000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 184173,
+          "ttft_s": 357.788,
+          "prefill_tok_s": 514.76,
+          "completion_tokens": 686,
+          "decode_tok_s": 23.88,
+          "error": null,
+          "tail_distinct_word_ratio": 0.88,
+          "text_tail": "ut variation, punctuation changes, or additional context. This repetition emphasizes the specific phrasing of each topic but does not introduce new information.",
+          "target": 200000
+        }
+      ],
+      "np2_vram_gib_after_depth": 25.54,
+      "np4_load_s": 12.1,
+      "np4_vram_gib": 25.04,
+      "conc_low": [
+        {
+          "n": 1,
+          "prompt_tokens_target": 2000,
+          "ok": "1/1",
+          "prompt_tokens_each": [
+            1900
+          ],
+          "per_stream_decode_mean": 33.25,
+          "per_stream_decode_min": 33.25,
+          "aggregate_completion_tok_s": 30.77,
+          "ttft_p50": 1.965,
+          "wall_s": 26.0,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.84
+        },
+        {
+          "n": 2,
+          "prompt_tokens_target": 2000,
+          "ok": "2/2",
+          "prompt_tokens_each": [
+            1901,
+            1903
+          ],
+          "per_stream_decode_mean": 29.57,
+          "per_stream_decode_min": 29.46,
+          "aggregate_completion_tok_s": 49.94,
+          "ttft_p50": 4.223,
+          "wall_s": 27.9,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.8
+        },
+        {
+          "n": 3,
+          "prompt_tokens_target": 2000,
+          "ok": "3/3",
+          "prompt_tokens_each": [
+            1900,
+            1901,
+            1903
+          ],
+          "per_stream_decode_mean": 26.56,
+          "per_stream_decode_min": 25.7,
+          "aggregate_completion_tok_s": 58.13,
+          "ttft_p50": 8.312,
+          "wall_s": 37.8,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.86
+        },
+        {
+          "n": 4,
+          "prompt_tokens_target": 2000,
+          "ok": "4/4",
+          "prompt_tokens_each": [
+            1902,
+            1901,
+            1904,
+            1903
+          ],
+          "per_stream_decode_mean": 22.72,
+          "per_stream_decode_min": 21.99,
+          "aggregate_completion_tok_s": 60.23,
+          "ttft_p50": 11.747,
+          "wall_s": 44.5,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.93
+        }
+      ],
+      "conc_depth": [
+        {
+          "n": 1,
+          "prompt_tokens_target": 36000,
+          "ok": "1/1",
+          "prompt_tokens_each": [
+            33202
+          ],
+          "per_stream_decode_mean": 31.09,
+          "per_stream_decode_min": 31.09,
+          "aggregate_completion_tok_s": 8.91,
+          "ttft_p50": 42.098,
+          "wall_s": 59.0,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.86
+        },
+        {
+          "n": 2,
+          "prompt_tokens_target": 36000,
+          "ok": "2/2",
+          "prompt_tokens_each": [
+            33202,
+            33201
+          ],
+          "per_stream_decode_mean": 17.91,
+          "per_stream_decode_min": 11.22,
+          "aggregate_completion_tok_s": 11.55,
+          "ttft_p50": 77.268,
+          "wall_s": 103.7,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.91
+        }
+      ],
+      "np4_vram_gib_after": 25.38
+    }
+  }
+}

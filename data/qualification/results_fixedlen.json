@@ -1,0 +1,284 @@
+{
+  "started": "2026-09-10T13:35:02",
+  "why": "phase1b outputs stopped at model EOS; Turbo answers ~5x shorter -> TG/aggregate length-confounded. Forced length here.",
+  "launch": "production line minus --spec-type draft-mtp --spec-draft-n-max 2",
+  "gen_tokens": 768,
+  "depth_targets": [
+    2500,
+    42000,
+    140000
+  ],
+  "models": {
+    "heretic-q4_k_s": {
+      "file": "/mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf",
+      "np2_load_s": 6.0,
+      "tg_fixed": [
+        {
+          "ok": true,
+          "prompt_tokens": 2363,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 2.334,
+          "wall_s": 24.517,
+          "prefill_tok_s": 1012.4,
+          "decode_tok_s": 34.58,
+          "error": null,
+          "target": 2500
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 38724,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 43.012,
+          "wall_s": 67.039,
+          "prefill_tok_s": 900.32,
+          "decode_tok_s": 31.92,
+          "error": null,
+          "target": 42000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 128939,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 207.136,
+          "wall_s": 235.509,
+          "prefill_tok_s": 622.48,
+          "decode_tok_s": 27.03,
+          "error": null,
+          "target": 140000
+        }
+      ],
+      "np4_load_s": 6.0,
+      "conc_fixed": [
+        {
+          "n": 1,
+          "gen_tokens": 768,
+          "ok": "1/1",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 34.6,
+          "per_stream_decode_min": 34.6,
+          "aggregate_completion_tok_s": 31.9,
+          "wall_s": 24.1,
+          "errors": []
+        },
+        {
+          "n": 2,
+          "gen_tokens": 768,
+          "ok": "2/2",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 31.19,
+          "per_stream_decode_min": 31.14,
+          "aggregate_completion_tok_s": 53.7,
+          "wall_s": 28.6,
+          "errors": []
+        },
+        {
+          "n": 3,
+          "gen_tokens": 768,
+          "ok": "3/3",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 28.03,
+          "per_stream_decode_min": 27.6,
+          "aggregate_completion_tok_s": 64.81,
+          "wall_s": 35.5,
+          "errors": []
+        },
+        {
+          "n": 4,
+          "gen_tokens": 768,
+          "ok": "4/4",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 24.79,
+          "per_stream_decode_min": 23.84,
+          "aggregate_completion_tok_s": 72.69,
+          "wall_s": 42.3,
+          "errors": []
+        }
+      ]
+    },
+    "turbo-mtp-q4_k_s": {
+      "file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf",
+      "np2_load_s": 24.2,
+      "tg_fixed": [
+        {
+          "ok": true,
+          "prompt_tokens": 2364,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 2.359,
+          "wall_s": 26.399,
+          "prefill_tok_s": 1002.24,
+          "decode_tok_s": 31.91,
+          "error": null,
+          "target": 2500
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 38726,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 43.127,
+          "wall_s": 68.914,
+          "prefill_tok_s": 897.95,
+          "decode_tok_s": 29.74,
+          "error": null,
+          "target": 42000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 128939,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 207.274,
+          "wall_s": 237.455,
+          "prefill_tok_s": 622.07,
+          "decode_tok_s": 25.41,
+          "error": null,
+          "target": 140000
+        }
+      ],
+      "np4_load_s": 6.0,
+      "conc_fixed": [
+        {
+          "n": 1,
+          "gen_tokens": 768,
+          "ok": "1/1",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 32.12,
+          "per_stream_decode_min": 32.12,
+          "aggregate_completion_tok_s": 29.77,
+          "wall_s": 25.8,
+          "errors": []
+        },
+        {
+          "n": 2,
+          "gen_tokens": 768,
+          "ok": "2/2",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 29.16,
+          "per_stream_decode_min": 29.11,
+          "aggregate_completion_tok_s": 50.64,
+          "wall_s": 30.3,
+          "errors": []
+        },
+        {
+          "n": 3,
+          "gen_tokens": 768,
+          "ok": "3/3",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 26.42,
+          "per_stream_decode_min": 26.03,
+          "aggregate_completion_tok_s": 61.96,
+          "wall_s": 37.2,
+          "errors": []
+        },
+        {
+          "n": 4,
+          "gen_tokens": 768,
+          "ok": "4/4",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 23.61,
+          "per_stream_decode_min": 22.73,
+          "aggregate_completion_tok_s": 69.6,
+          "wall_s": 44.1,
+          "errors": []
+        }
+      ]
+    },
+    "turbo-mtp-iq4_xs": {
+      "file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-iq4_xs.gguf",
+      "np2_load_s": 21.1,
+      "tg_fixed": [
+        {
+          "ok": true,
+          "prompt_tokens": 2363,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 2.413,
+          "wall_s": 26.024,
+          "prefill_tok_s": 979.39,
+          "decode_tok_s": 32.48,
+          "error": null,
+          "target": 2500
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 38725,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 43.833,
+          "wall_s": 69.249,
+          "prefill_tok_s": 883.46,
+          "decode_tok_s": 30.18,
+          "error": null,
+          "target": 42000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 128938,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 209.354,
+          "wall_s": 239.173,
+          "prefill_tok_s": 615.88,
+          "decode_tok_s": 25.72,
+          "error": null,
+          "target": 140000
+        }
+      ],
+      "np4_load_s": 6.0,
+      "conc_fixed": [
+        {
+          "n": 1,
+          "gen_tokens": 768,
+          "ok": "1/1",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 32.53,
+          "per_stream_decode_min": 32.53,
+          "aggregate_completion_tok_s": 30.07,
+          "wall_s": 25.5,
+          "errors": []
+        },
+        {
+          "n": 2,
+          "gen_tokens": 768,
+          "ok": "2/2",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 28.66,
+          "per_stream_decode_min": 28.62,
+          "aggregate_completion_tok_s": 49.71,
+          "wall_s": 30.9,
+          "errors": []
+        },
+        {
+          "n": 3,
+          "gen_tokens": 768,
+          "ok": "3/3",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 25.47,
+          "per_stream_decode_min": 25.08,
+          "aggregate_completion_tok_s": 59.79,
+          "wall_s": 38.5,
+          "errors": []
+        },
+        {
+          "n": 4,
+          "gen_tokens": 768,
+          "ok": "4/4",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 20.58,
+          "per_stream_decode_min": 19.9,
+          "aggregate_completion_tok_s": 62.56,
+          "wall_s": 49.1,
+          "errors": []
+        }
+      ]
+    }
+  },
+  "restore_line": "~/benchmarks/engine_matrix/restore/llamaserver_cmd_production_mtp_n2_20260910_1335.txt",
+  "finished": "2026-09-10T14:00:28",
+  "production_restored_s": 30.0,
+  "production_cmdline": "3690934 ~/projects/llama.cpp-master/build-vulkan/bin/llama-server -m /mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf --mmproj /mnt/models/llm/qwen3.8-27b-instruct-unsloth/mmproj-BF16.gguf --image-min-tokens 1024 -dev Vulkan0 -ngl 99 -c 262144 -ctk q8_0 -ctv q8_0 -fa on --ctx-checkpoints 2 -np 2 -kvu --jinja --reasoning-format deepseek --spec-type draft-mtp --spec-draft-n-max 2 -cram 12288 --host 0.0.0.0 --port 8080 --log-timestamps --log-prefix"
+}

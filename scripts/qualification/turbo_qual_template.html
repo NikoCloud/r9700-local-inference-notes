@@ -1,0 +1,465 @@
+<title>Turbo Heretic Qualification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#EDF0F3; --surface:#FFFFFF; --surface-2:#F6F8FA; --ink:#15202B; --muted:#5B6874; --faint:#8B96A1;
+  --rule:#D3DAE1; --grid:#E4E9EE; --accent:#C4262E;
+  --s-ctl:#5E6B78; --s-q4:#1E5BD0; --s-iq:#9B3FB5; --s-unl:#0E857A;
+  --good:#2E7D4F; --good-bg:#E2F1E7; --warn:#9A620A; --warn-bg:#F6ECD9; --bad:#B3261E; --bad-bg:#F7E3E1;
+  --info:#4F5D6A; --info-bg:#E6EBF0;
+  --band-bad:rgba(179,38,30,.09); --band-warn:rgba(154,98,10,.09); --band-good:rgba(46,125,79,.06);
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1318; --surface:#151C23; --surface-2:#1A222A; --ink:#E4E9EE; --muted:#97A3AE; --faint:#6D7984;
+    --rule:#27313B; --grid:#1F2831; --accent:#EF5058;
+    --s-ctl:#9DA9B5; --s-q4:#6F9CFF; --s-iq:#CF86E8; --s-unl:#4FCFBF;
+    --good:#62C58F; --good-bg:#16301F; --warn:#E3A74B; --warn-bg:#35270F; --bad:#F27A70; --bad-bg:#3A1917;
+    --info:#A9B5C0; --info-bg:#212B34;
+    --band-bad:rgba(242,122,112,.10); --band-warn:rgba(227,167,75,.09); --band-good:rgba(98,197,143,.06);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1318; --surface:#151C23; --surface-2:#1A222A; --ink:#E4E9EE; --muted:#97A3AE; --faint:#6D7984;
+  --rule:#27313B; --grid:#1F2831; --accent:#EF5058;
+  --s-ctl:#9DA9B5; --s-q4:#6F9CFF; --s-iq:#CF86E8;
+  --good:#62C58F; --good-bg:#16301F; --warn:#E3A74B; --warn-bg:#35270F; --bad:#F27A70; --bad-bg:#3A1917;
+  --info:#A9B5C0; --info-bg:#212B34;
+  --band-bad:rgba(242,122,112,.10); --band-warn:rgba(227,167,75,.09); --band-good:rgba(98,197,143,.06);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:32px 24px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--cond);text-wrap:balance;margin:0;letter-spacing:.005em}
+h1{font-size:40px;line-height:1.05;font-weight:700}
+h2{font-size:24px;line-height:1.15;font-weight:600}
+h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+p{margin:0;max-width:68ch}
+.num,td.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:end;padding-bottom:22px;border-bottom:2px solid var(--ink)}
+.eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.eyebrow::before{content:"";width:22px;height:4px;background:var(--accent);display:block}
+.lede{margin-top:12px;color:var(--muted);font-size:15.5px}
+dl.meta{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0;font-size:13px}
+dl.meta dt{color:var(--muted);font-family:var(--cond);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:12px;padding-top:2px}
+dl.meta dd{margin:0;font-family:var(--mono);font-size:12.5px;overflow-wrap:anywhere}
+.callout{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--ink);padding:14px 18px}
+.callout b{font-family:var(--cond);font-size:16px;font-weight:600;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13.5px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:18px;height:4px;border-radius:2px;display:inline-block}
+.panel{background:var(--surface);border:1px solid var(--rule)}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{font-family:var(--cond);font-weight:600;font-size:15px;background:var(--surface-2);white-space:nowrap}
+thead th small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--muted)}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+.gates th[scope=row]{width:22%;font-family:var(--cond);font-weight:600;font-size:15px}
+.gates th[scope=row] small{display:block;font-family:var(--sans);font-weight:400;font-size:12.5px;color:var(--muted);margin-top:2px}
+.cell{display:flex;flex-direction:column;gap:5px}
+.cell .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:14px}
+.cell .sub{font-size:12.5px;color:var(--muted)}
+.chip{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-family:var(--cond);font-weight:600;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.chip.good{color:var(--good);background:var(--good-bg)} .chip.warn{color:var(--warn);background:var(--warn-bg)}
+.chip.bad{color:var(--bad);background:var(--bad-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.colhead{display:flex;align-items:center;gap:8px}
+section.axis{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:0}
+section.axis .head{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;padding:18px 20px 4px}
+section.axis .head p{color:var(--muted);font-size:14px}
+.chart{padding:8px 12px 14px 12px;min-width:0}
+.chart svg{width:100%;height:auto;display:block}
+.readout{padding:14px 18px 18px;border-left:1px solid var(--rule);min-width:0;display:flex;flex-direction:column;gap:10px}
+.readout table{font-size:12.5px}
+.readout th,.readout td{padding:6px 8px}
+.readout thead th{font-size:12.5px}
+td.num{text-align:right;white-space:nowrap}
+.charts-2{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.cap{font-family:var(--cond);font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:0 8px}
+svg .grid{stroke:var(--grid);stroke-width:1}
+svg .axisl{stroke:var(--rule);stroke-width:1}
+svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+svg text.al{font-family:var(--cond);font-size:12px;letter-spacing:.05em;fill:var(--muted)}
+svg text.thr{font-family:var(--cond);font-size:12px;font-weight:600}
+svg .b-bad{fill:var(--band-bad)} svg .b-warn{fill:var(--band-warn)} svg .b-good{fill:var(--band-good)}
+.notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 32px;padding:20px 22px;font-size:13.5px;color:var(--muted)}
+.notes h3{margin-bottom:6px}
+.notes ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+footer{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:14px}
+.missing{color:var(--faint);font-style:italic}
+@media (max-width:860px){
+  header,section.axis,.notes,.charts-2{grid-template-columns:1fr}
+  .readout{border-left:0;border-top:1px solid var(--rule)}
+  h1{font-size:32px}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Phase 1 · qualification · heretic → Turbo A/B</div>
+      <h1>Turbo Heretic Qualification</h1>
+      <p class="lede">Four Qwen3.8-27B builds on the same R9700, same production launch line, only the model file swapped: heretic and both Turbo quants back-to-back, and the stock-proxy Unleashed added in a later window with a drift check against the control. Rows follow the owner's priority: prompt processing ranks, the gates can disqualify, and MTP is a bonus.</p>
+    </div>
+    <dl class="meta" id="meta"></dl>
+  </header>
+
+  <div class="callout">
+    <b>the owner's call: Turbo Q4_K_S.</b>
+    <p>Decided 2026-09-10 on the three-way results below; no model tripped a disqualifier. Unleashed was added afterwards as a stock-proxy reference, not a candidate. Core-19 (heretic vs Turbo Q4_K_S) starts on the owner's command.</p>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="panel table-wrap">
+    <table class="gates" id="gates"></table>
+  </div>
+
+  <section class="axis panel" id="ax-pp">
+    <div class="head"><h2>Prompt processing by context depth</h2>
+      <p>Responsiveness. Tokens per second while reading the prompt, from time-to-first-token; one request per depth, thinking off, no MTP.</p></div>
+    <div class="chart" id="c-pp"></div>
+    <div class="readout" id="r-pp"></div>
+  </section>
+
+  <section class="axis panel" id="ax-tg">
+    <div class="head"><h2>Generation without MTP, by depth</h2>
+      <p>Decode speed after the same prompts. Under 18 disqualifies, 20 is usable, 30 and up is the dream setup. Solid lines force exactly 768 generated tokens, so every model is timed over the same window — the gate reads these. Dashed lines are each model's natural answer length, and reach down to 185k.</p></div>
+    <div class="chart" id="c-tg"></div>
+    <div class="readout" id="r-tg"></div>
+  </section>
+
+  <section class="axis panel" id="ax-conc">
+    <div class="head"><h2>Concurrency — true batching</h2>
+      <p>Simultaneous requests at <span class="mono">-np 4</span>, no MTP, ~1.9k-token prompts. A collapse in per-stream generation is a disqualifier. Solid lines force every stream to 768 tokens (the gate reads these); dashed lines let each model stop on its own, where the aggregate mostly tracks how much it writes.</p></div>
+    <div class="chart">
+      <div class="charts-2">
+        <div><div class="cap">Per-stream generation</div><div id="c-conc-per"></div></div>
+        <div><div class="cap">Aggregate generation</div><div id="c-conc-agg"></div></div>
+      </div>
+    </div>
+    <div class="readout" id="r-conc"></div>
+  </section>
+
+  <section class="axis panel" id="ax-mtp">
+    <div class="head"><h2>MTP — the bonus</h2>
+      <p>Production MTP settings (<span class="mono">draft-mtp</span>, n_max 2, <span class="mono">-np 2</span>), 2048-token code and prose prompts at the template's default thinking. DavidAU's caution: below 50% acceptance, MTP isn't paying for itself.</p></div>
+    <div class="chart" id="c-mtp"></div>
+    <div class="readout" id="r-mtp"></div>
+  </section>
+
+  <section class="axis panel" id="ax-vram">
+    <div class="head"><h2>VRAM by parallel slots</h2>
+      <p>Used memory on the 32 GB R9700 right after load, 262k context, q8_0 KV, MTP loaded. <span class="mono">-np 4</span> is the per-agent-subagent design goal.</p></div>
+    <div class="chart" id="c-vram"></div>
+    <div class="readout" id="r-vram"></div>
+  </section>
+
+  <div class="panel notes">
+    <div><h3>Method</h3><ul id="method"></ul></div>
+    <div><h3>Read with care</h3><ul id="caveats"></ul></div>
+  </div>
+
+  <footer><span id="foot-left"></span><span>Results: <span class="mono">~/benchmarks/engine_matrix/results_turbo_ab/</span></span></footer>
+</div>
+
+<script>
+const D1 = /*MTP_JSON*/null;
+const D2 = /*NOSPEC_JSON*/null;
+const D3 = /*FIXED_JSON*/null;
+
+const MODELS = [
+  {key:"heretic-q4_k_s",   label:"heretic Q4_K_S", role:"current production · control", v:"--s-ctl"},
+  {key:"turbo-mtp-q4_k_s", label:"Turbo Q4_K_S",   role:"candidate · 17.54 GB file",    v:"--s-q4"},
+  {key:"turbo-mtp-iq4_xs", label:"Turbo IQ4_XS",   role:"candidate · 17.03 GB file",    v:"--s-iq"},
+  {key:"unleashed-ud-q4_k_m", label:"Unleashed Q4_K_M", role:"stock proxy · later window · 16.52 GB", v:"--s-unl"},
+];
+const DRIFT = /*DRIFT_JSON*/null;
+const CARD_GIB = 31.86;
+const $ = id => document.getElementById(id);
+const mtp = k => (D1 && D1.models && D1.models[k]) || null;
+const nsp = k => (D2 && D2.models && D2.models[k]) || null;
+const fix = k => (D3 && D3.models && D3.models[k]) || null;
+function fixRows(k){ return ((fix(k)||{}).tg_fixed || []).filter(r => r && r.ok && isNum(r.decode_tok_s)); }
+const isNum = v => typeof v === "number" && isFinite(v);
+const f1 = v => isNum(v) ? v.toFixed(1) : "—";
+const f0 = v => isNum(v) ? Math.round(v).toLocaleString("en-US") : "—";
+const pct = v => isNum(v) ? (v*100).toFixed(1) + "%" : "—";
+const ktok = v => isNum(v) ? (v >= 1000 ? (v/1000).toFixed(v >= 100000 ? 0 : 1) + "k" : String(v)) : "—";
+const dur = s => !isNum(s) ? "—" : s < 90 ? s.toFixed(1) + " s" : Math.floor(s/60) + " m " + String(Math.round(s % 60)).padStart(2,"0") + " s";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const chip = (cls, text) => `<span class="chip ${cls}">${esc(text)}</span>`;
+
+function depthRows(k){ return ((nsp(k)||{}).depth || []).filter(r => r && r.ok && isNum(r.prefill_tok_s)); }
+function tgTier(v){
+  if (!isNum(v)) return ["info","no data"];
+  if (v < 18) return ["bad","disqualified · under 18"];
+  if (v < 20) return ["warn","marginal · 18–20"];
+  if (v < 30) return ["good","usable · 20+"];
+  return ["good","dream · 30+"];
+}
+function batching(k){
+  const fixedRows = ((fix(k)||{}).conc_fixed || []).filter(r => isNum(r.per_stream_decode_mean));
+  const rows = fixedRows.length ? fixedRows : ((nsp(k)||{}).conc_low || []).filter(r => isNum(r.per_stream_decode_mean));
+  if (!rows.length) return {cls:"info", text:"no data", rows};
+  const base = rows.find(r => r.n === 1) || rows[0];
+  const worst = Math.min(...rows.map(r => r.per_stream_decode_mean));
+  const aggDrop = rows.some(r => r.n > 1 && isNum(r.aggregate_completion_tok_s) && r.aggregate_completion_tok_s < base.aggregate_completion_tok_s);
+  const failed = rows.some(r => r.ok && r.ok.split("/")[0] !== r.ok.split("/")[1]);
+  let cls = "good", text = "holds";
+  if (worst < 18 || aggDrop || failed) { cls = "bad"; text = "collapse"; }
+  return {cls, text, rows, base, worst, fixed: fixedRows.length > 0};
+}
+function mtpBonus(k){
+  const m = mtp(k); if (!m) return ["info","no data", null, null];
+  const a = (m.np2_predictable||{}).accept || {}, b = (m.np2_creative||{}).accept || {};
+  const ca = a.pooled, cb = b.pooled;
+  if (!isNum(ca) && !isNum(cb)) return ["info","no data", ca, cb];
+  const ok = [ca, cb].filter(v => isNum(v) && v >= 0.5).length;
+  if (ok === 2) return ["good","bonus · both ≥ 50%", ca, cb];
+  if (ok === 1) return ["warn","partial · one ≥ 50%", ca, cb];
+  return ["info","no bonus · under 50%", ca, cb];
+}
+
+/* ---------- header ---------- */
+(function meta(){
+  const rows = [
+    ["Box", "rig · Ryzen 9 5900X · 32 GB"],
+    ["GPU", "Radeon AI PRO R9700 32 GB (Vulkan0)"],
+    ["Engine", "llama.cpp master 434ddbb · Vulkan · rebased vision patch"],
+    ["Power", ((D1 && D1.power && D1.power[0]) ? "250 W cap (LACT Vram1) — " + D1.power.length + " GPUs reported" : "250 W cap (LACT Vram1)")],
+    ["Launch", "-c 262144 · q8_0 KV · -fa on · -kvu · --jinja · -cram 12288"],
+    ["Run", (D1 && D1.started ? D1.started.replace("T"," ") : "—") + " → " + (((D3 && D3.finished) || (D2 && D2.finished)) ? ((D3 && D3.finished) || D2.finished).replace("T"," ").slice(11) : "…")],
+  ];
+  $("meta").innerHTML = rows.map(([a,b]) => `<dt>${a}</dt><dd>${esc(b)}</dd>`).join("");
+  $("legend").innerHTML = MODELS.map(m => `<span><i class="sw" style="background:var(${m.v})"></i><b>${m.label}</b>&nbsp;<span style="color:var(--muted)">${m.role}</span></span>`).join("");
+})();
+
+/* ---------- scorecard ---------- */
+(function gates(){
+  const ctl = depthRows(MODELS[0].key);
+  const head = `<thead><tr><th>Criterion</th>${MODELS.map(m => `<th><span class="colhead"><i class="sw" style="background:var(${m.v})"></i>${m.label}</span><small>${m.role}</small></th>`).join("")}</tr></thead>`;
+  const row = (name, note, cellFn) => `<tr><th scope="row">${name}<small>${note}</small></th>${MODELS.map((m,i) => `<td>${cellFn(m,i)}</td>`).join("")}</tr>`;
+
+  const pp = row("Prompt processing", "ranks · higher wins", (m) => {
+    const d = depthRows(m.key); if (!d.length) return `<span class="missing">no data</span>`;
+    const lo = d[0], hi = d[d.length-1];
+    let delta = "";
+    if (m.key !== MODELS[0].key && ctl.length) {
+      const c = ctl.find(r => r.target === hi.target);
+      if (c) { const p = (hi.prefill_tok_s / c.prefill_tok_s - 1) * 100; delta = ` · ${p >= 0 ? "+" : ""}${p.toFixed(1)}% vs control at ${ktok(hi.prompt_tokens)}`; }
+    }
+    return `<div class="cell"><span class="v">${f0(lo.prefill_tok_s)} → ${f0(hi.prefill_tok_s)} tok/s</span><span class="sub">at ${ktok(lo.prompt_tokens)} → ${ktok(hi.prompt_tokens)} tokens · first token after ${dur(hi.ttft_s)} at depth${delta}</span></div>`;
+  });
+  const tg = row("Generation, no MTP", "gate · under 18 disqualifies", (m) => {
+    const fx = fixRows(m.key), nat = depthRows(m.key).filter(r => isNum(r.decode_tok_s));
+    const d = fx.length ? fx : nat; if (!d.length) return `<span class="missing">no data</span>`;
+    const fxMax = fx.length ? Math.max(...fx.map(r => r.prompt_tokens || 0)) : 0;
+    const beyond = fx.length ? nat.filter(r => r.prompt_tokens > fxMax * 1.05) : [];
+    const pool = d.concat(beyond);
+    const min = Math.min(...pool.map(r => r.decode_tok_s)); const [c,t] = tgTier(min);
+    const deep = beyond.length ? beyond[beyond.length-1] : null;
+    return `<div class="cell"><span class="v">${f1(d[0].decode_tok_s)} → ${f1(d[d.length-1].decode_tok_s)} tok/s</span><span class="sub">${ktok(d[0].prompt_tokens)} → ${ktok(d[d.length-1].prompt_tokens)} ${fx.length ? "· forced 768 tokens" : "· natural length"}${deep ? ` · ${f1(deep.decode_tok_s)} at ${ktok(deep.prompt_tokens)} (natural)` : ""} · lowest ${f1(min)}</span>${chip(c,t)}</div>`;
+  });
+  const bt = row("True batching", "gate · collapse disqualifies", (m) => {
+    const b = batching(m.key); if (!b.rows.length) return `<span class="missing">no data</span>`;
+    const n4 = b.rows.find(r => r.n === 4) || b.rows[b.rows.length-1];
+    const dep = ((nsp(m.key)||{}).conc_depth || []).find(r => r.n === 2);
+    return `<div class="cell"><span class="v">${f1(n4.per_stream_decode_mean)} tok/s each × ${n4.n}</span><span class="sub">${b.fixed ? "forced 768 tokens · " : "natural length · "}${f1(b.base.per_stream_decode_mean)} solo ·${f1(n4.aggregate_completion_tok_s)} aggregate${dep ? ` · 2 × ${ktok(Math.round((dep.prompt_tokens_each||[0])[0]))}: ${f1(dep.per_stream_decode_mean)} each` : ""}</span>${chip(b.cls,b.text)}</div>`;
+  });
+  const mt = row("MTP acceptance", "bonus · ≥ 50% on caution of the model card", (m) => {
+    const [c,t,a,b] = mtpBonus(m.key); const x = mtp(m.key);
+    if (!x) return `<span class="missing">no data</span>`;
+    return `<div class="cell"><span class="v">${pct(a)} code · ${pct(b)} prose</span><span class="sub">${f1((x.np2_predictable||{}).tok_s)} / ${f1((x.np2_creative||{}).tok_s)} tok/s with MTP</span>${chip(c,t)}</div>`;
+  });
+  const vr = row("VRAM at -np 4", "info · 31.9 GiB card", (m) => {
+    const x = mtp(m.key); const v = x && x.np4_vram_gib;
+    return isNum(v) ? `<div class="cell"><span class="v">${f1(v)} GiB</span><span class="sub">${f1(CARD_GIB - v)} GiB headroom · -np 2: ${f1(x.np2_vram_gib_after || x.np2_vram_gib_idle)}</span></div>` : `<span class="missing">no data</span>`;
+  });
+  const th = row("Thinking before answering", "info · code prompt, 2048-token budget", (m) => {
+    const x = mtp(m.key); const p = x && x.np2_predictable;
+    if (!p) return `<span class="missing">no data</span>`;
+    const hit = p.content_chunks === 0;
+    return `<div class="cell"><span class="v">${f0(p.reasoning_chunks)} thinking · ${f0(p.content_chunks)} answer</span><span class="sub">${hit ? "budget ran out before any answer" : "answer started within budget"}</span></div>`;
+  });
+  $("gates").innerHTML = head + "<tbody>" + pp + tg + bt + mt + vr + th + "</tbody>";
+})();
+
+/* ---------- chart primitives ---------- */
+function niceStep(v){ if (!isNum(v) || v <= 0) return 1; const e = Math.pow(10, Math.floor(Math.log10(v))); const n = v / e; const s = n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10; return s * e; }
+function niceMax(v){ if (!isNum(v) || v <= 0) return 1; const step = niceStep(v / 5); return Math.ceil(v / step - 1e-9) * step; }
+function ticks(max, count){ const step = niceStep(max / count); const out = []; for (let t = 0; t <= max + 1e-9; t += step) out.push(+t.toFixed(6)); return out; }
+
+function lineChart(el, o){
+  const W = o.w || 720, H = o.h || 320, m = {l:56, r:o.r || 24, t:18, b:46};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const [x0, x1] = o.xDomain;
+  const sx = o.xLog ? v => m.l + (Math.log(v) - Math.log(x0)) / (Math.log(x1) - Math.log(x0)) * iw
+                    : v => m.l + (v - x0) / (x1 - x0) * iw;
+  const yMax = o.yMax; const sy = v => m.t + ih - (v / yMax) * ih;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria)}">`;
+  (o.bands || []).forEach(b => { const y0 = Math.min(b.to, yMax), y1 = Math.max(b.from, 0); if (y0 > y1) s += `<rect class="${b.cls}" x="${m.l}" y="${sy(y0)}" width="${iw}" height="${sy(y1) - sy(y0)}"/>`; });
+  ticks(yMax, o.yCount || 5).forEach(t => { s += `<line class="grid" x1="${m.l}" x2="${m.l + iw}" y1="${sy(t)}" y2="${sy(t)}"/><text x="${m.l - 8}" y="${sy(t) + 4}" text-anchor="end">${o.yFmt ? o.yFmt(t) : t}</text>`; });
+  s += `<line class="axisl" x1="${m.l}" x2="${m.l + iw}" y1="${sy(0)}" y2="${sy(0)}"/>`;
+  o.xTicks.forEach(t => { s += `<line class="grid" x1="${sx(t)}" x2="${sx(t)}" y1="${m.t}" y2="${m.t + ih}"/><text x="${sx(t)}" y="${m.t + ih + 16}" text-anchor="middle">${o.xFmt ? o.xFmt(t) : t}</text>`; });
+  s += `<text class="al" x="${m.l + iw / 2}" y="${H - 6}" text-anchor="middle">${esc(o.xLabel)}</text>`;
+  s += `<text class="al" transform="translate(13 ${m.t + ih / 2}) rotate(-90)" text-anchor="middle">${esc(o.yLabel)}</text>`;
+  (o.lines || []).forEach(L => { if (L.y <= yMax) s += `<line x1="${m.l}" x2="${m.l + iw}" y1="${sy(L.y)}" y2="${sy(L.y)}" style="stroke:var(${L.v});stroke-width:1.25" stroke-dasharray="${L.dash || "5 4"}"/><text class="thr" x="${m.l + iw - 4}" y="${L.below ? sy(L.y) + 14 : sy(L.y) - 5}" text-anchor="end" style="fill:var(${L.v})">${esc(L.label)}</text>`; });
+  o.series.forEach(se => {
+    const pts = se.points.filter(p => isNum(p[0]) && isNum(p[1]));
+    if (!pts.length) return;
+    const dashAttr = se.dash ? ` stroke-dasharray="5 4" opacity=".5"` : "";
+    s += `<polyline fill="none" style="stroke:var(${se.v})" stroke-width="${se.dash ? 1.75 : 2.5}" stroke-linejoin="round"${dashAttr} points="${pts.map(p => `${sx(p[0]).toFixed(1)},${sy(p[1]).toFixed(1)}`).join(" ")}"/>`;
+    pts.forEach(p => { s += `<circle cx="${sx(p[0]).toFixed(1)}" cy="${sy(p[1]).toFixed(1)}" r="${se.dash ? 3 : 4}" style="fill:var(--surface);stroke:var(${se.v})" stroke-width="2"${se.dash ? ` opacity=".6"` : ""}><title>${esc(se.label)}: ${o.tipFmt ? o.tipFmt(p) : p[1]}</title></circle>`; });
+  });
+  el.innerHTML = s + `</svg>`;
+}
+
+function groupedBars(el, o){
+  const W = o.w || 720, H = o.h || 300, m = {l:56, r:24, t:18, b:46};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const yMax = o.yMax, sy = v => m.t + ih - (v / yMax) * ih;
+  const gw = iw / o.groups.length, pad = gw * 0.2, bw = (gw - pad) / o.series.length;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria)}">`;
+  ticks(yMax, o.yCount || 5).forEach(t => { s += `<line class="grid" x1="${m.l}" x2="${m.l + iw}" y1="${sy(t)}" y2="${sy(t)}"/><text x="${m.l - 8}" y="${sy(t) + 4}" text-anchor="end">${o.yFmt ? o.yFmt(t) : t}</text>`; });
+  s += `<line class="axisl" x1="${m.l}" x2="${m.l + iw}" y1="${sy(0)}" y2="${sy(0)}"/>`;
+  o.groups.forEach((g, gi) => {
+    const gx = m.l + gi * gw + pad / 2;
+    s += `<text x="${gx + (gw - pad) / 2}" y="${m.t + ih + 17}" text-anchor="middle" class="al">${esc(g)}</text>`;
+    o.series.forEach((se, si) => {
+      const v = se.values[gi]; if (!isNum(v)) return;
+      const x = gx + si * bw, y = sy(Math.min(v, yMax));
+      s += `<rect x="${(x + 2).toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(bw - 4, 2).toFixed(1)}" height="${(sy(0) - y).toFixed(1)}" style="fill:var(${se.v})"><title>${esc(se.label)} · ${esc(g)}: ${o.valFmt ? o.valFmt(v) : v}</title></rect>`;
+      s += `<text x="${(x + bw / 2).toFixed(1)}" y="${(y - 5).toFixed(1)}" text-anchor="middle">${o.valFmt ? o.valFmt(v) : v}</text>`;
+    });
+  });
+  (o.lines || []).forEach(L => { if (L.y <= yMax) s += `<line x1="${m.l}" x2="${m.l + iw}" y1="${sy(L.y)}" y2="${sy(L.y)}" style="stroke:var(${L.v});stroke-width:1.25" stroke-dasharray="${L.dash || "5 4"}"/><text class="thr" x="${m.l + iw - 4}" y="${sy(L.y) - 5}" text-anchor="end" style="fill:var(${L.v})">${esc(L.label)}</text>`; });
+  el.innerHTML = s + `</svg>`;
+}
+
+function readoutTable(el, cols, rows, note){
+  el.innerHTML = `<div class="table-wrap"><table><thead><tr>${cols.map((c,i) => `<th${i ? ' style="text-align:right"' : ""}>${c}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => i ? `<td class="num">${c}</td>` : `<th scope="row" style="font-weight:500">${c}</th>`).join("")}</tr>`).join("")}</tbody></table></div>` + (note ? `<p style="font-size:12.5px;color:var(--muted)">${note}</p>` : "");
+}
+const sw = m => `<i class="sw" style="background:var(${m.v});margin-right:6px;vertical-align:middle"></i>`;
+
+/* ---------- PP + TG by depth ---------- */
+(function depth(){
+  const all = MODELS.flatMap(m => depthRows(m.key));
+  if (!all.length) { $("c-pp").innerHTML = $("c-tg").innerHTML = `<p class="missing" style="padding:20px">Depth ladder not run yet.</p>`; return; }
+  const xs = all.map(r => r.prompt_tokens).filter(isNum);
+  const xDomain = [Math.min(1500, Math.min(...xs) * 0.8), Math.max(256000, Math.max(...xs) * 1.1)];
+  const xTicks = [2000, 8000, 32000, 128000].filter(t => t >= xDomain[0] && t <= xDomain[1]);
+  const kf = t => (t / 1000) + "k";
+  lineChart($("c-pp"), {aria:"Prompt processing tokens per second by context depth for each model", xLog:true, xDomain, xTicks, xFmt:kf,
+    yMax: niceMax(Math.max(...all.map(r => r.prefill_tok_s)) * 1.08), xLabel:"CONTEXT DEPTH · PROMPT TOKENS (LOG)", yLabel:"PP TOK/S",
+    tipFmt: p => `${f0(p[1])} tok/s at ${ktok(p[0])}`,
+    series: MODELS.map(m => ({label:m.label, v:m.v, points: depthRows(m.key).map(r => [r.prompt_tokens, r.prefill_tok_s])}))});
+  const tgAll = all.map(r => r.decode_tok_s).concat(MODELS.flatMap(m => fixRows(m.key).map(r => r.decode_tok_s))).filter(isNum);
+  const tgMax = niceMax(Math.max(34, ...tgAll) * 1.08);
+  lineChart($("c-tg"), {aria:"Generation tokens per second without MTP by context depth, with 18, 20 and 30 thresholds", xLog:true, xDomain, xTicks, xFmt:kf,
+    yMax: tgMax, xLabel:"CONTEXT DEPTH · PROMPT TOKENS (LOG)", yLabel:"TG TOK/S · NO MTP",
+    bands:[{from:0,to:18,cls:"b-bad"},{from:18,to:20,cls:"b-warn"},{from:30,to:tgMax,cls:"b-good"}],
+    lines:[{y:18,label:"18 · disqualify",v:"--bad",dash:"0",below:true},{y:20,label:"20 · usable",v:"--warn"},{y:30,label:"30 · dream",v:"--good"}],
+    tipFmt: p => `${f1(p[1])} tok/s at ${ktok(p[0])}`,
+    series: [
+      ...MODELS.map(m => ({label:m.label + " · natural length", v:m.v, dash:true, points: depthRows(m.key).filter(r => isNum(r.decode_tok_s)).map(r => [r.prompt_tokens, r.decode_tok_s])})),
+      ...MODELS.map(m => ({label:m.label + " · forced 768 tokens", v:m.v, points: fixRows(m.key).map(r => [r.prompt_tokens, r.decode_tok_s])}))]});
+  const targets = [...new Set(all.map(r => r.target))].sort((a,b) => a - b);
+  const byT = (m, t) => depthRows(m.key).find(r => r.target === t);
+  readoutTable($("r-pp"), ["Depth", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))],
+    targets.map(t => [ktok((byT(MODELS[0], t) || byT(MODELS[1], t) || {}).prompt_tokens), ...MODELS.map(m => { const r = byT(m, t); return r ? `${f0(r.prefill_tok_s)}<br><span style="color:var(--muted)">${dur(r.ttft_s)}</span>` : "—"; })]),
+    "tok/s, with time to first token underneath.");
+  readoutTable($("r-tg"), ["Depth", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))],
+    targets.map(t => [ktok((byT(MODELS[0], t) || byT(MODELS[1], t) || {}).prompt_tokens), ...MODELS.map(m => {
+      const r = byT(m, t), fx = fixRows(m.key).find(x => x.target === t);
+      const paint = v => { if (!isNum(v)) return "—"; const [c] = tgTier(v); const col = c === "bad" ? "--bad" : c === "warn" ? "--warn" : "--ink"; return `<span style="color:var(${col})">${f1(v)}</span>`; };
+      const nat = r && isNum(r.decode_tok_s) ? `${f1(r.decode_tok_s)}<span style="color:var(--faint)"> · ${f0(r.completion_tokens)}t</span>` : "—";
+      return `${fx ? paint(fx.decode_tok_s) : "—"}<br><span style="color:var(--muted)">${nat}</span>`; })]),
+    "Top: tok/s with generation forced to 768 tokens (the gate reads this). Underneath: natural answer length, with how many tokens the model actually wrote. Repetition check on each output tail is in the JSON (<span class=\"mono\">tail_distinct_word_ratio</span>).");
+})();
+
+/* ---------- concurrency ---------- */
+(function conc(){
+  const rowsOf = k => ((nsp(k)||{}).conc_low || []).filter(r => isNum(r.per_stream_decode_mean));
+  const fxOf = k => ((fix(k)||{}).conc_fixed || []).filter(r => isNum(r.per_stream_decode_mean));
+  const all = MODELS.flatMap(m => rowsOf(m.key).concat(fxOf(m.key)));
+  if (!all.length) { $("c-conc-per").innerHTML = `<p class="missing" style="padding:20px">Concurrency ladder not run yet.</p>`; return; }
+  const perMax = niceMax(Math.max(34, ...all.map(r => r.per_stream_decode_mean)) * 1.08);
+  const aggMax = niceMax(Math.max(...all.map(r => r.aggregate_completion_tok_s || 0)) * 1.1);
+  const base = {w:420, h:300, r:14, xLog:false, xDomain:[0.7, 4.3], xTicks:[1,2,3,4], xLabel:"CONCURRENT STREAMS"};
+  lineChart($("c-conc-per"), Object.assign({}, base, {aria:"Per-stream generation speed at 1 to 4 concurrent streams", yMax:perMax, yLabel:"TOK/S EACH",
+    bands:[{from:0,to:18,cls:"b-bad"}], lines:[{y:18,label:"18",v:"--bad",dash:"0"}],
+    tipFmt: p => `${f1(p[1])} tok/s each at ${p[0]} streams`,
+    series: [
+      ...MODELS.map(m => ({label:m.label + " · natural length", v:m.v, dash:true, points: rowsOf(m.key).map(r => [r.n, r.per_stream_decode_mean])})),
+      ...MODELS.map(m => ({label:m.label + " · forced 768 tokens", v:m.v, points: fxOf(m.key).map(r => [r.n, r.per_stream_decode_mean])}))]}));
+  lineChart($("c-conc-agg"), Object.assign({}, base, {aria:"Aggregate generation speed at 1 to 4 concurrent streams", yMax:aggMax, yLabel:"TOK/S TOTAL",
+    tipFmt: p => `${f1(p[1])} tok/s total at ${p[0]} streams`,
+    series: [
+      ...MODELS.map(m => ({label:m.label + " · natural length", v:m.v, dash:true, points: rowsOf(m.key).map(r => [r.n, r.aggregate_completion_tok_s])})),
+      ...MODELS.map(m => ({label:m.label + " · forced 768 tokens", v:m.v, points: fxOf(m.key).map(r => [r.n, r.aggregate_completion_tok_s])}))]}));
+  const rows = [];
+  [1,2,3,4].forEach(n => rows.push([`${n} × 1.9k · 768t`, ...MODELS.map(m => { const r = fxOf(m.key).find(x => x.n === n); return r ? `${f1(r.per_stream_decode_mean)} / ${f1(r.aggregate_completion_tok_s)}` : "—"; })]));
+  [1,2,3,4].forEach(n => rows.push([`${n} × 1.9k · natural`, ...MODELS.map(m => { const r = rowsOf(m.key).find(x => x.n === n); return r ? `<span style="color:var(--muted)">${f1(r.per_stream_decode_mean)} / ${f1(r.aggregate_completion_tok_s)}</span>` : "—"; })]));
+  [1,2].forEach(n => rows.push([`${n} × ~33k`, ...MODELS.map(m => { const r = ((nsp(m.key)||{}).conc_depth || []).find(x => x.n === n); return r && isNum(r.per_stream_decode_mean) ? `${f1(r.per_stream_decode_mean)} / ${f1(r.aggregate_completion_tok_s)}` : "—"; })]));
+  rows.push(["Gate", ...MODELS.map(m => { const b = batching(m.key); return chip(b.cls, b.text); })]);
+  readoutTable($("r-conc"), ["Streams", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))], rows,
+    "Each cell: tok/s per stream / aggregate tok/s. Collapse, as read here, uses the ~1.9k rows only: any stream under 18, the total falling below one stream alone, or a failed request. The ~33k rows are a realism check, not a batching test: the second request is still prefilling while the first generates, so its per-stream figure is pulled down by the sibling's prefill, and the aggregate includes prefill time.");
+})();
+
+/* ---------- MTP ---------- */
+(function mtpSec(){
+  if (!D1) { $("c-mtp").innerHTML = `<p class="missing" style="padding:20px">MTP pass not run yet.</p>`; return; }
+  groupedBars($("c-mtp"), {aria:"MTP acceptance rate for code and prose prompts, with the 50 percent caution line", h:300, yMax:1,
+    groups:["Code prompt","Prose prompt","Under load (3 streams)"], yFmt: t => Math.round(t*100) + "%", valFmt: v => Math.round(v*100) + "%",
+    lines:[{y:0.5,label:"50% · card's caution",v:"--warn"}],
+    series: MODELS.map(m => { const x = mtp(m.key) || {}; return {label:m.label, v:m.v, values:[((x.np2_predictable||{}).accept||{}).pooled, ((x.np2_creative||{}).accept||{}).pooled, (x.np3_accept||{}).pooled]}; })});
+  const c = k => ((mtp(k)||{}).np3_conc) || {};
+  readoutTable($("r-mtp"), ["", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))], [
+    ["Code tok/s", ...MODELS.map(m => f1(((mtp(m.key)||{}).np2_predictable||{}).tok_s))],
+    ["Prose tok/s", ...MODELS.map(m => f1(((mtp(m.key)||{}).np2_creative||{}).tok_s))],
+    ["Mean draft len", ...MODELS.map(m => { const x = mtp(m.key)||{}; return `${f1(((x.np2_predictable||{}).accept||{}).mean_len)} / ${f1(((x.np2_creative||{}).accept||{}).mean_len)}`; })],
+    ["1 stream", ...MODELS.map(m => f1((c(m.key).n1||{}).per_stream))],
+    ["2 streams", ...MODELS.map(m => `${f1((c(m.key).n2||{}).per_stream)} / ${f1((c(m.key).n2||{}).aggregate)}`)],
+    ["3 streams", ...MODELS.map(m => `${f1((c(m.key).n3||{}).per_stream)} / ${f1((c(m.key).n3||{}).aggregate)}`)],
+    ["Bonus", ...MODELS.map(m => { const [cl,t] = mtpBonus(m.key); return chip(cl, t.split(" · ")[0]); })],
+  ], "With MTP on. Mean draft length is code / prose. Stream rows are tok/s per stream / aggregate, at <span class=\"mono\">-np 3</span>, code prompt, 800 tokens.");
+})();
+
+/* ---------- VRAM ---------- */
+(function vram(){
+  if (!D1) { $("c-vram").innerHTML = `<p class="missing" style="padding:20px">VRAM ladder not run yet.</p>`; return; }
+  const v = (k, n) => { const x = mtp(k) || {}; return n === 1 ? x.np1_vram_gib : n === 2 ? (x.np2_vram_gib_idle ?? x.np2_vram_gib_after) : n === 3 ? (x.np3_vram_gib_idle ?? x.np3_vram_gib_after) : x.np4_vram_gib; };
+  groupedBars($("c-vram"), {aria:"VRAM used at -np 1 to 4 for each model against the 31.9 GiB card", h:300, yMax:35, yCount:7,
+    groups:["-np 1","-np 2","-np 3","-np 4"], yFmt: t => t, valFmt: x => x.toFixed(1),
+    lines:[{y:CARD_GIB, label:"31.9 GiB card", v:"--bad", dash:"0"}],
+    series: MODELS.map(m => ({label:m.label, v:m.v, values:[1,2,3,4].map(n => { const x = v(m.key, n); return isNum(x) ? x : null; })}))});
+  readoutTable($("r-vram"), ["", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))],
+    [1,2,3,4].map(n => [`-np ${n}`, ...MODELS.map(m => f1(v(m.key, n)))]).concat([["No MTP, -np 2", ...MODELS.map(m => f1((nsp(m.key)||{}).np2_vram_gib))], ["No MTP, -np 4", ...MODELS.map(m => f1((nsp(m.key)||{}).np4_vram_gib))]]),
+    "GiB used on GPU0 right after load. The context and KV cache are reserved up front, so this is close to the working figure.");
+})();
+
+/* ---------- notes ---------- */
+$("method").innerHTML = [
+  "Same session and thermal window for all three; heretic re-measured as the control rather than borrowed from Session 7.",
+  "Launch = the live production line with only <span class=\"mono\">-m</span> swapped (and <span class=\"mono\">-np</span> for the slot ladder); the no-MTP pass drops only the two spec flags.",
+  "PP, TG and batching use the Session 6/7 ruler (<span class=\"mono\">bench_sweep.call</span>): unique prompts so the cache can't help, temp 0, seed 42, thinking off, PP from time to first token.",
+  "Gates are re-measured with generation forced to 768 tokens (<span class=\"mono\">ignore_eos</span>) at 2.4k / 39k / 129k and 1–4 streams, back-to-back for all three models, so answer length can't masquerade as speed.",
+  "MTP uses the Session 7 speculation prompts at the template's own default thinking; acceptance is pooled from each request's own server-log lines.",
+].map(x => `<li>${x}</li>`).join("");
+$("caveats").innerHTML = [
+  "One run per cell. The Session 7 repeat put run-to-run spread near 1%, so gaps of a few percent are real but thin.",
+  "Output length differs by model: on the filler summaries Turbo stops after roughly 125–140 tokens where heretic writes 460–720, so Turbo's natural-length generation figures average over a much shorter window. The forced-length pass (768 tokens, <span class=\"mono\">ignore_eos</span>) exists to remove that, and the two gates read it; beyond its deepest point (~129k) only natural-length figures exist.",
+  "Filler-text prompts measure speed, not understanding; output coherence at depth is only spot-checked (tail word-repetition ratio).",
+  "The two families ship different chat templates; Turbo's default adds an xhigh reasoning instruction. Speed rows use thinking off, so that mostly affects the MTP and thinking rows.",
+  ...(DRIFT ? [`Unleashed ran in a later window (${esc((DRIFT.at || "").replace("T"," ").slice(11,16))}). Control re-check on live heretic at its start: MTP code ${f1(DRIFT.mtp_predictable_tok_s)} tok/s vs 68.0 (${isNum(DRIFT.mtp_predictable_delta_pct) ? (DRIFT.mtp_predictable_delta_pct >= 0 ? "+" : "") + DRIFT.mtp_predictable_delta_pct.toFixed(1) + "%" : "—"}), prefill @42k ${f0(DRIFT.prefill42k_tok_s)} vs 855 (${isNum(DRIFT.prefill42k_delta_pct) ? (DRIFT.prefill42k_delta_pct >= 0 ? "+" : "") + DRIFT.prefill42k_delta_pct.toFixed(1) + "%" : "—"}). Read its gaps against that drift.`] : []),
+  "Quality is not on this page. That's Phase 2 (Core-19), on the owner's command.",
+].map(x => `<li>${x}</li>`).join("");
+$("foot-left").textContent = "Phase 1 of the Turbo Heretic A/B · handoff 2026-09-10 · winner: Turbo Q4_K_S (the owner)";
+</script>

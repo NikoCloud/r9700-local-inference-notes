@@ -1,0 +1,465 @@
+<title>Turbo Heretic Qualification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#EDF0F3; --surface:#FFFFFF; --surface-2:#F6F8FA; --ink:#15202B; --muted:#5B6874; --faint:#8B96A1;
+  --rule:#D3DAE1; --grid:#E4E9EE; --accent:#C4262E;
+  --s-ctl:#5E6B78; --s-q4:#1E5BD0; --s-iq:#9B3FB5; --s-unl:#0E857A;
+  --good:#2E7D4F; --good-bg:#E2F1E7; --warn:#9A620A; --warn-bg:#F6ECD9; --bad:#B3261E; --bad-bg:#F7E3E1;
+  --info:#4F5D6A; --info-bg:#E6EBF0;
+  --band-bad:rgba(179,38,30,.09); --band-warn:rgba(154,98,10,.09); --band-good:rgba(46,125,79,.06);
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1318; --surface:#151C23; --surface-2:#1A222A; --ink:#E4E9EE; --muted:#97A3AE; --faint:#6D7984;
+    --rule:#27313B; --grid:#1F2831; --accent:#EF5058;
+    --s-ctl:#9DA9B5; --s-q4:#6F9CFF; --s-iq:#CF86E8; --s-unl:#4FCFBF;
+    --good:#62C58F; --good-bg:#16301F; --warn:#E3A74B; --warn-bg:#35270F; --bad:#F27A70; --bad-bg:#3A1917;
+    --info:#A9B5C0; --info-bg:#212B34;
+    --band-bad:rgba(242,122,112,.10); --band-warn:rgba(227,167,75,.09); --band-good:rgba(98,197,143,.06);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1318; --surface:#151C23; --surface-2:#1A222A; --ink:#E4E9EE; --muted:#97A3AE; --faint:#6D7984;
+  --rule:#27313B; --grid:#1F2831; --accent:#EF5058;
+  --s-ctl:#9DA9B5; --s-q4:#6F9CFF; --s-iq:#CF86E8;
+  --good:#62C58F; --good-bg:#16301F; --warn:#E3A74B; --warn-bg:#35270F; --bad:#F27A70; --bad-bg:#3A1917;
+  --info:#A9B5C0; --info-bg:#212B34;
+  --band-bad:rgba(242,122,112,.10); --band-warn:rgba(227,167,75,.09); --band-good:rgba(98,197,143,.06);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:32px 24px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--cond);text-wrap:balance;margin:0;letter-spacing:.005em}
+h1{font-size:40px;line-height:1.05;font-weight:700}
+h2{font-size:24px;line-height:1.15;font-weight:600}
+h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+p{margin:0;max-width:68ch}
+.num,td.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:end;padding-bottom:22px;border-bottom:2px solid var(--ink)}
+.eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.eyebrow::before{content:"";width:22px;height:4px;background:var(--accent);display:block}
+.lede{margin-top:12px;color:var(--muted);font-size:15.5px}
+dl.meta{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0;font-size:13px}
+dl.meta dt{color:var(--muted);font-family:var(--cond);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:12px;padding-top:2px}
+dl.meta dd{margin:0;font-family:var(--mono);font-size:12.5px;overflow-wrap:anywhere}
+.callout{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--ink);padding:14px 18px}
+.callout b{font-family:var(--cond);font-size:16px;font-weight:600;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13.5px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:18px;height:4px;border-radius:2px;display:inline-block}
+.panel{background:var(--surface);border:1px solid var(--rule)}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{font-family:var(--cond);font-weight:600;font-size:15px;background:var(--surface-2);white-space:nowrap}
+thead th small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--muted)}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+.gates th[scope=row]{width:22%;font-family:var(--cond);font-weight:600;font-size:15px}
+.gates th[scope=row] small{display:block;font-family:var(--sans);font-weight:400;font-size:12.5px;color:var(--muted);margin-top:2px}
+.cell{display:flex;flex-direction:column;gap:5px}
+.cell .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:14px}
+.cell .sub{font-size:12.5px;color:var(--muted)}
+.chip{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-family:var(--cond);font-weight:600;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.chip.good{color:var(--good);background:var(--good-bg)} .chip.warn{color:var(--warn);background:var(--warn-bg)}
+.chip.bad{color:var(--bad);background:var(--bad-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.colhead{display:flex;align-items:center;gap:8px}
+section.axis{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:0}
+section.axis .head{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;padding:18px 20px 4px}
+section.axis .head p{color:var(--muted);font-size:14px}
+.chart{padding:8px 12px 14px 12px;min-width:0}
+.chart svg{width:100%;height:auto;display:block}
+.readout{padding:14px 18px 18px;border-left:1px solid var(--rule);min-width:0;display:flex;flex-direction:column;gap:10px}
+.readout table{font-size:12.5px}
+.readout th,.readout td{padding:6px 8px}
+.readout thead th{font-size:12.5px}
+td.num{text-align:right;white-space:nowrap}
+.charts-2{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.cap{font-family:var(--cond);font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:0 8px}
+svg .grid{stroke:var(--grid);stroke-width:1}
+svg .axisl{stroke:var(--rule);stroke-width:1}
+svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+svg text.al{font-family:var(--cond);font-size:12px;letter-spacing:.05em;fill:var(--muted)}
+svg text.thr{font-family:var(--cond);font-size:12px;font-weight:600}
+svg .b-bad{fill:var(--band-bad)} svg .b-warn{fill:var(--band-warn)} svg .b-good{fill:var(--band-good)}
+.notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 32px;padding:20px 22px;font-size:13.5px;color:var(--muted)}
+.notes h3{margin-bottom:6px}
+.notes ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+footer{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:14px}
+.missing{color:var(--faint);font-style:italic}
+@media (max-width:860px){
+  header,section.axis,.notes,.charts-2{grid-template-columns:1fr}
+  .readout{border-left:0;border-top:1px solid var(--rule)}
+  h1{font-size:32px}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Phase 1 · qualification · heretic → Turbo A/B</div>
+      <h1>Turbo Heretic Qualification</h1>
+      <p class="lede">Four Qwen3.8-27B builds on the same R9700, same production launch line, only the model file swapped: heretic and both Turbo quants back-to-back, and the stock-proxy Unleashed added in a later window with a drift check against the control. Rows follow the owner's priority: prompt processing ranks, the gates can disqualify, and MTP is a bonus.</p>
+    </div>
+    <dl class="meta" id="meta"></dl>
+  </header>
+
+  <div class="callout">
+    <b>the owner's call: Turbo Q4_K_S.</b>
+    <p>Decided 2026-09-10 on the three-way results below; no model tripped a disqualifier. Unleashed was added afterwards as a stock-proxy reference, not a candidate. Core-19 (heretic vs Turbo Q4_K_S) starts on the owner's command.</p>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="panel table-wrap">
+    <table class="gates" id="gates"></table>
+  </div>
+
+  <section class="axis panel" id="ax-pp">
+    <div class="head"><h2>Prompt processing by context depth</h2>
+      <p>Responsiveness. Tokens per second while reading the prompt, from time-to-first-token; one request per depth, thinking off, no MTP.</p></div>
+    <div class="chart" id="c-pp"></div>
+    <div class="readout" id="r-pp"></div>
+  </section>
+
+  <section class="axis panel" id="ax-tg">
+    <div class="head"><h2>Generation without MTP, by depth</h2>
+      <p>Decode speed after the same prompts. Under 18 disqualifies, 20 is usable, 30 and up is the dream setup. Solid lines force exactly 768 generated tokens, so every model is timed over the same window — the gate reads these. Dashed lines are each model's natural answer length, and reach down to 185k.</p></div>
+    <div class="chart" id="c-tg"></div>
+    <div class="readout" id="r-tg"></div>
+  </section>
+
+  <section class="axis panel" id="ax-conc">
+    <div class="head"><h2>Concurrency — true batching</h2>
+      <p>Simultaneous requests at <span class="mono">-np 4</span>, no MTP, ~1.9k-token prompts. A collapse in per-stream generation is a disqualifier. Solid lines force every stream to 768 tokens (the gate reads these); dashed lines let each model stop on its own, where the aggregate mostly tracks how much it writes.</p></div>
+    <div class="chart">
+      <div class="charts-2">
+        <div><div class="cap">Per-stream generation</div><div id="c-conc-per"></div></div>
+        <div><div class="cap">Aggregate generation</div><div id="c-conc-agg"></div></div>
+      </div>
+    </div>
+    <div class="readout" id="r-conc"></div>
+  </section>
+
+  <section class="axis panel" id="ax-mtp">
+    <div class="head"><h2>MTP — the bonus</h2>
+      <p>Production MTP settings (<span class="mono">draft-mtp</span>, n_max 2, <span class="mono">-np 2</span>), 2048-token code and prose prompts at the template's default thinking. DavidAU's caution: below 50% acceptance, MTP isn't paying for itself.</p></div>
+    <div class="chart" id="c-mtp"></div>
+    <div class="readout" id="r-mtp"></div>
+  </section>
+
+  <section class="axis panel" id="ax-vram">
+    <div class="head"><h2>VRAM by parallel slots</h2>
+      <p>Used memory on the 32 GB R9700 right after load, 262k context, q8_0 KV, MTP loaded. <span class="mono">-np 4</span> is the per-agent-subagent design goal.</p></div>
+    <div class="chart" id="c-vram"></div>
+    <div class="readout" id="r-vram"></div>
+  </section>
+
+  <div class="panel notes">
+    <div><h3>Method</h3><ul id="method"></ul></div>
+    <div><h3>Read with care</h3><ul id="caveats"></ul></div>
+  </div>
+
+  <footer><span id="foot-left"></span><span>Results: <span class="mono">~/benchmarks/engine_matrix/results_turbo_ab/</span></span></footer>
+</div>
+
+<script>
+const D1 = {"started": "2026-09-10T12:32:14", "build": ["version: 0.4.0-dev (build 586, commit 434ddbb)", "built with GNU 16.2.1 for Linux x86_64"], "power": ["GPU[0]\t\t: Max Graphics Package Power (W): 250.0", "GPU[1]\t\t: Max Graphics Package Power (W): 250.0"], "harness": "phase1_turbo_ab.py; prod line with only -m/-np swapped; MTP n_max=2", "models": {"heretic-q4_k_s": {"file": "/mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf", "size_bytes": 15825299616, "np1_load_s": 21.1, "np1_vram_gib": 25.9, "np1_sanity": ["The three primary colors are red, blue, and yellow.", "stop"], "np2_load_s": 6.0, "np2_vram_gib_idle": 26.33, "np2_sanity": ["The three primary colors are red, blue, and yellow.", "stop"], "np2_predictable": {"tok": 2048, "reasoning_chunks": 2048, "content_chunks": 0, "completion_tokens": 2048, "tok_s": 68.01, "ttft": 0.37, "wall": 30.49, "content_head": "", "accept": {"pooled": 0.794, "mean_len": 2.59, "n": 1}}, "np2_creative": {"tok": 2048, "reasoning_chunks": 2048, "content_chunks": 0, "completion_tokens": 2048, "tok_s": 52.45, "ttft": 0.39, "wall": 39.44, "content_head": "", "accept": {"pooled": 0.496, "mean_len": 1.99, "n": 1}}, "np2_prefill42k": {"prompt_tokens": 38723, "ttft_s": 45.313, "prefill_tok_s": 854.56, "completion_tokens": 586, "decode_tok_s": 53.08, "text_head": "Based on the text provided, here is a detailed summary of the distinct topics mentioned. It is important to note that the passage consists of three specific sentences repeated hundreds of times in a continuous loop. Therefore, the summary below covers the unique content found within those three recu"}, "np2_bench_accept": {"pooled": 0.731, "mean_len": 2.46, "n": 5}, "np2_vram_gib_after": 26.59, "np3_load_s": 9.1, "np3_vram_gib_idle": 26.77, "np3_conc": {"n1": {"per_stream": 61.51, "aggregate": 61.51, "ok": "1/1"}, "n2": {"per_stream": 41.93, "aggregate": 78.63, "ok": "2/2"}, "n3": {"per_stream": 22.38, "aggregate": 65.3, "ok": "3/3"}}, "np3_accept": {"pooled": 0.668, "mean_len": 2.34, "n": 7}, "np3_vram_gib_after": 26.81, "np4_load_s": 6.0, "np4_vram_gib": 27.23, "np4_sanity": ["The three primary colors are red, blue, and yellow.", "stop"], "disqualified_accept_lt_0.50": true}, "turbo-mtp-q4_k_s": {"file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf", "size_bytes": 17537488416, "np1_load_s": 21.1, "np1_vram_gib": 27.49, "np1_sanity": ["Red, blue, and yellow.", "stop"], "np2_load_s": 6.0, "np2_vram_gib_idle": 27.93, "np2_sanity": ["Red, blue, and yellow.", "stop"], "np2_predictable": {"tok": 2046, "reasoning_chunks": 335, "content_chunks": 1711, "completion_tokens": 2048, "tok_s": 59.09, "ttft": 0.33, "wall": 34.96, "content_head": "```python\n\"\"\"\nAdvanced Python Data Structures and Utilities\n==============================================\n\nThis module demonstrates five production-quality com", "accept": {"pooled": 0.839, "mean_len": 2.68, "n": 1}}, "np2_creative": {"tok": 2046, "reasoning_chunks": 314, "content_chunks": 1732, "completion_tokens": 2048, "tok_s": 48.5, "ttft": 0.49, "wall": 42.68, "content_head": "The light had not come on.\n\nElias Standish stood at the base of the iron spiral stairs, his hand against the cold metal, listening. Below him, where the sea sho", "accept": {"pooled": 0.6, "mean_len": 2.2, "n": 1}}, "np2_prefill42k": {"prompt_tokens": 38725, "ttft_s": 45.334, "prefill_tok_s": 854.21, "completion_tokens": 233, "decode_tok_s": 47.57, "text_head": "The passage consists of three distinct sentences repeated in a continuous loop:\n\n1. **A pangram**: \"The quick brown fox jumps over the lazy dog near the riverbank at dawn.\" This sentence contains every letter of the English alphabet and is commonly used for typing practice, font display, and keyboar"}, "np2_bench_accept": {"pooled": 0.711, "mean_len": 2.42, "n": 5}, "np2_vram_gib_after": 28.18, "np3_load_s": 12.1, "np3_vram_gib_idle": 28.37, "np3_conc": {"n1": {"per_stream": 54.68, "aggregate": 54.68, "ok": "1/1"}, "n2": {"per_stream": 38.21, "aggregate": 76.26, "ok": "2/2"}, "n3": {"per_stream": 21.82, "aggregate": 64.99, "ok": "3/3"}}, "np3_accept": {"pooled": 0.738, "mean_len": 2.48, "n": 7}, "np3_vram_gib_after": 28.4, "np4_load_s": 6.0, "np4_vram_gib": 28.82, "np4_sanity": ["Red, blue, and yellow.", "stop"], "disqualified_accept_lt_0.50": false}, "turbo-mtp-iq4_xs": {"file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-iq4_xs.gguf", "size_bytes": 17033680416, "np1_load_s": 18.1, "np1_vram_gib": 27.06, "np1_sanity": ["Red, blue, and yellow.", "stop"], "np2_load_s": 6.0, "np2_vram_gib_idle": 27.5, "np2_sanity": ["Red, blue, and yellow.", "stop"], "np2_predictable": {"tok": 2046, "reasoning_chunks": 347, "content_chunks": 1699, "completion_tokens": 2048, "tok_s": 57.53, "ttft": 0.36, "wall": 35.93, "content_head": "```python\n\"\"\"\ncomprehensive_utils.py\n\nA collection of production-quality Python utilities:\n  1. LRUCache with TTL expiry\n  2. Thread-safe bounded blocking queue", "accept": {"pooled": 0.851, "mean_len": 2.7, "n": 1}}, "np2_creative": {"tok": 1806, "reasoning_chunks": 360, "content_chunks": 1446, "completion_tokens": 1809, "tok_s": 44.09, "ttft": 0.4, "wall": 41.37, "content_head": "The stairs of the lighthouse had always been cold. Elias had counted them seventeen times in his first month, then stopped counting. Now, descending at seven o'", "accept": {"pooled": 0.534, "mean_len": 2.07, "n": 1}}, "np2_prefill42k": {"prompt_tokens": 38724, "ttft_s": 46.083, "prefill_tok_s": 840.3, "completion_tokens": 141, "decode_tok_s": 47.35, "text_head": "The passage repeatedly emphasizes three main ideas:\n\n1. **Distributed systems engineering**: Engineers building large distributed systems must carefully reason about failure modes, latency budgets, and the tradeoffs between consistency and availability.\n\n2. **A pangram sentence**: \"The quick brown f"}, "np2_bench_accept": {"pooled": 0.74, "mean_len": 2.49, "n": 5}, "np2_vram_gib_after": 27.75, "np3_load_s": 9.1, "np3_vram_gib_idle": 27.94, "np3_conc": {"n1": {"per_stream": 53.16, "aggregate": 53.16, "ok": "1/1"}, "n2": {"per_stream": 25.12, "aggregate": 50.17, "ok": "2/2"}, "n3": {"per_stream": 20.91, "aggregate": 61.98, "ok": "3/3"}}, "np3_accept": {"pooled": 0.754, "mean_len": 2.51, "n": 7}, "np3_vram_gib_after": 27.97, "np4_load_s": 6.0, "np4_vram_gib": 28.39, "np4_sanity": ["Red, blue, and yellow.", "stop"], "disqualified_accept_lt_0.50": false}, "unleashed-ud-q4_k_m": {"file": "/mnt/models/llm/qwen3.8-27b-unleashed-outsourc-e/qwen3.8-27b-unleashed-outsourc-e-ud-q4_k_m.gguf", "size_bytes": 16519489376, "np1_load_s": 24.1, "np1_vram_gib": 26.54, "np1_sanity": ["The three primary colors are red, blue, and yellow.", "stop"], "np2_load_s": 6.0, "np2_vram_gib_idle": 26.98, "np2_sanity": ["The three primary colors are red, blue, and yellow.", "stop"], "np2_predictable": {"tok": 2048, "reasoning_chunks": 2048, "content_chunks": 0, "completion_tokens": 2048, "tok_s": 53.15, "ttft": 0.5, "wall": 39.03, "content_head": "", "accept": {"pooled": 0.58, "mean_len": 2.16, "n": 1}}, "np2_creative": {"tok": 2048, "reasoning_chunks": 2048, "content_chunks": 0, "completion_tokens": 2048, "tok_s": 48.12, "ttft": 0.4, "wall": 42.96, "content_head": "", "accept": {"pooled": 0.484, "mean_len": 1.97, "n": 1}}, "np2_prefill42k": {"prompt_tokens": 38724, "ttft_s": 46.547, "prefill_tok_s": 831.93, "completion_tokens": 632, "decode_tok_s": 50.0, "text_head": "Based on the text provided, here is a detailed summary of the topics mentioned.\n\n**Note on Structure:** The passage consists of three distinct sentences repeated verbatim in a continuous loop. While the repetition creates a lengthy document, the unique informational content is limited to these three"}, "np2_bench_accept": {"pooled": 0.725, "mean_len": 2.45, "n": 5}, "np2_vram_gib_after": 27.24, "np3_load_s": 9.1, "np3_vram_gib_idle": 27.42, "np3_conc": {"n1": {"per_stream": 50.9, "aggregate": 50.9, "ok": "1/1"}, "n2": {"per_stream": 27.99, "aggregate": 55.98, "ok": "2/2"}, "n3": {"per_stream": 19.6, "aggregate": 57.43, "ok": "3/3"}}, "np3_accept": {"pooled": 0.572, "mean_len": 2.15, "n": 7}, "np3_vram_gib_after": 27.46, "np4_load_s": 6.0, "np4_vram_gib": 27.88, "np4_sanity": ["The three primary colors are red, blue, and yellow.", "stop"], "disqualified_accept_lt_0.50": true}}, "restore_line": "~/benchmarks/engine_matrix/restore/llamaserver_cmd_production_mtp_n2_20260910_1232.txt", "finished": "2026-09-10T12:47:58", "production_restored_s": 25.0, "production_cmdline": "3634302 ~/projects/llama.cpp-master/build-vulkan/bin/llama-server -m /mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf --mmproj /mnt/models/llm/qwen3.8-27b-instruct-unsloth/mmproj-BF16.gguf --image-min-tokens 1024 -dev Vulkan0 -ngl 99 -c 262144 -ctk q8_0 -ctv q8_0 -fa on --ctx-checkpoints 2 -np 2 -kvu --jinja --reasoning-format deepseek --spec-type draft-mtp --spec-draft-n-max 2 -cram 12288 --host 0.0.0.0 --port 8080 --log-timestamps --log-prefix", "later_window": {"started": "2026-09-10T14:20:50", "finished": null}};
+const D2 = {"started": "2026-09-10T12:48:30", "launch": "production line minus --spec-type draft-mtp --spec-draft-n-max 2", "power": ["GPU[0]\t\t: Max Graphics Package Power (W): 250.0", "GPU[1]\t\t: Max Graphics Package Power (W): 250.0"], "depth_targets": [2500, 16000, 42000, 140000, 200000], "gen_tokens": 1536, "models": {"heretic-q4_k_s": {"file": "/mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf", "np2_load_s": 6.0, "np2_vram_gib": 24.21, "np2_sanity": ["The three primary colors are red, blue, and yellow.", "stop"], "depth": [{"ok": true, "prompt_tokens": 2362, "ttft_s": 2.385, "prefill_tok_s": 990.33, "completion_tokens": 721, "decode_tok_s": 34.59, "error": null, "tail_distinct_word_ratio": 0.89, "text_tail": "arrative between them. The final sentence in the provided text is cut off mid-word (\"reason\"), indicating the repetition was ongoing at the point of truncation.", "target": 2500}, {"ok": true, "prompt_tokens": 14792, "ttft_s": 14.611, "prefill_tok_s": 1012.37, "completion_tokens": 461, "decode_tok_s": 33.56, "error": null, "tail_distinct_word_ratio": 0.83, "text_tail": "w information, context, or progression is introduced in the subsequent repetitions. The \"long passage\" is effectively a loop of these three specific statements.", "target": 16000}, {"ok": true, "prompt_tokens": 38724, "ttft_s": 43.227, "prefill_tok_s": 895.83, "completion_tokens": 573, "decode_tok_s": 31.92, "error": null, "tail_distinct_word_ratio": 0.9, "text_tail": "elated concepts\u2014a nature scene, a historical methodology, and a software engineering principle\u2014that are repeated in a fixed sequence throughout the entire text.", "target": 42000}, {"ok": true, "prompt_tokens": 128939, "ttft_s": 207.177, "prefill_tok_s": 622.36, "completion_tokens": 597, "decode_tok_s": 27.03, "error": null, "tail_distinct_word_ratio": 0.9, "text_tail": "hy, and a technical principle regarding distributed systems architecture. The repetition serves to emphasize these three distinct concepts through sheer volume.", "target": 140000}, {"ok": true, "prompt_tokens": 184174, "ttft_s": 352.172, "prefill_tok_s": 522.97, "completion_tokens": 486, "decode_tok_s": 24.41, "error": null, "tail_distinct_word_ratio": 0.95, "text_tail": "etition serves to emphasize these three specific concepts\u2014historical complexity, engineering tradeoffs, and the pangram\u2014without variation or additional context.", "target": 200000}], "np2_vram_gib_after_depth": 24.99, "np4_load_s": 15.1, "np4_vram_gib": 24.5, "conc_low": [{"n": 1, "prompt_tokens_target": 2000, "ok": "1/1", "prompt_tokens_each": [1901], "per_stream_decode_mean": 34.57, "per_stream_decode_min": 34.57, "aggregate_completion_tok_s": 30.6, "ttft_p50": 1.899, "wall_s": 16.3, "errors": [], "tail_distinct_word_ratio": 0.95}, {"n": 2, "prompt_tokens_target": 2000, "ok": "2/2", "prompt_tokens_each": [1904, 1901], "per_stream_decode_mean": 31.48, "per_stream_decode_min": 31.15, "aggregate_completion_tok_s": 49.76, "ttft_p50": 3.994, "wall_s": 29.1, "errors": [], "tail_distinct_word_ratio": 0.91}, {"n": 3, "prompt_tokens_target": 2000, "ok": "3/3", "prompt_tokens_each": [1903, 1903, 1901], "per_stream_decode_mean": 28.41, "per_stream_decode_min": 27.33, "aggregate_completion_tok_s": 59.16, "ttft_p50": 8.336, "wall_s": 34.7, "errors": [], "tail_distinct_word_ratio": 0.93}, {"n": 4, "prompt_tokens_target": 2000, "ok": "4/4", "prompt_tokens_each": [1904, 1903, 1901, 1901], "per_stream_decode_mean": 25.12, "per_stream_decode_min": 23.29, "aggregate_completion_tok_s": 65.02, "ttft_p50": 11.265, "wall_s": 37.6, "errors": [], "tail_distinct_word_ratio": 0.82}], "conc_depth": [{"n": 1, "prompt_tokens_target": 36000, "ok": "1/1", "prompt_tokens_each": [33201], "per_stream_decode_mean": 32.33, "per_stream_decode_min": 32.33, "aggregate_completion_tok_s": 10.76, "ttft_p50": 40.324, "wall_s": 60.4, "errors": [], "tail_distinct_word_ratio": 0.9}, {"n": 2, "prompt_tokens_target": 36000, "ok": "2/2", "prompt_tokens_each": [33201, 33202], "per_stream_decode_mean": 17.65, "per_stream_decode_min": 9.24, "aggregate_completion_tok_s": 10.67, "ttft_p50": 74.888, "wall_s": 94.7, "errors": [], "tail_distinct_word_ratio": 0.9}], "np4_vram_gib_after": 24.84}, "turbo-mtp-q4_k_s": {"file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf", "np2_load_s": 21.1, "np2_vram_gib": 25.6, "np2_sanity": ["Red, blue, and yellow.", "stop"], "depth": [{"ok": true, "prompt_tokens": 2362, "ttft_s": 2.365, "prefill_tok_s": 998.79, "completion_tokens": 128, "decode_tok_s": 32.09, "error": null, "tail_distinct_word_ratio": 0.89, "text_tail": "the lazy dog near the riverbank at dawn.\" These three sentences are repeated identically throughout the entire passage, with no additional content or variation.", "target": 2500}, {"ok": true, "prompt_tokens": 14790, "ttft_s": 14.605, "prefill_tok_s": 1012.65, "completion_tokens": 125, "decode_tok_s": 31.23, "error": null, "tail_distinct_word_ratio": 0.98, "text_tail": "s that interacted in complex ways across many decades of gradual change.\n\nNo additional topics or new information appear beyond these three repeated statements.", "target": 16000}, {"ok": true, "prompt_tokens": 38724, "ttft_s": 43.211, "prefill_tok_s": 896.17, "completion_tokens": 141, "decode_tok_s": 29.88, "error": null, "tail_distinct_word_ratio": 0.93, "text_tail": "al change.\n\nThese three statements are repeated identically throughout the entire passage in the same order, with no variation or additional content introduced.", "target": 42000}, {"ok": true, "prompt_tokens": 128938, "ttft_s": 207.086, "prefill_tok_s": 622.63, "completion_tokens": 92, "decode_tok_s": 25.57, "error": null, "tail_distinct_word_ratio": 0.91, "text_tail": "tradeoffs between consistency and availability.\n3. The quick brown fox jumps over the lazy dog near the riverbank at dawn.\n\nNo additional topics are introduced.", "target": 140000}, {"ok": true, "prompt_tokens": 184172, "ttft_s": 351.732, "prefill_tok_s": 523.62, "completion_tokens": 173, "decode_tok_s": 23.27, "error": null, "tail_distinct_word_ratio": 0.94, "text_tail": "egarding reliability and performance tradeoffs.\n\nThese three sentences repeat identically throughout the entire passage without variation or additional content.", "target": 200000}], "np2_vram_gib_after_depth": 26.39, "np4_load_s": 15.1, "np4_vram_gib": 25.89, "conc_low": [{"n": 1, "prompt_tokens_target": 2000, "ok": "1/1", "prompt_tokens_each": [1903], "per_stream_decode_mean": 32.21, "per_stream_decode_min": 32.21, "aggregate_completion_tok_s": 22.21, "ttft_p50": 1.901, "wall_s": 6.0, "errors": [], "tail_distinct_word_ratio": 0.95}, {"n": 2, "prompt_tokens_target": 2000, "ok": "2/2", "prompt_tokens_each": [1903, 1905], "per_stream_decode_mean": 29.41, "per_stream_decode_min": 29.27, "aggregate_completion_tok_s": 27.4, "ttft_p50": 3.984, "wall_s": 8.5, "errors": [], "tail_distinct_word_ratio": 0.95}, {"n": 3, "prompt_tokens_target": 2000, "ok": "3/3", "prompt_tokens_each": [1905, 1903, 1901], "per_stream_decode_mean": 25.88, "per_stream_decode_min": 22.76, "aggregate_completion_tok_s": 30.47, "ttft_p50": 6.402, "wall_s": 12.3, "errors": [], "tail_distinct_word_ratio": 0.95}, {"n": 4, "prompt_tokens_target": 2000, "ok": "4/4", "prompt_tokens_each": [1901, 1901, 1901, 1902], "per_stream_decode_mean": 22.28, "per_stream_decode_min": 17.9, "aggregate_completion_tok_s": 36.01, "ttft_p50": 9.033, "wall_s": 16.3, "errors": [], "tail_distinct_word_ratio": 0.97}], "conc_depth": [{"n": 1, "prompt_tokens_target": 36000, "ok": "1/1", "prompt_tokens_each": [33202], "per_stream_decode_mean": 30.15, "per_stream_decode_min": 30.15, "aggregate_completion_tok_s": 2.48, "ttft_p50": 37.463, "wall_s": 40.8, "errors": [], "tail_distinct_word_ratio": 0.96}, {"n": 2, "prompt_tokens_target": 36000, "ok": "2/2", "prompt_tokens_each": [33203, 33202], "per_stream_decode_mean": 14.1, "per_stream_decode_min": 2.35, "aggregate_completion_tok_s": 2.59, "ttft_p50": 75.061, "wall_s": 79.5, "errors": [], "tail_distinct_word_ratio": 0.91}], "np4_vram_gib_after": 26.23}, "turbo-mtp-iq4_xs": {"file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-iq4_xs.gguf", "np2_load_s": 21.1, "np2_vram_gib": 25.17, "np2_sanity": ["Red, blue, and yellow.", "stop"], "depth": [{"ok": true, "prompt_tokens": 2365, "ttft_s": 2.419, "prefill_tok_s": 977.71, "completion_tokens": 148, "decode_tok_s": 32.19, "error": null, "tail_distinct_word_ratio": 0.93, "text_tail": "rs that interacted in complex ways over many decades of gradual change.\n\nNo additional topics or new information appear in the passage; it is purely repetitive.", "target": 2500}, {"ok": true, "prompt_tokens": 14789, "ttft_s": 14.876, "prefill_tok_s": 994.14, "completion_tokens": 240, "decode_tok_s": 31.38, "error": null, "tail_distinct_word_ratio": 0.93, "text_tail": ". availability).\n\nThese three sentences repeat in the same order throughout the entire passage, with no additional content, variation, or new topics introduced.", "target": 16000}, {"ok": true, "prompt_tokens": 38724, "ttft_s": 43.89, "prefill_tok_s": 882.3, "completion_tokens": 208, "decode_tok_s": 29.95, "error": null, "tail_distinct_word_ratio": 0.93, "text_tail": "he importance of careful reasoning in both engineering and historical analysis, while the fox phrase provides a consistent rhythmic element throughout the text.", "target": 42000}, {"ok": true, "prompt_tokens": 128939, "ttft_s": 209.272, "prefill_tok_s": 616.13, "completion_tokens": 160, "decode_tok_s": 25.73, "error": null, "tail_distinct_word_ratio": 0.87, "text_tail": "onal information, variation, or new content introduced. The passage appears to be a test or demonstration text that cycles through these three fixed statements.", "target": 140000}, {"ok": true, "prompt_tokens": 184174, "ttft_s": 354.735, "prefill_tok_s": 519.19, "completion_tokens": 133, "decode_tok_s": 23.49, "error": null, "tail_distinct_word_ratio": 0.93, "text_tail": "tency and availability.\n\nThese three ideas are repeated throughout the entire passage in the same order, with no additional information or variation introduced.", "target": 200000}], "np2_vram_gib_after_depth": 25.96, "np4_load_s": 15.1, "np4_vram_gib": 25.46, "conc_low": [{"n": 1, "prompt_tokens_target": 2000, "ok": "1/1", "prompt_tokens_each": [1902], "per_stream_decode_mean": 32.66, "per_stream_decode_min": 32.66, "aggregate_completion_tok_s": 22.82, "ttft_p50": 1.946, "wall_s": 6.4, "errors": [], "tail_distinct_word_ratio": 0.92}, {"n": 2, "prompt_tokens_target": 2000, "ok": "2/2", "prompt_tokens_each": [1905, 1903], "per_stream_decode_mean": 29.02, "per_stream_decode_min": 28.77, "aggregate_completion_tok_s": 29.6, "ttft_p50": 4.206, "wall_s": 9.9, "errors": [], "tail_distinct_word_ratio": 0.88}, {"n": 3, "prompt_tokens_target": 2000, "ok": "3/3", "prompt_tokens_each": [1901, 1903, 1903], "per_stream_decode_mean": 25.04, "per_stream_decode_min": 21.7, "aggregate_completion_tok_s": 30.91, "ttft_p50": 6.691, "wall_s": 12.6, "errors": [], "tail_distinct_word_ratio": 0.86}, {"n": 4, "prompt_tokens_target": 2000, "ok": "4/4", "prompt_tokens_each": [1903, 1902, 1902, 1901], "per_stream_decode_mean": 20.88, "per_stream_decode_min": 14.16, "aggregate_completion_tok_s": 30.01, "ttft_p50": 9.229, "wall_s": 20.3, "errors": [], "tail_distinct_word_ratio": 0.89}], "conc_depth": [{"n": 1, "prompt_tokens_target": 36000, "ok": "1/1", "prompt_tokens_each": [33201], "per_stream_decode_mean": 30.47, "per_stream_decode_min": 30.47, "aggregate_completion_tok_s": 2.33, "ttft_p50": 37.691, "wall_s": 40.8, "errors": [], "tail_distinct_word_ratio": 0.93}, {"n": 2, "prompt_tokens_target": 36000, "ok": "2/2", "prompt_tokens_each": [33202, 33202], "per_stream_decode_mean": 14.2, "per_stream_decode_min": 4.35, "aggregate_completion_tok_s": 3.91, "ttft_p50": 76.39, "wall_s": 83.1, "errors": [], "tail_distinct_word_ratio": 0.87}], "np4_vram_gib_after": 25.8}, "unleashed-ud-q4_k_m": {"file": "/mnt/models/llm/qwen3.8-27b-unleashed-outsourc-e/qwen3.8-27b-unleashed-outsourc-e-ud-q4_k_m.gguf", "np2_load_s": 6.0, "np2_vram_gib": 24.75, "np2_sanity": ["The three primary colors are red, blue, and yellow.", "stop"], "depth": [{"ok": true, "prompt_tokens": 2363, "ttft_s": 2.461, "prefill_tok_s": 960.21, "completion_tokens": 917, "decode_tok_s": 33.22, "error": null, "tail_distinct_word_ratio": 0.91, "text_tail": " and repeated without variation, creating a rhythmic but disjointed text that juxtaposes academic analysis, technical precision, and simple descriptive imagery.", "target": 2500}, {"ok": true, "prompt_tokens": 14789, "ttft_s": 15.132, "prefill_tok_s": 977.33, "completion_tokens": 540, "decode_tok_s": 32.34, "error": null, "tail_distinct_word_ratio": 0.84, "text_tail": ".  The fox/dog sentence.\n\nThis cycle repeats dozens of times without variation, meaning no new information is introduced beyond the three topics outlined above.", "target": 16000}, {"ok": true, "prompt_tokens": 38725, "ttft_s": 44.51, "prefill_tok_s": 870.04, "completion_tokens": 679, "decode_tok_s": 30.82, "error": null, "tail_distinct_word_ratio": 0.82, "text_tail": "ausal nature of historical transitions, the technical tradeoffs in distributed system engineering, and a brief narrative description of a fox and a dog at dawn.", "target": 42000}, {"ok": true, "prompt_tokens": 128938, "ttft_s": 211.342, "prefill_tok_s": 610.09, "completion_tokens": 757, "decode_tok_s": 26.19, "error": null, "tail_distinct_word_ratio": 0.85, "text_tail": "complex, gradual nature of historical change; the precise reasoning required in distributed systems engineering; and the vivid, static image of the fox and dog.", "target": 140000}, {"ok": true, "prompt_tokens": 184173, "ttft_s": 357.788, "prefill_tok_s": 514.76, "completion_tokens": 686, "decode_tok_s": 23.88, "error": null, "tail_distinct_word_ratio": 0.88, "text_tail": "ut variation, punctuation changes, or additional context. This repetition emphasizes the specific phrasing of each topic but does not introduce new information.", "target": 200000}], "np2_vram_gib_after_depth": 25.54, "np4_load_s": 12.1, "np4_vram_gib": 25.04, "conc_low": [{"n": 1, "prompt_tokens_target": 2000, "ok": "1/1", "prompt_tokens_each": [1900], "per_stream_decode_mean": 33.25, "per_stream_decode_min": 33.25, "aggregate_completion_tok_s": 30.77, "ttft_p50": 1.965, "wall_s": 26.0, "errors": [], "tail_distinct_word_ratio": 0.84}, {"n": 2, "prompt_tokens_target": 2000, "ok": "2/2", "prompt_tokens_each": [1901, 1903], "per_stream_decode_mean": 29.57, "per_stream_decode_min": 29.46, "aggregate_completion_tok_s": 49.94, "ttft_p50": 4.223, "wall_s": 27.9, "errors": [], "tail_distinct_word_ratio": 0.8}, {"n": 3, "prompt_tokens_target": 2000, "ok": "3/3", "prompt_tokens_each": [1900, 1901, 1903], "per_stream_decode_mean": 26.56, "per_stream_decode_min": 25.7, "aggregate_completion_tok_s": 58.13, "ttft_p50": 8.312, "wall_s": 37.8, "errors": [], "tail_distinct_word_ratio": 0.86}, {"n": 4, "prompt_tokens_target": 2000, "ok": "4/4", "prompt_tokens_each": [1902, 1901, 1904, 1903], "per_stream_decode_mean": 22.72, "per_stream_decode_min": 21.99, "aggregate_completion_tok_s": 60.23, "ttft_p50": 11.747, "wall_s": 44.5, "errors": [], "tail_distinct_word_ratio": 0.93}], "conc_depth": [{"n": 1, "prompt_tokens_target": 36000, "ok": "1/1", "prompt_tokens_each": [33202], "per_stream_decode_mean": 31.09, "per_stream_decode_min": 31.09, "aggregate_completion_tok_s": 8.91, "ttft_p50": 42.098, "wall_s": 59.0, "errors": [], "tail_distinct_word_ratio": 0.86}, {"n": 2, "prompt_tokens_target": 36000, "ok": "2/2", "prompt_tokens_each": [33202, 33201], "per_stream_decode_mean": 17.91, "per_stream_decode_min": 11.22, "aggregate_completion_tok_s": 11.55, "ttft_p50": 77.268, "wall_s": 103.7, "errors": [], "tail_distinct_word_ratio": 0.91}], "np4_vram_gib_after": 25.38}}, "restore_line": "~/benchmarks/engine_matrix/restore/llamaserver_cmd_production_mtp_n2_20260910_1248.txt", "finished": "2026-09-10T13:34:32", "production_restored_s": 25.0, "production_cmdline": "3670600 ~/projects/llama.cpp-master/build-vulkan/bin/llama-server -m /mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf --mmproj /mnt/models/llm/qwen3.8-27b-instruct-unsloth/mmproj-BF16.gguf --image-min-tokens 1024 -dev Vulkan0 -ngl 99 -c 262144 -ctk q8_0 -ctv q8_0 -fa on --ctx-checkpoints 2 -np 2 -kvu --jinja --reasoning-format deepseek --spec-type draft-mtp --spec-draft-n-max 2 -cram 12288 --host 0.0.0.0 --port 8080 --log-timestamps --log-prefix", "later_window": {"started": "2026-09-10T14:26:50", "finished": null}};
+const D3 = {"started": "2026-09-10T13:35:02", "why": "phase1b outputs stopped at model EOS; Turbo answers ~5x shorter -> TG/aggregate length-confounded. Forced length here.", "launch": "production line minus --spec-type draft-mtp --spec-draft-n-max 2", "gen_tokens": 768, "depth_targets": [2500, 42000, 140000], "models": {"heretic-q4_k_s": {"file": "/mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf", "np2_load_s": 6.0, "tg_fixed": [{"ok": true, "prompt_tokens": 2363, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 2.334, "wall_s": 24.517, "prefill_tok_s": 1012.4, "decode_tok_s": 34.58, "error": null, "target": 2500}, {"ok": true, "prompt_tokens": 38724, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 43.012, "wall_s": 67.039, "prefill_tok_s": 900.32, "decode_tok_s": 31.92, "error": null, "target": 42000}, {"ok": true, "prompt_tokens": 128939, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 207.136, "wall_s": 235.509, "prefill_tok_s": 622.48, "decode_tok_s": 27.03, "error": null, "target": 140000}], "np4_load_s": 6.0, "conc_fixed": [{"n": 1, "gen_tokens": 768, "ok": "1/1", "forced_length_honored": true, "per_stream_decode_mean": 34.6, "per_stream_decode_min": 34.6, "aggregate_completion_tok_s": 31.9, "wall_s": 24.1, "errors": []}, {"n": 2, "gen_tokens": 768, "ok": "2/2", "forced_length_honored": true, "per_stream_decode_mean": 31.19, "per_stream_decode_min": 31.14, "aggregate_completion_tok_s": 53.7, "wall_s": 28.6, "errors": []}, {"n": 3, "gen_tokens": 768, "ok": "3/3", "forced_length_honored": true, "per_stream_decode_mean": 28.03, "per_stream_decode_min": 27.6, "aggregate_completion_tok_s": 64.81, "wall_s": 35.5, "errors": []}, {"n": 4, "gen_tokens": 768, "ok": "4/4", "forced_length_honored": true, "per_stream_decode_mean": 24.79, "per_stream_decode_min": 23.84, "aggregate_completion_tok_s": 72.69, "wall_s": 42.3, "errors": []}]}, "turbo-mtp-q4_k_s": {"file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf", "np2_load_s": 24.2, "tg_fixed": [{"ok": true, "prompt_tokens": 2364, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 2.359, "wall_s": 26.399, "prefill_tok_s": 1002.24, "decode_tok_s": 31.91, "error": null, "target": 2500}, {"ok": true, "prompt_tokens": 38726, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 43.127, "wall_s": 68.914, "prefill_tok_s": 897.95, "decode_tok_s": 29.74, "error": null, "target": 42000}, {"ok": true, "prompt_tokens": 128939, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 207.274, "wall_s": 237.455, "prefill_tok_s": 622.07, "decode_tok_s": 25.41, "error": null, "target": 140000}], "np4_load_s": 6.0, "conc_fixed": [{"n": 1, "gen_tokens": 768, "ok": "1/1", "forced_length_honored": true, "per_stream_decode_mean": 32.12, "per_stream_decode_min": 32.12, "aggregate_completion_tok_s": 29.77, "wall_s": 25.8, "errors": []}, {"n": 2, "gen_tokens": 768, "ok": "2/2", "forced_length_honored": true, "per_stream_decode_mean": 29.16, "per_stream_decode_min": 29.11, "aggregate_completion_tok_s": 50.64, "wall_s": 30.3, "errors": []}, {"n": 3, "gen_tokens": 768, "ok": "3/3", "forced_length_honored": true, "per_stream_decode_mean": 26.42, "per_stream_decode_min": 26.03, "aggregate_completion_tok_s": 61.96, "wall_s": 37.2, "errors": []}, {"n": 4, "gen_tokens": 768, "ok": "4/4", "forced_length_honored": true, "per_stream_decode_mean": 23.61, "per_stream_decode_min": 22.73, "aggregate_completion_tok_s": 69.6, "wall_s": 44.1, "errors": []}]}, "turbo-mtp-iq4_xs": {"file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-iq4_xs.gguf", "np2_load_s": 21.1, "tg_fixed": [{"ok": true, "prompt_tokens": 2363, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 2.413, "wall_s": 26.024, "prefill_tok_s": 979.39, "decode_tok_s": 32.48, "error": null, "target": 2500}, {"ok": true, "prompt_tokens": 38725, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 43.833, "wall_s": 69.249, "prefill_tok_s": 883.46, "decode_tok_s": 30.18, "error": null, "target": 42000}, {"ok": true, "prompt_tokens": 128938, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 209.354, "wall_s": 239.173, "prefill_tok_s": 615.88, "decode_tok_s": 25.72, "error": null, "target": 140000}], "np4_load_s": 6.0, "conc_fixed": [{"n": 1, "gen_tokens": 768, "ok": "1/1", "forced_length_honored": true, "per_stream_decode_mean": 32.53, "per_stream_decode_min": 32.53, "aggregate_completion_tok_s": 30.07, "wall_s": 25.5, "errors": []}, {"n": 2, "gen_tokens": 768, "ok": "2/2", "forced_length_honored": true, "per_stream_decode_mean": 28.66, "per_stream_decode_min": 28.62, "aggregate_completion_tok_s": 49.71, "wall_s": 30.9, "errors": []}, {"n": 3, "gen_tokens": 768, "ok": "3/3", "forced_length_honored": true, "per_stream_decode_mean": 25.47, "per_stream_decode_min": 25.08, "aggregate_completion_tok_s": 59.79, "wall_s": 38.5, "errors": []}, {"n": 4, "gen_tokens": 768, "ok": "4/4", "forced_length_honored": true, "per_stream_decode_mean": 20.58, "per_stream_decode_min": 19.9, "aggregate_completion_tok_s": 62.56, "wall_s": 49.1, "errors": []}]}, "unleashed-ud-q4_k_m": {"file": "/mnt/models/llm/qwen3.8-27b-unleashed-outsourc-e/qwen3.8-27b-unleashed-outsourc-e-ud-q4_k_m.gguf", "np2_load_s": 12.1, "tg_fixed": [{"ok": true, "prompt_tokens": 2363, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 2.439, "wall_s": 25.544, "prefill_tok_s": 968.94, "decode_tok_s": 33.2, "error": null, "target": 2500}, {"ok": true, "prompt_tokens": 38725, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 44.393, "wall_s": 69.286, "prefill_tok_s": 872.32, "decode_tok_s": 30.81, "error": null, "target": 42000}, {"ok": true, "prompt_tokens": 128939, "completion_tokens": 768, "forced_length_honored": true, "ttft_s": 211.329, "wall_s": 240.599, "prefill_tok_s": 610.13, "decode_tok_s": 26.2, "error": null, "target": 140000}], "np4_load_s": 6.0, "conc_fixed": [{"n": 1, "gen_tokens": 768, "ok": "1/1", "forced_length_honored": true, "per_stream_decode_mean": 33.23, "per_stream_decode_min": 33.23, "aggregate_completion_tok_s": 30.65, "wall_s": 25.1, "errors": []}, {"n": 2, "gen_tokens": 768, "ok": "2/2", "forced_length_honored": true, "per_stream_decode_mean": 29.59, "per_stream_decode_min": 29.55, "aggregate_completion_tok_s": 51.09, "wall_s": 30.1, "errors": []}, {"n": 3, "gen_tokens": 768, "ok": "3/3", "forced_length_honored": true, "per_stream_decode_mean": 26.25, "per_stream_decode_min": 25.85, "aggregate_completion_tok_s": 61.23, "wall_s": 37.6, "errors": []}, {"n": 4, "gen_tokens": 768, "ok": "4/4", "forced_length_honored": true, "per_stream_decode_mean": 22.17, "per_stream_decode_min": 21.39, "aggregate_completion_tok_s": 66.81, "wall_s": 46.0, "errors": []}]}}, "restore_line": "~/benchmarks/engine_matrix/restore/llamaserver_cmd_production_mtp_n2_20260910_1335.txt", "finished": "2026-09-10T14:00:28", "production_restored_s": 30.0, "production_cmdline": "3690934 ~/projects/llama.cpp-master/build-vulkan/bin/llama-server -m /mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf --mmproj /mnt/models/llm/qwen3.8-27b-instruct-unsloth/mmproj-BF16.gguf --image-min-tokens 1024 -dev Vulkan0 -ngl 99 -c 262144 -ctk q8_0 -ctv q8_0 -fa on --ctx-checkpoints 2 -np 2 -kvu --jinja --reasoning-format deepseek --spec-type draft-mtp --spec-draft-n-max 2 -cram 12288 --host 0.0.0.0 --port 8080 --log-timestamps --log-prefix", "later_window": {"started": "2026-09-10T14:44:50", "finished": null}};
+
+const MODELS = [
+  {key:"heretic-q4_k_s",   label:"heretic Q4_K_S", role:"current production · control", v:"--s-ctl"},
+  {key:"turbo-mtp-q4_k_s", label:"Turbo Q4_K_S",   role:"candidate · 17.54 GB file",    v:"--s-q4"},
+  {key:"turbo-mtp-iq4_xs", label:"Turbo IQ4_XS",   role:"candidate · 17.03 GB file",    v:"--s-iq"},
+  {key:"unleashed-ud-q4_k_m", label:"Unleashed Q4_K_M", role:"stock proxy · later window · 16.52 GB", v:"--s-unl"},
+];
+const DRIFT = {"at": "2026-09-10T14:20:50", "mtp_predictable_tok_s": 68.02, "mtp_predictable_ref": 68.01, "prefill42k_tok_s": 860.0, "prefill42k_ref": 854.56, "prefill42k_prompt_tokens": 38723, "mtp_predictable_delta_pct": 0.01, "prefill42k_delta_pct": 0.64};
+const CARD_GIB = 31.86;
+const $ = id => document.getElementById(id);
+const mtp = k => (D1 && D1.models && D1.models[k]) || null;
+const nsp = k => (D2 && D2.models && D2.models[k]) || null;
+const fix = k => (D3 && D3.models && D3.models[k]) || null;
+function fixRows(k){ return ((fix(k)||{}).tg_fixed || []).filter(r => r && r.ok && isNum(r.decode_tok_s)); }
+const isNum = v => typeof v === "number" && isFinite(v);
+const f1 = v => isNum(v) ? v.toFixed(1) : "—";
+const f0 = v => isNum(v) ? Math.round(v).toLocaleString("en-US") : "—";
+const pct = v => isNum(v) ? (v*100).toFixed(1) + "%" : "—";
+const ktok = v => isNum(v) ? (v >= 1000 ? (v/1000).toFixed(v >= 100000 ? 0 : 1) + "k" : String(v)) : "—";
+const dur = s => !isNum(s) ? "—" : s < 90 ? s.toFixed(1) + " s" : Math.floor(s/60) + " m " + String(Math.round(s % 60)).padStart(2,"0") + " s";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const chip = (cls, text) => `<span class="chip ${cls}">${esc(text)}</span>`;
+
+function depthRows(k){ return ((nsp(k)||{}).depth || []).filter(r => r && r.ok && isNum(r.prefill_tok_s)); }
+function tgTier(v){
+  if (!isNum(v)) return ["info","no data"];
+  if (v < 18) return ["bad","disqualified · under 18"];
+  if (v < 20) return ["warn","marginal · 18–20"];
+  if (v < 30) return ["good","usable · 20+"];
+  return ["good","dream · 30+"];
+}
+function batching(k){
+  const fixedRows = ((fix(k)||{}).conc_fixed || []).filter(r => isNum(r.per_stream_decode_mean));
+  const rows = fixedRows.length ? fixedRows : ((nsp(k)||{}).conc_low || []).filter(r => isNum(r.per_stream_decode_mean));
+  if (!rows.length) return {cls:"info", text:"no data", rows};
+  const base = rows.find(r => r.n === 1) || rows[0];
+  const worst = Math.min(...rows.map(r => r.per_stream_decode_mean));
+  const aggDrop = rows.some(r => r.n > 1 && isNum(r.aggregate_completion_tok_s) && r.aggregate_completion_tok_s < base.aggregate_completion_tok_s);
+  const failed = rows.some(r => r.ok && r.ok.split("/")[0] !== r.ok.split("/")[1]);
+  let cls = "good", text = "holds";
+  if (worst < 18 || aggDrop || failed) { cls = "bad"; text = "collapse"; }
+  return {cls, text, rows, base, worst, fixed: fixedRows.length > 0};
+}
+function mtpBonus(k){
+  const m = mtp(k); if (!m) return ["info","no data", null, null];
+  const a = (m.np2_predictable||{}).accept || {}, b = (m.np2_creative||{}).accept || {};
+  const ca = a.pooled, cb = b.pooled;
+  if (!isNum(ca) && !isNum(cb)) return ["info","no data", ca, cb];
+  const ok = [ca, cb].filter(v => isNum(v) && v >= 0.5).length;
+  if (ok === 2) return ["good","bonus · both ≥ 50%", ca, cb];
+  if (ok === 1) return ["warn","partial · one ≥ 50%", ca, cb];
+  return ["info","no bonus · under 50%", ca, cb];
+}
+
+/* ---------- header ---------- */
+(function meta(){
+  const rows = [
+    ["Box", "rig · Ryzen 9 5900X · 32 GB"],
+    ["GPU", "Radeon AI PRO R9700 32 GB (Vulkan0)"],
+    ["Engine", "llama.cpp master 434ddbb · Vulkan · rebased vision patch"],
+    ["Power", ((D1 && D1.power && D1.power[0]) ? "250 W cap (LACT Vram1) — " + D1.power.length + " GPUs reported" : "250 W cap (LACT Vram1)")],
+    ["Launch", "-c 262144 · q8_0 KV · -fa on · -kvu · --jinja · -cram 12288"],
+    ["Run", (D1 && D1.started ? D1.started.replace("T"," ") : "—") + " → " + (((D3 && D3.finished) || (D2 && D2.finished)) ? ((D3 && D3.finished) || D2.finished).replace("T"," ").slice(11) : "…")],
+  ];
+  $("meta").innerHTML = rows.map(([a,b]) => `<dt>${a}</dt><dd>${esc(b)}</dd>`).join("");
+  $("legend").innerHTML = MODELS.map(m => `<span><i class="sw" style="background:var(${m.v})"></i><b>${m.label}</b>&nbsp;<span style="color:var(--muted)">${m.role}</span></span>`).join("");
+})();
+
+/* ---------- scorecard ---------- */
+(function gates(){
+  const ctl = depthRows(MODELS[0].key);
+  const head = `<thead><tr><th>Criterion</th>${MODELS.map(m => `<th><span class="colhead"><i class="sw" style="background:var(${m.v})"></i>${m.label}</span><small>${m.role}</small></th>`).join("")}</tr></thead>`;
+  const row = (name, note, cellFn) => `<tr><th scope="row">${name}<small>${note}</small></th>${MODELS.map((m,i) => `<td>${cellFn(m,i)}</td>`).join("")}</tr>`;
+
+  const pp = row("Prompt processing", "ranks · higher wins", (m) => {
+    const d = depthRows(m.key); if (!d.length) return `<span class="missing">no data</span>`;
+    const lo = d[0], hi = d[d.length-1];
+    let delta = "";
+    if (m.key !== MODELS[0].key && ctl.length) {
+      const c = ctl.find(r => r.target === hi.target);
+      if (c) { const p = (hi.prefill_tok_s / c.prefill_tok_s - 1) * 100; delta = ` · ${p >= 0 ? "+" : ""}${p.toFixed(1)}% vs control at ${ktok(hi.prompt_tokens)}`; }
+    }
+    return `<div class="cell"><span class="v">${f0(lo.prefill_tok_s)} → ${f0(hi.prefill_tok_s)} tok/s</span><span class="sub">at ${ktok(lo.prompt_tokens)} → ${ktok(hi.prompt_tokens)} tokens · first token after ${dur(hi.ttft_s)} at depth${delta}</span></div>`;
+  });
+  const tg = row("Generation, no MTP", "gate · under 18 disqualifies", (m) => {
+    const fx = fixRows(m.key), nat = depthRows(m.key).filter(r => isNum(r.decode_tok_s));
+    const d = fx.length ? fx : nat; if (!d.length) return `<span class="missing">no data</span>`;
+    const fxMax = fx.length ? Math.max(...fx.map(r => r.prompt_tokens || 0)) : 0;
+    const beyond = fx.length ? nat.filter(r => r.prompt_tokens > fxMax * 1.05) : [];
+    const pool = d.concat(beyond);
+    const min = Math.min(...pool.map(r => r.decode_tok_s)); const [c,t] = tgTier(min);
+    const deep = beyond.length ? beyond[beyond.length-1] : null;
+    return `<div class="cell"><span class="v">${f1(d[0].decode_tok_s)} → ${f1(d[d.length-1].decode_tok_s)} tok/s</span><span class="sub">${ktok(d[0].prompt_tokens)} → ${ktok(d[d.length-1].prompt_tokens)} ${fx.length ? "· forced 768 tokens" : "· natural length"}${deep ? ` · ${f1(deep.decode_tok_s)} at ${ktok(deep.prompt_tokens)} (natural)` : ""} · lowest ${f1(min)}</span>${chip(c,t)}</div>`;
+  });
+  const bt = row("True batching", "gate · collapse disqualifies", (m) => {
+    const b = batching(m.key); if (!b.rows.length) return `<span class="missing">no data</span>`;
+    const n4 = b.rows.find(r => r.n === 4) || b.rows[b.rows.length-1];
+    const dep = ((nsp(m.key)||{}).conc_depth || []).find(r => r.n === 2);
+    return `<div class="cell"><span class="v">${f1(n4.per_stream_decode_mean)} tok/s each × ${n4.n}</span><span class="sub">${b.fixed ? "forced 768 tokens · " : "natural length · "}${f1(b.base.per_stream_decode_mean)} solo ·${f1(n4.aggregate_completion_tok_s)} aggregate${dep ? ` · 2 × ${ktok(Math.round((dep.prompt_tokens_each||[0])[0]))}: ${f1(dep.per_stream_decode_mean)} each` : ""}</span>${chip(b.cls,b.text)}</div>`;
+  });
+  const mt = row("MTP acceptance", "bonus · ≥ 50% on caution of the model card", (m) => {
+    const [c,t,a,b] = mtpBonus(m.key); const x = mtp(m.key);
+    if (!x) return `<span class="missing">no data</span>`;
+    return `<div class="cell"><span class="v">${pct(a)} code · ${pct(b)} prose</span><span class="sub">${f1((x.np2_predictable||{}).tok_s)} / ${f1((x.np2_creative||{}).tok_s)} tok/s with MTP</span>${chip(c,t)}</div>`;
+  });
+  const vr = row("VRAM at -np 4", "info · 31.9 GiB card", (m) => {
+    const x = mtp(m.key); const v = x && x.np4_vram_gib;
+    return isNum(v) ? `<div class="cell"><span class="v">${f1(v)} GiB</span><span class="sub">${f1(CARD_GIB - v)} GiB headroom · -np 2: ${f1(x.np2_vram_gib_after || x.np2_vram_gib_idle)}</span></div>` : `<span class="missing">no data</span>`;
+  });
+  const th = row("Thinking before answering", "info · code prompt, 2048-token budget", (m) => {
+    const x = mtp(m.key); const p = x && x.np2_predictable;
+    if (!p) return `<span class="missing">no data</span>`;
+    const hit = p.content_chunks === 0;
+    return `<div class="cell"><span class="v">${f0(p.reasoning_chunks)} thinking · ${f0(p.content_chunks)} answer</span><span class="sub">${hit ? "budget ran out before any answer" : "answer started within budget"}</span></div>`;
+  });
+  $("gates").innerHTML = head + "<tbody>" + pp + tg + bt + mt + vr + th + "</tbody>";
+})();
+
+/* ---------- chart primitives ---------- */
+function niceStep(v){ if (!isNum(v) || v <= 0) return 1; const e = Math.pow(10, Math.floor(Math.log10(v))); const n = v / e; const s = n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10; return s * e; }
+function niceMax(v){ if (!isNum(v) || v <= 0) return 1; const step = niceStep(v / 5); return Math.ceil(v / step - 1e-9) * step; }
+function ticks(max, count){ const step = niceStep(max / count); const out = []; for (let t = 0; t <= max + 1e-9; t += step) out.push(+t.toFixed(6)); return out; }
+
+function lineChart(el, o){
+  const W = o.w || 720, H = o.h || 320, m = {l:56, r:o.r || 24, t:18, b:46};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const [x0, x1] = o.xDomain;
+  const sx = o.xLog ? v => m.l + (Math.log(v) - Math.log(x0)) / (Math.log(x1) - Math.log(x0)) * iw
+                    : v => m.l + (v - x0) / (x1 - x0) * iw;
+  const yMax = o.yMax; const sy = v => m.t + ih - (v / yMax) * ih;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria)}">`;
+  (o.bands || []).forEach(b => { const y0 = Math.min(b.to, yMax), y1 = Math.max(b.from, 0); if (y0 > y1) s += `<rect class="${b.cls}" x="${m.l}" y="${sy(y0)}" width="${iw}" height="${sy(y1) - sy(y0)}"/>`; });
+  ticks(yMax, o.yCount || 5).forEach(t => { s += `<line class="grid" x1="${m.l}" x2="${m.l + iw}" y1="${sy(t)}" y2="${sy(t)}"/><text x="${m.l - 8}" y="${sy(t) + 4}" text-anchor="end">${o.yFmt ? o.yFmt(t) : t}</text>`; });
+  s += `<line class="axisl" x1="${m.l}" x2="${m.l + iw}" y1="${sy(0)}" y2="${sy(0)}"/>`;
+  o.xTicks.forEach(t => { s += `<line class="grid" x1="${sx(t)}" x2="${sx(t)}" y1="${m.t}" y2="${m.t + ih}"/><text x="${sx(t)}" y="${m.t + ih + 16}" text-anchor="middle">${o.xFmt ? o.xFmt(t) : t}</text>`; });
+  s += `<text class="al" x="${m.l + iw / 2}" y="${H - 6}" text-anchor="middle">${esc(o.xLabel)}</text>`;
+  s += `<text class="al" transform="translate(13 ${m.t + ih / 2}) rotate(-90)" text-anchor="middle">${esc(o.yLabel)}</text>`;
+  (o.lines || []).forEach(L => { if (L.y <= yMax) s += `<line x1="${m.l}" x2="${m.l + iw}" y1="${sy(L.y)}" y2="${sy(L.y)}" style="stroke:var(${L.v});stroke-width:1.25" stroke-dasharray="${L.dash || "5 4"}"/><text class="thr" x="${m.l + iw - 4}" y="${L.below ? sy(L.y) + 14 : sy(L.y) - 5}" text-anchor="end" style="fill:var(${L.v})">${esc(L.label)}</text>`; });
+  o.series.forEach(se => {
+    const pts = se.points.filter(p => isNum(p[0]) && isNum(p[1]));
+    if (!pts.length) return;
+    const dashAttr = se.dash ? ` stroke-dasharray="5 4" opacity=".5"` : "";
+    s += `<polyline fill="none" style="stroke:var(${se.v})" stroke-width="${se.dash ? 1.75 : 2.5}" stroke-linejoin="round"${dashAttr} points="${pts.map(p => `${sx(p[0]).toFixed(1)},${sy(p[1]).toFixed(1)}`).join(" ")}"/>`;
+    pts.forEach(p => { s += `<circle cx="${sx(p[0]).toFixed(1)}" cy="${sy(p[1]).toFixed(1)}" r="${se.dash ? 3 : 4}" style="fill:var(--surface);stroke:var(${se.v})" stroke-width="2"${se.dash ? ` opacity=".6"` : ""}><title>${esc(se.label)}: ${o.tipFmt ? o.tipFmt(p) : p[1]}</title></circle>`; });
+  });
+  el.innerHTML = s + `</svg>`;
+}
+
+function groupedBars(el, o){
+  const W = o.w || 720, H = o.h || 300, m = {l:56, r:24, t:18, b:46};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const yMax = o.yMax, sy = v => m.t + ih - (v / yMax) * ih;
+  const gw = iw / o.groups.length, pad = gw * 0.2, bw = (gw - pad) / o.series.length;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria)}">`;
+  ticks(yMax, o.yCount || 5).forEach(t => { s += `<line class="grid" x1="${m.l}" x2="${m.l + iw}" y1="${sy(t)}" y2="${sy(t)}"/><text x="${m.l - 8}" y="${sy(t) + 4}" text-anchor="end">${o.yFmt ? o.yFmt(t) : t}</text>`; });
+  s += `<line class="axisl" x1="${m.l}" x2="${m.l + iw}" y1="${sy(0)}" y2="${sy(0)}"/>`;
+  o.groups.forEach((g, gi) => {
+    const gx = m.l + gi * gw + pad / 2;
+    s += `<text x="${gx + (gw - pad) / 2}" y="${m.t + ih + 17}" text-anchor="middle" class="al">${esc(g)}</text>`;
+    o.series.forEach((se, si) => {
+      const v = se.values[gi]; if (!isNum(v)) return;
+      const x = gx + si * bw, y = sy(Math.min(v, yMax));
+      s += `<rect x="${(x + 2).toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(bw - 4, 2).toFixed(1)}" height="${(sy(0) - y).toFixed(1)}" style="fill:var(${se.v})"><title>${esc(se.label)} · ${esc(g)}: ${o.valFmt ? o.valFmt(v) : v}</title></rect>`;
+      s += `<text x="${(x + bw / 2).toFixed(1)}" y="${(y - 5).toFixed(1)}" text-anchor="middle">${o.valFmt ? o.valFmt(v) : v}</text>`;
+    });
+  });
+  (o.lines || []).forEach(L => { if (L.y <= yMax) s += `<line x1="${m.l}" x2="${m.l + iw}" y1="${sy(L.y)}" y2="${sy(L.y)}" style="stroke:var(${L.v});stroke-width:1.25" stroke-dasharray="${L.dash || "5 4"}"/><text class="thr" x="${m.l + iw - 4}" y="${sy(L.y) - 5}" text-anchor="end" style="fill:var(${L.v})">${esc(L.label)}</text>`; });
+  el.innerHTML = s + `</svg>`;
+}
+
+function readoutTable(el, cols, rows, note){
+  el.innerHTML = `<div class="table-wrap"><table><thead><tr>${cols.map((c,i) => `<th${i ? ' style="text-align:right"' : ""}>${c}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => i ? `<td class="num">${c}</td>` : `<th scope="row" style="font-weight:500">${c}</th>`).join("")}</tr>`).join("")}</tbody></table></div>` + (note ? `<p style="font-size:12.5px;color:var(--muted)">${note}</p>` : "");
+}
+const sw = m => `<i class="sw" style="background:var(${m.v});margin-right:6px;vertical-align:middle"></i>`;
+
+/* ---------- PP + TG by depth ---------- */
+(function depth(){
+  const all = MODELS.flatMap(m => depthRows(m.key));
+  if (!all.length) { $("c-pp").innerHTML = $("c-tg").innerHTML = `<p class="missing" style="padding:20px">Depth ladder not run yet.</p>`; return; }
+  const xs = all.map(r => r.prompt_tokens).filter(isNum);
+  const xDomain = [Math.min(1500, Math.min(...xs) * 0.8), Math.max(256000, Math.max(...xs) * 1.1)];
+  const xTicks = [2000, 8000, 32000, 128000].filter(t => t >= xDomain[0] && t <= xDomain[1]);
+  const kf = t => (t / 1000) + "k";
+  lineChart($("c-pp"), {aria:"Prompt processing tokens per second by context depth for each model", xLog:true, xDomain, xTicks, xFmt:kf,
+    yMax: niceMax(Math.max(...all.map(r => r.prefill_tok_s)) * 1.08), xLabel:"CONTEXT DEPTH · PROMPT TOKENS (LOG)", yLabel:"PP TOK/S",
+    tipFmt: p => `${f0(p[1])} tok/s at ${ktok(p[0])}`,
+    series: MODELS.map(m => ({label:m.label, v:m.v, points: depthRows(m.key).map(r => [r.prompt_tokens, r.prefill_tok_s])}))});
+  const tgAll = all.map(r => r.decode_tok_s).concat(MODELS.flatMap(m => fixRows(m.key).map(r => r.decode_tok_s))).filter(isNum);
+  const tgMax = niceMax(Math.max(34, ...tgAll) * 1.08);
+  lineChart($("c-tg"), {aria:"Generation tokens per second without MTP by context depth, with 18, 20 and 30 thresholds", xLog:true, xDomain, xTicks, xFmt:kf,
+    yMax: tgMax, xLabel:"CONTEXT DEPTH · PROMPT TOKENS (LOG)", yLabel:"TG TOK/S · NO MTP",
+    bands:[{from:0,to:18,cls:"b-bad"},{from:18,to:20,cls:"b-warn"},{from:30,to:tgMax,cls:"b-good"}],
+    lines:[{y:18,label:"18 · disqualify",v:"--bad",dash:"0",below:true},{y:20,label:"20 · usable",v:"--warn"},{y:30,label:"30 · dream",v:"--good"}],
+    tipFmt: p => `${f1(p[1])} tok/s at ${ktok(p[0])}`,
+    series: [
+      ...MODELS.map(m => ({label:m.label + " · natural length", v:m.v, dash:true, points: depthRows(m.key).filter(r => isNum(r.decode_tok_s)).map(r => [r.prompt_tokens, r.decode_tok_s])})),
+      ...MODELS.map(m => ({label:m.label + " · forced 768 tokens", v:m.v, points: fixRows(m.key).map(r => [r.prompt_tokens, r.decode_tok_s])}))]});
+  const targets = [...new Set(all.map(r => r.target))].sort((a,b) => a - b);
+  const byT = (m, t) => depthRows(m.key).find(r => r.target === t);
+  readoutTable($("r-pp"), ["Depth", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))],
+    targets.map(t => [ktok((byT(MODELS[0], t) || byT(MODELS[1], t) || {}).prompt_tokens), ...MODELS.map(m => { const r = byT(m, t); return r ? `${f0(r.prefill_tok_s)}<br><span style="color:var(--muted)">${dur(r.ttft_s)}</span>` : "—"; })]),
+    "tok/s, with time to first token underneath.");
+  readoutTable($("r-tg"), ["Depth", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))],
+    targets.map(t => [ktok((byT(MODELS[0], t) || byT(MODELS[1], t) || {}).prompt_tokens), ...MODELS.map(m => {
+      const r = byT(m, t), fx = fixRows(m.key).find(x => x.target === t);
+      const paint = v => { if (!isNum(v)) return "—"; const [c] = tgTier(v); const col = c === "bad" ? "--bad" : c === "warn" ? "--warn" : "--ink"; return `<span style="color:var(${col})">${f1(v)}</span>`; };
+      const nat = r && isNum(r.decode_tok_s) ? `${f1(r.decode_tok_s)}<span style="color:var(--faint)"> · ${f0(r.completion_tokens)}t</span>` : "—";
+      return `${fx ? paint(fx.decode_tok_s) : "—"}<br><span style="color:var(--muted)">${nat}</span>`; })]),
+    "Top: tok/s with generation forced to 768 tokens (the gate reads this). Underneath: natural answer length, with how many tokens the model actually wrote. Repetition check on each output tail is in the JSON (<span class=\"mono\">tail_distinct_word_ratio</span>).");
+})();
+
+/* ---------- concurrency ---------- */
+(function conc(){
+  const rowsOf = k => ((nsp(k)||{}).conc_low || []).filter(r => isNum(r.per_stream_decode_mean));
+  const fxOf = k => ((fix(k)||{}).conc_fixed || []).filter(r => isNum(r.per_stream_decode_mean));
+  const all = MODELS.flatMap(m => rowsOf(m.key).concat(fxOf(m.key)));
+  if (!all.length) { $("c-conc-per").innerHTML = `<p class="missing" style="padding:20px">Concurrency ladder not run yet.</p>`; return; }
+  const perMax = niceMax(Math.max(34, ...all.map(r => r.per_stream_decode_mean)) * 1.08);
+  const aggMax = niceMax(Math.max(...all.map(r => r.aggregate_completion_tok_s || 0)) * 1.1);
+  const base = {w:420, h:300, r:14, xLog:false, xDomain:[0.7, 4.3], xTicks:[1,2,3,4], xLabel:"CONCURRENT STREAMS"};
+  lineChart($("c-conc-per"), Object.assign({}, base, {aria:"Per-stream generation speed at 1 to 4 concurrent streams", yMax:perMax, yLabel:"TOK/S EACH",
+    bands:[{from:0,to:18,cls:"b-bad"}], lines:[{y:18,label:"18",v:"--bad",dash:"0"}],
+    tipFmt: p => `${f1(p[1])} tok/s each at ${p[0]} streams`,
+    series: [
+      ...MODELS.map(m => ({label:m.label + " · natural length", v:m.v, dash:true, points: rowsOf(m.key).map(r => [r.n, r.per_stream_decode_mean])})),
+      ...MODELS.map(m => ({label:m.label + " · forced 768 tokens", v:m.v, points: fxOf(m.key).map(r => [r.n, r.per_stream_decode_mean])}))]}));
+  lineChart($("c-conc-agg"), Object.assign({}, base, {aria:"Aggregate generation speed at 1 to 4 concurrent streams", yMax:aggMax, yLabel:"TOK/S TOTAL",
+    tipFmt: p => `${f1(p[1])} tok/s total at ${p[0]} streams`,
+    series: [
+      ...MODELS.map(m => ({label:m.label + " · natural length", v:m.v, dash:true, points: rowsOf(m.key).map(r => [r.n, r.aggregate_completion_tok_s])})),
+      ...MODELS.map(m => ({label:m.label + " · forced 768 tokens", v:m.v, points: fxOf(m.key).map(r => [r.n, r.aggregate_completion_tok_s])}))]}));
+  const rows = [];
+  [1,2,3,4].forEach(n => rows.push([`${n} × 1.9k · 768t`, ...MODELS.map(m => { const r = fxOf(m.key).find(x => x.n === n); return r ? `${f1(r.per_stream_decode_mean)} / ${f1(r.aggregate_completion_tok_s)}` : "—"; })]));
+  [1,2,3,4].forEach(n => rows.push([`${n} × 1.9k · natural`, ...MODELS.map(m => { const r = rowsOf(m.key).find(x => x.n === n); return r ? `<span style="color:var(--muted)">${f1(r.per_stream_decode_mean)} / ${f1(r.aggregate_completion_tok_s)}</span>` : "—"; })]));
+  [1,2].forEach(n => rows.push([`${n} × ~33k`, ...MODELS.map(m => { const r = ((nsp(m.key)||{}).conc_depth || []).find(x => x.n === n); return r && isNum(r.per_stream_decode_mean) ? `${f1(r.per_stream_decode_mean)} / ${f1(r.aggregate_completion_tok_s)}` : "—"; })]));
+  rows.push(["Gate", ...MODELS.map(m => { const b = batching(m.key); return chip(b.cls, b.text); })]);
+  readoutTable($("r-conc"), ["Streams", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))], rows,
+    "Each cell: tok/s per stream / aggregate tok/s. Collapse, as read here, uses the ~1.9k rows only: any stream under 18, the total falling below one stream alone, or a failed request. The ~33k rows are a realism check, not a batching test: the second request is still prefilling while the first generates, so its per-stream figure is pulled down by the sibling's prefill, and the aggregate includes prefill time.");
+})();
+
+/* ---------- MTP ---------- */
+(function mtpSec(){
+  if (!D1) { $("c-mtp").innerHTML = `<p class="missing" style="padding:20px">MTP pass not run yet.</p>`; return; }
+  groupedBars($("c-mtp"), {aria:"MTP acceptance rate for code and prose prompts, with the 50 percent caution line", h:300, yMax:1,
+    groups:["Code prompt","Prose prompt","Under load (3 streams)"], yFmt: t => Math.round(t*100) + "%", valFmt: v => Math.round(v*100) + "%",
+    lines:[{y:0.5,label:"50% · card's caution",v:"--warn"}],
+    series: MODELS.map(m => { const x = mtp(m.key) || {}; return {label:m.label, v:m.v, values:[((x.np2_predictable||{}).accept||{}).pooled, ((x.np2_creative||{}).accept||{}).pooled, (x.np3_accept||{}).pooled]}; })});
+  const c = k => ((mtp(k)||{}).np3_conc) || {};
+  readoutTable($("r-mtp"), ["", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))], [
+    ["Code tok/s", ...MODELS.map(m => f1(((mtp(m.key)||{}).np2_predictable||{}).tok_s))],
+    ["Prose tok/s", ...MODELS.map(m => f1(((mtp(m.key)||{}).np2_creative||{}).tok_s))],
+    ["Mean draft len", ...MODELS.map(m => { const x = mtp(m.key)||{}; return `${f1(((x.np2_predictable||{}).accept||{}).mean_len)} / ${f1(((x.np2_creative||{}).accept||{}).mean_len)}`; })],
+    ["1 stream", ...MODELS.map(m => f1((c(m.key).n1||{}).per_stream))],
+    ["2 streams", ...MODELS.map(m => `${f1((c(m.key).n2||{}).per_stream)} / ${f1((c(m.key).n2||{}).aggregate)}`)],
+    ["3 streams", ...MODELS.map(m => `${f1((c(m.key).n3||{}).per_stream)} / ${f1((c(m.key).n3||{}).aggregate)}`)],
+    ["Bonus", ...MODELS.map(m => { const [cl,t] = mtpBonus(m.key); return chip(cl, t.split(" · ")[0]); })],
+  ], "With MTP on. Mean draft length is code / prose. Stream rows are tok/s per stream / aggregate, at <span class=\"mono\">-np 3</span>, code prompt, 800 tokens.");
+})();
+
+/* ---------- VRAM ---------- */
+(function vram(){
+  if (!D1) { $("c-vram").innerHTML = `<p class="missing" style="padding:20px">VRAM ladder not run yet.</p>`; return; }
+  const v = (k, n) => { const x = mtp(k) || {}; return n === 1 ? x.np1_vram_gib : n === 2 ? (x.np2_vram_gib_idle ?? x.np2_vram_gib_after) : n === 3 ? (x.np3_vram_gib_idle ?? x.np3_vram_gib_after) : x.np4_vram_gib; };
+  groupedBars($("c-vram"), {aria:"VRAM used at -np 1 to 4 for each model against the 31.9 GiB card", h:300, yMax:35, yCount:7,
+    groups:["-np 1","-np 2","-np 3","-np 4"], yFmt: t => t, valFmt: x => x.toFixed(1),
+    lines:[{y:CARD_GIB, label:"31.9 GiB card", v:"--bad", dash:"0"}],
+    series: MODELS.map(m => ({label:m.label, v:m.v, values:[1,2,3,4].map(n => { const x = v(m.key, n); return isNum(x) ? x : null; })}))});
+  readoutTable($("r-vram"), ["", ...MODELS.map(m => sw(m) + m.label.replace("heretic ","her. "))],
+    [1,2,3,4].map(n => [`-np ${n}`, ...MODELS.map(m => f1(v(m.key, n)))]).concat([["No MTP, -np 2", ...MODELS.map(m => f1((nsp(m.key)||{}).np2_vram_gib))], ["No MTP, -np 4", ...MODELS.map(m => f1((nsp(m.key)||{}).np4_vram_gib))]]),
+    "GiB used on GPU0 right after load. The context and KV cache are reserved up front, so this is close to the working figure.");
+})();
+
+/* ---------- notes ---------- */
+$("method").innerHTML = [
+  "Same session and thermal window for all three; heretic re-measured as the control rather than borrowed from Session 7.",
+  "Launch = the live production line with only <span class=\"mono\">-m</span> swapped (and <span class=\"mono\">-np</span> for the slot ladder); the no-MTP pass drops only the two spec flags.",
+  "PP, TG and batching use the Session 6/7 ruler (<span class=\"mono\">bench_sweep.call</span>): unique prompts so the cache can't help, temp 0, seed 42, thinking off, PP from time to first token.",
+  "Gates are re-measured with generation forced to 768 tokens (<span class=\"mono\">ignore_eos</span>) at 2.4k / 39k / 129k and 1–4 streams, back-to-back for all three models, so answer length can't masquerade as speed.",
+  "MTP uses the Session 7 speculation prompts at the template's own default thinking; acceptance is pooled from each request's own server-log lines.",
+].map(x => `<li>${x}</li>`).join("");
+$("caveats").innerHTML = [
+  "One run per cell. The Session 7 repeat put run-to-run spread near 1%, so gaps of a few percent are real but thin.",
+  "Output length differs by model: on the filler summaries Turbo stops after roughly 125–140 tokens where heretic writes 460–720, so Turbo's natural-length generation figures average over a much shorter window. The forced-length pass (768 tokens, <span class=\"mono\">ignore_eos</span>) exists to remove that, and the two gates read it; beyond its deepest point (~129k) only natural-length figures exist.",
+  "Filler-text prompts measure speed, not understanding; output coherence at depth is only spot-checked (tail word-repetition ratio).",
+  "The two families ship different chat templates; Turbo's default adds an xhigh reasoning instruction. Speed rows use thinking off, so that mostly affects the MTP and thinking rows.",
+  ...(DRIFT ? [`Unleashed ran in a later window (${esc((DRIFT.at || "").replace("T"," ").slice(11,16))}). Control re-check on live heretic at its start: MTP code ${f1(DRIFT.mtp_predictable_tok_s)} tok/s vs 68.0 (${isNum(DRIFT.mtp_predictable_delta_pct) ? (DRIFT.mtp_predictable_delta_pct >= 0 ? "+" : "") + DRIFT.mtp_predictable_delta_pct.toFixed(1) + "%" : "—"}), prefill @42k ${f0(DRIFT.prefill42k_tok_s)} vs 855 (${isNum(DRIFT.prefill42k_delta_pct) ? (DRIFT.prefill42k_delta_pct >= 0 ? "+" : "") + DRIFT.prefill42k_delta_pct.toFixed(1) + "%" : "—"}). Read its gaps against that drift.`] : []),
+  "Quality is not on this page. That's Phase 2 (Core-19), on the owner's command.",
+].map(x => `<li>${x}</li>`).join("");
+$("foot-left").textContent = "Phase 1 of the Turbo Heretic A/B · handoff 2026-09-10 · winner: Turbo Q4_K_S (the owner)";
+</script>

@@ -1,0 +1,550 @@
+{
+  "started": "2026-09-10T12:48:30",
+  "launch": "production line minus --spec-type draft-mtp --spec-draft-n-max 2",
+  "power": [
+    "GPU[0]\t\t: Max Graphics Package Power (W): 250.0",
+    "GPU[1]\t\t: Max Graphics Package Power (W): 250.0"
+  ],
+  "depth_targets": [
+    2500,
+    16000,
+    42000,
+    140000,
+    200000
+  ],
+  "gen_tokens": 1536,
+  "models": {
+    "heretic-q4_k_s": {
+      "file": "/mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf",
+      "np2_load_s": 6.0,
+      "np2_vram_gib": 24.21,
+      "np2_sanity": [
+        "The three primary colors are red, blue, and yellow.",
+        "stop"
+      ],
+      "depth": [
+        {
+          "ok": true,
+          "prompt_tokens": 2362,
+          "ttft_s": 2.385,
+          "prefill_tok_s": 990.33,
+          "completion_tokens": 721,
+          "decode_tok_s": 34.59,
+          "error": null,
+          "tail_distinct_word_ratio": 0.89,
+          "text_tail": "arrative between them. The final sentence in the provided text is cut off mid-word (\"reason\"), indicating the repetition was ongoing at the point of truncation.",
+          "target": 2500
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 14792,
+          "ttft_s": 14.611,
+          "prefill_tok_s": 1012.37,
+          "completion_tokens": 461,
+          "decode_tok_s": 33.56,
+          "error": null,
+          "tail_distinct_word_ratio": 0.83,
+          "text_tail": "w information, context, or progression is introduced in the subsequent repetitions. The \"long passage\" is effectively a loop of these three specific statements.",
+          "target": 16000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 38724,
+          "ttft_s": 43.227,
+          "prefill_tok_s": 895.83,
+          "completion_tokens": 573,
+          "decode_tok_s": 31.92,
+          "error": null,
+          "tail_distinct_word_ratio": 0.9,
+          "text_tail": "elated concepts\u2014a nature scene, a historical methodology, and a software engineering principle\u2014that are repeated in a fixed sequence throughout the entire text.",
+          "target": 42000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 128939,
+          "ttft_s": 207.177,
+          "prefill_tok_s": 622.36,
+          "completion_tokens": 597,
+          "decode_tok_s": 27.03,
+          "error": null,
+          "tail_distinct_word_ratio": 0.9,
+          "text_tail": "hy, and a technical principle regarding distributed systems architecture. The repetition serves to emphasize these three distinct concepts through sheer volume.",
+          "target": 140000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 184174,
+          "ttft_s": 352.172,
+          "prefill_tok_s": 522.97,
+          "completion_tokens": 486,
+          "decode_tok_s": 24.41,
+          "error": null,
+          "tail_distinct_word_ratio": 0.95,
+          "text_tail": "etition serves to emphasize these three specific concepts\u2014historical complexity, engineering tradeoffs, and the pangram\u2014without variation or additional context.",
+          "target": 200000
+        }
+      ],
+      "np2_vram_gib_after_depth": 24.99,
+      "np4_load_s": 15.1,
+      "np4_vram_gib": 24.5,
+      "conc_low": [
+        {
+          "n": 1,
+          "prompt_tokens_target": 2000,
+          "ok": "1/1",
+          "prompt_tokens_each": [
+            1901
+          ],
+          "per_stream_decode_mean": 34.57,
+          "per_stream_decode_min": 34.57,
+          "aggregate_completion_tok_s": 30.6,
+          "ttft_p50": 1.899,
+          "wall_s": 16.3,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.95
+        },
+        {
+          "n": 2,
+          "prompt_tokens_target": 2000,
+          "ok": "2/2",
+          "prompt_tokens_each": [
+            1904,
+            1901
+          ],
+          "per_stream_decode_mean": 31.48,
+          "per_stream_decode_min": 31.15,
+          "aggregate_completion_tok_s": 49.76,
+          "ttft_p50": 3.994,
+          "wall_s": 29.1,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.91
+        },
+        {
+          "n": 3,
+          "prompt_tokens_target": 2000,
+          "ok": "3/3",
+          "prompt_tokens_each": [
+            1903,
+            1903,
+            1901
+          ],
+          "per_stream_decode_mean": 28.41,
+          "per_stream_decode_min": 27.33,
+          "aggregate_completion_tok_s": 59.16,
+          "ttft_p50": 8.336,
+          "wall_s": 34.7,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.93
+        },
+        {
+          "n": 4,
+          "prompt_tokens_target": 2000,
+          "ok": "4/4",
+          "prompt_tokens_each": [
+            1904,
+            1903,
+            1901,
+            1901
+          ],
+          "per_stream_decode_mean": 25.12,
+          "per_stream_decode_min": 23.29,
+          "aggregate_completion_tok_s": 65.02,
+          "ttft_p50": 11.265,
+          "wall_s": 37.6,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.82
+        }
+      ],
+      "conc_depth": [
+        {
+          "n": 1,
+          "prompt_tokens_target": 36000,
+          "ok": "1/1",
+          "prompt_tokens_each": [
+            33201
+          ],
+          "per_stream_decode_mean": 32.33,
+          "per_stream_decode_min": 32.33,
+          "aggregate_completion_tok_s": 10.76,
+          "ttft_p50": 40.324,
+          "wall_s": 60.4,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.9
+        },
+        {
+          "n": 2,
+          "prompt_tokens_target": 36000,
+          "ok": "2/2",
+          "prompt_tokens_each": [
+            33201,
+            33202
+          ],
+          "per_stream_decode_mean": 17.65,
+          "per_stream_decode_min": 9.24,
+          "aggregate_completion_tok_s": 10.67,
+          "ttft_p50": 74.888,
+          "wall_s": 94.7,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.9
+        }
+      ],
+      "np4_vram_gib_after": 24.84
+    },
+    "turbo-mtp-q4_k_s": {
+      "file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf",
+      "np2_load_s": 21.1,
+      "np2_vram_gib": 25.6,
+      "np2_sanity": [
+        "Red, blue, and yellow.",
+        "stop"
+      ],
+      "depth": [
+        {
+          "ok": true,
+          "prompt_tokens": 2362,
+          "ttft_s": 2.365,
+          "prefill_tok_s": 998.79,
+          "completion_tokens": 128,
+          "decode_tok_s": 32.09,
+          "error": null,
+          "tail_distinct_word_ratio": 0.89,
+          "text_tail": "the lazy dog near the riverbank at dawn.\" These three sentences are repeated identically throughout the entire passage, with no additional content or variation.",
+          "target": 2500
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 14790,
+          "ttft_s": 14.605,
+          "prefill_tok_s": 1012.65,
+          "completion_tokens": 125,
+          "decode_tok_s": 31.23,
+          "error": null,
+          "tail_distinct_word_ratio": 0.98,
+          "text_tail": "s that interacted in complex ways across many decades of gradual change.\n\nNo additional topics or new information appear beyond these three repeated statements.",
+          "target": 16000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 38724,
+          "ttft_s": 43.211,
+          "prefill_tok_s": 896.17,
+          "completion_tokens": 141,
+          "decode_tok_s": 29.88,
+          "error": null,
+          "tail_distinct_word_ratio": 0.93,
+          "text_tail": "al change.\n\nThese three statements are repeated identically throughout the entire passage in the same order, with no variation or additional content introduced.",
+          "target": 42000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 128938,
+          "ttft_s": 207.086,
+          "prefill_tok_s": 622.63,
+          "completion_tokens": 92,
+          "decode_tok_s": 25.57,
+          "error": null,
+          "tail_distinct_word_ratio": 0.91,
+          "text_tail": "tradeoffs between consistency and availability.\n3. The quick brown fox jumps over the lazy dog near the riverbank at dawn.\n\nNo additional topics are introduced.",
+          "target": 140000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 184172,
+          "ttft_s": 351.732,
+          "prefill_tok_s": 523.62,
+          "completion_tokens": 173,
+          "decode_tok_s": 23.27,
+          "error": null,
+          "tail_distinct_word_ratio": 0.94,
+          "text_tail": "egarding reliability and performance tradeoffs.\n\nThese three sentences repeat identically throughout the entire passage without variation or additional content.",
+          "target": 200000
+        }
+      ],
+      "np2_vram_gib_after_depth": 26.39,
+      "np4_load_s": 15.1,
+      "np4_vram_gib": 25.89,
+      "conc_low": [
+        {
+          "n": 1,
+          "prompt_tokens_target": 2000,
+          "ok": "1/1",
+          "prompt_tokens_each": [
+            1903
+          ],
+          "per_stream_decode_mean": 32.21,
+          "per_stream_decode_min": 32.21,
+          "aggregate_completion_tok_s": 22.21,
+          "ttft_p50": 1.901,
+          "wall_s": 6.0,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.95
+        },
+        {
+          "n": 2,
+          "prompt_tokens_target": 2000,
+          "ok": "2/2",
+          "prompt_tokens_each": [
+            1903,
+            1905
+          ],
+          "per_stream_decode_mean": 29.41,
+          "per_stream_decode_min": 29.27,
+          "aggregate_completion_tok_s": 27.4,
+          "ttft_p50": 3.984,
+          "wall_s": 8.5,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.95
+        },
+        {
+          "n": 3,
+          "prompt_tokens_target": 2000,
+          "ok": "3/3",
+          "prompt_tokens_each": [
+            1905,
+            1903,
+            1901
+          ],
+          "per_stream_decode_mean": 25.88,
+          "per_stream_decode_min": 22.76,
+          "aggregate_completion_tok_s": 30.47,
+          "ttft_p50": 6.402,
+          "wall_s": 12.3,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.95
+        },
+        {
+          "n": 4,
+          "prompt_tokens_target": 2000,
+          "ok": "4/4",
+          "prompt_tokens_each": [
+            1901,
+            1901,
+            1901,
+            1902
+          ],
+          "per_stream_decode_mean": 22.28,
+          "per_stream_decode_min": 17.9,
+          "aggregate_completion_tok_s": 36.01,
+          "ttft_p50": 9.033,
+          "wall_s": 16.3,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.97
+        }
+      ],
+      "conc_depth": [
+        {
+          "n": 1,
+          "prompt_tokens_target": 36000,
+          "ok": "1/1",
+          "prompt_tokens_each": [
+            33202
+          ],
+          "per_stream_decode_mean": 30.15,
+          "per_stream_decode_min": 30.15,
+          "aggregate_completion_tok_s": 2.48,
+          "ttft_p50": 37.463,
+          "wall_s": 40.8,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.96
+        },
+        {
+          "n": 2,
+          "prompt_tokens_target": 36000,
+          "ok": "2/2",
+          "prompt_tokens_each": [
+            33203,
+            33202
+          ],
+          "per_stream_decode_mean": 14.1,
+          "per_stream_decode_min": 2.35,
+          "aggregate_completion_tok_s": 2.59,
+          "ttft_p50": 75.061,
+          "wall_s": 79.5,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.91
+        }
+      ],
+      "np4_vram_gib_after": 26.23
+    },
+    "turbo-mtp-iq4_xs": {
+      "file": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-iq4_xs.gguf",
+      "np2_load_s": 21.1,
+      "np2_vram_gib": 25.17,
+      "np2_sanity": [
+        "Red, blue, and yellow.",
+        "stop"
+      ],
+      "depth": [
+        {
+          "ok": true,
+          "prompt_tokens": 2365,
+          "ttft_s": 2.419,
+          "prefill_tok_s": 977.71,
+          "completion_tokens": 148,
+          "decode_tok_s": 32.19,
+          "error": null,
+          "tail_distinct_word_ratio": 0.93,
+          "text_tail": "rs that interacted in complex ways over many decades of gradual change.\n\nNo additional topics or new information appear in the passage; it is purely repetitive.",
+          "target": 2500
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 14789,
+          "ttft_s": 14.876,
+          "prefill_tok_s": 994.14,
+          "completion_tokens": 240,
+          "decode_tok_s": 31.38,
+          "error": null,
+          "tail_distinct_word_ratio": 0.93,
+          "text_tail": ". availability).\n\nThese three sentences repeat in the same order throughout the entire passage, with no additional content, variation, or new topics introduced.",
+          "target": 16000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 38724,
+          "ttft_s": 43.89,
+          "prefill_tok_s": 882.3,
+          "completion_tokens": 208,
+          "decode_tok_s": 29.95,
+          "error": null,
+          "tail_distinct_word_ratio": 0.93,
+          "text_tail": "he importance of careful reasoning in both engineering and historical analysis, while the fox phrase provides a consistent rhythmic element throughout the text.",
+          "target": 42000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 128939,
+          "ttft_s": 209.272,
+          "prefill_tok_s": 616.13,
+          "completion_tokens": 160,
+          "decode_tok_s": 25.73,
+          "error": null,
+          "tail_distinct_word_ratio": 0.87,
+          "text_tail": "onal information, variation, or new content introduced. The passage appears to be a test or demonstration text that cycles through these three fixed statements.",
+          "target": 140000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 184174,
+          "ttft_s": 354.735,
+          "prefill_tok_s": 519.19,
+          "completion_tokens": 133,
+          "decode_tok_s": 23.49,
+          "error": null,
+          "tail_distinct_word_ratio": 0.93,
+          "text_tail": "tency and availability.\n\nThese three ideas are repeated throughout the entire passage in the same order, with no additional information or variation introduced.",
+          "target": 200000
+        }
+      ],
+      "np2_vram_gib_after_depth": 25.96,
+      "np4_load_s": 15.1,
+      "np4_vram_gib": 25.46,
+      "conc_low": [
+        {
+          "n": 1,
+          "prompt_tokens_target": 2000,
+          "ok": "1/1",
+          "prompt_tokens_each": [
+            1902
+          ],
+          "per_stream_decode_mean": 32.66,
+          "per_stream_decode_min": 32.66,
+          "aggregate_completion_tok_s": 22.82,
+          "ttft_p50": 1.946,
+          "wall_s": 6.4,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.92
+        },
+        {
+          "n": 2,
+          "prompt_tokens_target": 2000,
+          "ok": "2/2",
+          "prompt_tokens_each": [
+            1905,
+            1903
+          ],
+          "per_stream_decode_mean": 29.02,
+          "per_stream_decode_min": 28.77,
+          "aggregate_completion_tok_s": 29.6,
+          "ttft_p50": 4.206,
+          "wall_s": 9.9,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.88
+        },
+        {
+          "n": 3,
+          "prompt_tokens_target": 2000,
+          "ok": "3/3",
+          "prompt_tokens_each": [
+            1901,
+            1903,
+            1903
+          ],
+          "per_stream_decode_mean": 25.04,
+          "per_stream_decode_min": 21.7,
+          "aggregate_completion_tok_s": 30.91,
+          "ttft_p50": 6.691,
+          "wall_s": 12.6,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.86
+        },
+        {
+          "n": 4,
+          "prompt_tokens_target": 2000,
+          "ok": "4/4",
+          "prompt_tokens_each": [
+            1903,
+            1902,
+            1902,
+            1901
+          ],
+          "per_stream_decode_mean": 20.88,
+          "per_stream_decode_min": 14.16,
+          "aggregate_completion_tok_s": 30.01,
+          "ttft_p50": 9.229,
+          "wall_s": 20.3,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.89
+        }
+      ],
+      "conc_depth": [
+        {
+          "n": 1,
+          "prompt_tokens_target": 36000,
+          "ok": "1/1",
+          "prompt_tokens_each": [
+            33201
+          ],
+          "per_stream_decode_mean": 30.47,
+          "per_stream_decode_min": 30.47,
+          "aggregate_completion_tok_s": 2.33,
+          "ttft_p50": 37.691,
+          "wall_s": 40.8,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.93
+        },
+        {
+          "n": 2,
+          "prompt_tokens_target": 36000,
+          "ok": "2/2",
+          "prompt_tokens_each": [
+            33202,
+            33202
+          ],
+          "per_stream_decode_mean": 14.2,
+          "per_stream_decode_min": 4.35,
+          "aggregate_completion_tok_s": 3.91,
+          "ttft_p50": 76.39,
+          "wall_s": 83.1,
+          "errors": [],
+          "tail_distinct_word_ratio": 0.87
+        }
+      ],
+      "np4_vram_gib_after": 25.8
+    }
+  },
+  "restore_line": "~/benchmarks/engine_matrix/restore/llamaserver_cmd_production_mtp_n2_20260910_1248.txt",
+  "finished": "2026-09-10T13:34:32",
+  "production_restored_s": 25.0,
+  "production_cmdline": "3670600 ~/projects/llama.cpp-master/build-vulkan/bin/llama-server -m /mnt/models/llm/qwen3.8-27b-heretic-trohrbaugh/qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf --mmproj /mnt/models/llm/qwen3.8-27b-instruct-unsloth/mmproj-BF16.gguf --image-min-tokens 1024 -dev Vulkan0 -ngl 99 -c 262144 -ctk q8_0 -ctv q8_0 -fa on --ctx-checkpoints 2 -np 2 -kvu --jinja --reasoning-format deepseek --spec-type draft-mtp --spec-draft-n-max 2 -cram 12288 --host 0.0.0.0 --port 8080 --log-timestamps --log-prefix"
+}

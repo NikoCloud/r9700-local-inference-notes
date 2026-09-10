@@ -1,0 +1,102 @@
+{
+  "started": "2026-09-10T14:44:50",
+  "why": "phase1b outputs stopped at model EOS; Turbo answers ~5x shorter -> TG/aggregate length-confounded. Forced length here.",
+  "launch": "production line minus --spec-type draft-mtp --spec-draft-n-max 2",
+  "gen_tokens": 768,
+  "depth_targets": [
+    2500,
+    42000,
+    140000
+  ],
+  "models": {
+    "unleashed-ud-q4_k_m": {
+      "file": "/mnt/models/llm/qwen3.8-27b-unleashed-outsourc-e/qwen3.8-27b-unleashed-outsourc-e-ud-q4_k_m.gguf",
+      "np2_load_s": 12.1,
+      "tg_fixed": [
+        {
+          "ok": true,
+          "prompt_tokens": 2363,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 2.439,
+          "wall_s": 25.544,
+          "prefill_tok_s": 968.94,
+          "decode_tok_s": 33.2,
+          "error": null,
+          "target": 2500
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 38725,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 44.393,
+          "wall_s": 69.286,
+          "prefill_tok_s": 872.32,
+          "decode_tok_s": 30.81,
+          "error": null,
+          "target": 42000
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 128939,
+          "completion_tokens": 768,
+          "forced_length_honored": true,
+          "ttft_s": 211.329,
+          "wall_s": 240.599,
+          "prefill_tok_s": 610.13,
+          "decode_tok_s": 26.2,
+          "error": null,
+          "target": 140000
+        }
+      ],
+      "np4_load_s": 6.0,
+      "conc_fixed": [
+        {
+          "n": 1,
+          "gen_tokens": 768,
+          "ok": "1/1",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 33.23,
+          "per_stream_decode_min": 33.23,
+          "aggregate_completion_tok_s": 30.65,
+          "wall_s": 25.1,
+          "errors": []
+        },
+        {
+          "n": 2,
+          "gen_tokens": 768,
+          "ok": "2/2",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 29.59,
+          "per_stream_decode_min": 29.55,
+          "aggregate_completion_tok_s": 51.09,
+          "wall_s": 30.1,
+          "errors": []
+        },
+        {
+          "n": 3,
+          "gen_tokens": 768,
+          "ok": "3/3",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 26.25,
+          "per_stream_decode_min": 25.85,
+          "aggregate_completion_tok_s": 61.23,
+          "wall_s": 37.6,
+          "errors": []
+        },
+        {
+          "n": 4,
+          "gen_tokens": 768,
+          "ok": "4/4",
+          "forced_length_honored": true,
+          "per_stream_decode_mean": 22.17,
+          "per_stream_decode_min": 21.39,
+          "aggregate_completion_tok_s": 66.81,
+          "wall_s": 46.0,
+          "errors": []
+        }
+      ]
+    }
+  }
+}

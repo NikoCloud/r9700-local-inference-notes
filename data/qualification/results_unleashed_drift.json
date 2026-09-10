@@ -1,0 +1,10 @@
+{
+  "at": "2026-09-10T14:20:50",
+  "mtp_predictable_tok_s": 68.02,
+  "mtp_predictable_ref": 68.01,
+  "prefill42k_tok_s": 860.0,
+  "prefill42k_ref": 854.56,
+  "prefill42k_prompt_tokens": 38723,
+  "mtp_predictable_delta_pct": 0.01,
+  "prefill42k_delta_pct": 0.64
+}
