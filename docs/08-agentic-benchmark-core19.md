@@ -97,6 +97,54 @@ remembered to build, not what was asked. Two tasks aren't enough to call it a tr
   activity).
 - **The server log stayed clean:** no truncated prompts, context shifts or error lines.
 
+## Results (pending: filled in when both arms finish)
+
+### Summary
+
+| | heretic Q4_K_S | Turbo Q4_K_S |
+|---|---|---|
+| **pass@1** (attempt 1) | _TBD_ / 19 | _TBD_ / 19 |
+| **pass@2** (with conditional retry) | _TBD_ / 19 | _TBD_ / 19 |
+| Total agent time, attempt 1 | _TBD_ | _TBD_ |
+| Output tokens, attempt 1 | _TBD_ | _TBD_ |
+| Minutes per solved task (attempt 1) | _TBD_ | _TBD_ |
+| Output tokens per solved task (attempt 1) | _TBD_ | _TBD_ |
+| Tasks solved per hour (attempt 1) | _TBD_ | _TBD_ |
+| Peak context, median / max | _TBD_ | _TBD_ |
+
+### Per task
+
+| Task | heretic: result, min, output tokens | Turbo: result, min, output tokens |
+|---|---|---|
+| break-filter-js-from-html | _TBD_ | _TBD_ |
+| build-cython-ext | _TBD_ | _TBD_ |
+| cobol-modernization | _TBD_ | _TBD_ |
+| configure-git-webserver | _TBD_ | _TBD_ |
+| extract-elf | _TBD_ | _TBD_ |
+| fix-git | _TBD_ | _TBD_ |
+| fix-ocaml-gc | _TBD_ | _TBD_ |
+| git-leak-recovery | _TBD_ | _TBD_ |
+| headless-terminal | _TBD_ | _TBD_ |
+| llm-inference-batching-scheduler | _TBD_ | _TBD_ |
+| mailman | _TBD_ | _TBD_ |
+| mteb-retrieve | _TBD_ | _TBD_ |
+| nginx-request-logging | _TBD_ | _TBD_ |
+| openssl-selfsigned-cert | _TBD_ | _TBD_ |
+| overfull-hbox | _TBD_ | _TBD_ |
+| pypi-server | _TBD_ | _TBD_ |
+| regex-log | _TBD_ | _TBD_ |
+| sparql-university | _TBD_ | _TBD_ |
+| sqlite-with-gcov | _TBD_ | _TBD_ |
+
+### Failure analysis
+
+_TBD: for each failed task in either arm, what the verifier checked and what the agent actually did._
+
+### Verdict
+
+_TBD: whether Turbo Q4_K_S replaces heretic in production is the owner's decision, made after both arms
+finish._
+
 ## Planned comparison
 
 - **Pass rate:** pass@1 and pass@2 per arm, broken down per task. The hard tier is where differences are

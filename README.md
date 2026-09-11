@@ -87,6 +87,9 @@ ComfyUI on the second card.
 10. **ComfyUI's default `--cache-ram` lets its inactive model cache grow to 100% of system RAM.** On
     32 GB that pushed everything else into swap. Capping it (`--cache-ram 2 4`) took image runs from
     98–229 s to 25–28 s. ([docs/09](docs/09-comfyui-memory.md))
+11. **Agentic quality A/B (Core-19): results pending.** heretic vs Turbo Q4_K_S on 19 real terminal tasks,
+    same server and harness, comparing pass rate plus time and tokens per solved task.
+    ([docs/08](docs/08-agentic-benchmark-core19.md))
 
 ---
 
