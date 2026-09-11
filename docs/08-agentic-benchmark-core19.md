@@ -211,8 +211,11 @@ makes the speed numbers meaningless for the intended target (a 16 GB RX 9070 XT)
 - **Setup:** openbmb/MiniCPM5-2B official 4-bit (asymmetric GPTQ W4 g128, repacked in AWQ format), vLLM 0.29.0,
   GTX 1660 Ti Max-Q 6 GB, 65,536-token context (78k-token KV pool), **2 tasks at a time**, same runner and suite.
 - **Attempt 1 (final):** **2 / 19 passed** (`git-leak-recovery`, `sqlite-with-gcov`); **2 / 16** excluding 3
-  setup errors from the same Ubuntu mirror outage. Attempt 2 was still running at the time of writing and had
-  flipped nothing yet.
+  setup errors from the same Ubuntu mirror outage.
+- **Attempt 2: stopped by the owner partway, published as is.** 5 retries finished with no flips (4 fails, 1
+  setup error: `build-cython-ext`, `extract-elf`, `openssl-selfsigned-cert` and `sparql-university` failed again;
+  `configure-git-webserver` hit the mirror). Unfinished retries aren't counted; given the model's first-attempt
+  pattern they were unlikely to flip. **pass@2 as run: 2 / 19.**
 - **How it failed:**
   - Declared success with requirements missing: no SSH account; a date not in the required YYYY-MM-DD format.
   - Admitted it couldn't solve a task (`extract-elf`: "cannot find the reference solution values"). That's a

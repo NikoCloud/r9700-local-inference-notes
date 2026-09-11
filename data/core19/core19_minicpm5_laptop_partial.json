@@ -117,6 +117,19 @@
         "cached_tokens": 0,
         "output_tokens": 5510,
         "started": "2026-09-11T06:52:48.097338Z"
+      },
+      "a2": {
+        "trial": "build-cython-ext__4dfbpt6",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 33.25,
+        "steps": 27,
+        "input_tokens": 358768,
+        "cached_tokens": 0,
+        "output_tokens": 5961,
+        "started": "2026-09-11T12:55:38.270744Z"
       }
     },
     "nginx-request-logging": {
@@ -358,6 +371,6 @@
     "median_minutes_solved_a1": 16.8,
     "median_output_tokens_solved_a1": 2819
   },
-  "snapshot_note": "PARTIAL: laptop run still in attempt 2 at snapshot time",
-  "snapshot_time": "2026-09-11T09:01:43"
+  "snapshot_note": "STOPPED by owner during attempt 2 (published as is); attempt-2 trials without a result are not included",
+  "snapshot_time": "2026-09-11T09:34:08"
 }
