@@ -1,0 +1,192 @@
+{
+  "started": "2026-09-11 10:32:44",
+  "model": "qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf",
+  "gen_tokens": 512,
+  "sanity_gate": {
+    "config": "ngram-mod",
+    "prompt": "copy",
+    "decode_tok_s": 175.68,
+    "accept": 0.979,
+    "draft_n": 468,
+    "draft_accepted": 458,
+    "completion_tokens": 512,
+    "nospec_copy_decode_tok_s": 34.88,
+    "speedup_vs_nospec": 5.04
+  },
+  "gate_passed": true,
+  "matrix": {
+    "none": {
+      "gpu0_mib": 24786,
+      "prompts": {
+        "copy": {
+          "decode_tok_s": 34.84,
+          "prefill_tok_s": 37.7,
+          "ttft_s": 0.108,
+          "completion_tokens": 512,
+          "draft_n": null,
+          "draft_accepted": null,
+          "accept": null,
+          "wall_s": 14.78,
+          "text": "The maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that"
+        },
+        "code": {
+          "decode_tok_s": 34.78,
+          "prefill_tok_s": 841.9,
+          "ttft_s": 0.577,
+          "completion_tokens": 512,
+          "draft_n": null,
+          "draft_accepted": null,
+          "accept": null,
+          "wall_s": 15.27,
+          "text": "```python\nimport json\nfrom dataclasses import dataclass, field\n\n\n@dataclass\nclass Account:\n    \"\"\"A ledger account with a running balance and an audit trail.\"\"\"\n    name: str\n    balance: float = 0.0\n    history: list = field(default_factory=list)\n\n    def deposit(self, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"deposit must be positive\")\n        self.balance += amount\n        self.history.append({\"op\": \"deposit\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        return self.balance\n\n    def withdraw(self, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"withdraw must be positive\")\n        if amount > self.balance:\n            raise ValueError(\"insufficient funds\")\n        self.balance -= amount\n        self.history.append({\"op\": \"withdraw\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        return self.balance\n\n    def transfer(self, other, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"transfer must be positive\")\n        if amount > self.balance:\n            raise ValueError(\"insufficient funds\")\n        self.balance -= amount\n        self.history.append({\"op\": \"transfer_out\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        other.balance += amount\n        other.history.append({\"op\": \"transfer_in\", \"amount\": amount, \"memo\": memo, \"balance\": other.balance})\n        return self.balance\n\n    def statement(self):\n        lines = [f\"Account: {self.name}\"]\n        for h in self.history:\n            lines.append(f\"  {h['op']:<9} {h['amount']:>10.2f}  -> {h['balance']:>10.2f}  {h['memo']}\")\n        lines.append(f\"  {'final':<9} {'':>10}     {self.balance:>10.2f}\")\n        return \"\\n\".join(lines)\n\n    def to_json(self):\n        return json.dumps({\"name\": self.name, \"balance\": self.balance, \"history\": self.history}, indent=2)\n```\n\nWait, I need to reconsider. The problem says \"withdraws from self and deposits into other, recording both.\" This suggests"
+        },
+        "prose": {
+          "decode_tok_s": 34.81,
+          "prefill_tok_s": 280.1,
+          "ttft_s": 0.241,
+          "completion_tokens": 512,
+          "draft_n": null,
+          "draft_accepted": null,
+          "accept": null,
+          "wall_s": 14.92,
+          "text": "The silence is not merely an absence of sound but a physical weight, pressing down on the shoulders of the town like a heavy, white quilt. The snow has stopped falling, leaving behind a world that has been scrubbed clean of its jagged edges and chaotic textures. Every surface, from the shingles of the old general store to the rusted hood of the abandoned pickup truck in the square, is coated in a thick, unbroken layer of white. The air is crisp and biting, carrying a scent that is purely mineral and cold, a sharpness that stings the lungs with every breath. It is a smell that belongs to the earth itself, stripped of the usual organic decay and replaced by the sterile purity of frozen water.\n\nLight begins to creep over the eastern ridge, not as the warm, golden glow of a summer morning, but as a pale, silvery haze that diffuses through the thinning clouds. This light does not cast harsh shadows; instead, it softens the landscape, turning the deep blue shadows of the pines into shades of violet and indigo. The town, usually a clutter of parked cars and scattered debris, now appears as a single, continuous entity. The boundaries between the road, the sidewalks, and the lawns have dissolved, creating a seamless expanse of white that stretches out toward the tree line. The only interruptions are the dark, vertical spikes of the evergreens, their branches bowed low under the weight of the fresh accumulation, looking like ancient sentinels standing guard over the sleeping streets.\n\nA single crow lands on the roof of the post office, its black feathers stark against the white shingles. It tilts its head, scanning the quiet street, and then takes flight, its wings beating slowly against the still air. The sound of its wings is the only disruption in the profound quiet, a rhythmic flapping that seems to echo unnaturally in the vacuum of the morning. As the bird disappears into the tree line, the silence rushes back in to fill the void, heavier than before. The cold is beginning to bite deeper, a numbing sensation that creeps into the fingertips and toes, reminding the observer of the raw power of the winter.\n\nTime seems to move differently here, slowed by the stillness. There is no rush, no urgency, only the slow, inevitable creep of the sun higher into the sky. The light begins to change, shifting from silver to a soft, pearlescent white, illuminating the intricate patterns of the snowflakes that"
+        }
+      }
+    },
+    "draft-mtp": {
+      "gpu0_mib": 26966,
+      "prompts": {
+        "copy": {
+          "decode_tok_s": 77.7,
+          "prefill_tok_s": 36.7,
+          "ttft_s": 0.111,
+          "completion_tokens": 512,
+          "draft_n": 345,
+          "draft_accepted": 338,
+          "accept": 0.98,
+          "wall_s": 6.69,
+          "text": "The maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that"
+        },
+        "code": {
+          "decode_tok_s": 77.4,
+          "prefill_tok_s": 771.1,
+          "ttft_s": 0.626,
+          "completion_tokens": 512,
+          "draft_n": 346,
+          "draft_accepted": 337,
+          "accept": 0.974,
+          "wall_s": 7.23,
+          "text": "```python\nimport json\nfrom dataclasses import dataclass, field\n\n\n@dataclass\nclass Account:\n    \"\"\"A ledger account with a running balance and an audit trail.\"\"\"\n    name: str\n    balance: float = 0.0\n    history: list = field(default_factory=list)\n\n    def deposit(self, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"deposit must be positive\")\n        self.balance += amount\n        self.history.append({\"op\": \"deposit\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        return self.balance\n\n    def withdraw(self, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"withdraw must be positive\")\n        if amount > self.balance:\n            raise ValueError(\"insufficient funds\")\n        self.balance -= amount\n        self.history.append({\"op\": \"withdraw\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        return self.balance\n\n    def transfer(self, other, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"transfer must be positive\")\n        if amount > self.balance:\n            raise ValueError(\"insufficient funds\")\n        self.balance -= amount\n        self.history.append({\"op\": \"transfer_out\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        other.balance += amount\n        other.history.append({\"op\": \"transfer_in\", \"amount\": amount, \"memo\": memo, \"balance\": other.balance})\n        return self.balance\n\n    def statement(self):\n        lines = [f\"Account: {self.name}\"]\n        for h in self.history:\n            lines.append(f\"  {h['op']:<9} {h['amount']:>10.2f}  -> {h['balance']:>10.2f}  {h['memo']}\")\n        lines.append(f\"  {'final':<9} {'':>10}     {self.balance:>10.2f}\")\n        return \"\\n\".join(lines)\n\n    def to_json(self):\n        return json.dumps({\"name\": self.name, \"balance\": self.balance, \"history\": self.history}, indent=2)\n```\n\nWait, I need to reconsider. The problem says \"withdraws from self and deposits into other, recording both.\" This suggests"
+        },
+        "prose": {
+          "decode_tok_s": 56.92,
+          "prefill_tok_s": 256.6,
+          "ttft_s": 0.258,
+          "completion_tokens": 512,
+          "draft_n": 471,
+          "draft_accepted": 274,
+          "accept": 0.582,
+          "wall_s": 9.24,
+          "text": "The silence is not merely an absence of sound but a physical weight, pressing down on the shoulders of the town like a heavy, white quilt. The snow has stopped falling, leaving behind a world that has been scrubbed clean of its jagged edges and chaotic textures. Every surface, from the shingles of the old general store to the rusted hood of the abandoned pickup truck in the square, is coated in a thick, unbroken layer of white. The air is crisp and biting, carrying a scent that is purely mineral and cold, a sharpness that stings the lungs with every breath. It is a smell that belongs to the earth before it was paved, before it was planted, before it was touched by human hands.\n\nLight begins to creep over the eastern ridge, painting the sky in shades of bruised purple and pale pink. As the sun rises, it does not shine so much as it glows, diffused by the high altitude and the lingering haze of the storm. The light catches the snow, turning the entire valley into a blinding expanse of diamond dust. Shadows stretch long and thin across the main street, sharp and black against the white, creating a stark contrast that feels almost violent in its clarity. The town, usually a hive of activity with the clatter of boots and the murmur of conversation, is now a tableau of stillness. The wind, which had howled through the night, has died down to a whisper, occasionally stirring the loose flakes that cling to the eaves of the houses.\n\nA single crow lands on the roof of the church, its black feathers a smudge of ink on the pristine canvas. It tilts its head, scanning the empty streets, and then takes flight, its wings beating a slow, deliberate rhythm against the quiet air. The sound of its wings is the only movement in the world, a reminder that life persists even in this frozen pause. The snow continues to settle, filling the cracks in the pavement and softening the edges of the world. It is a time of suspension, a breath held between the chaos of the storm and the return of the day. The town waits, wrapped in its white shroud, silent and still, as if it has been erased from the map, existing only in the memory of the mountains that surround it. The cold is a constant companion, seeping into the bones, a reminder of the power of nature and the fragility of human presence. In this hour, the town is not a place of commerce or"
+        }
+      }
+    },
+    "ngram-mod": {
+      "gpu0_mib": 24786,
+      "prompts": {
+        "copy": {
+          "decode_tok_s": 174.55,
+          "prefill_tok_s": 38.0,
+          "ttft_s": 0.107,
+          "completion_tokens": 512,
+          "draft_n": 468,
+          "draft_accepted": 458,
+          "accept": 0.979,
+          "wall_s": 3.04,
+          "text": "The maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that"
+        },
+        "code": {
+          "decode_tok_s": 76.61,
+          "prefill_tok_s": 844.7,
+          "ttft_s": 0.576,
+          "completion_tokens": 512,
+          "draft_n": 477,
+          "draft_accepted": 334,
+          "accept": 0.7,
+          "wall_s": 7.25,
+          "text": "```python\nimport json\nfrom dataclasses import dataclass, field\n\n\n@dataclass\nclass Account:\n    \"\"\"A ledger account with a running balance and an audit trail.\"\"\"\n    name: str\n    balance: float = 0.0\n    history: list = field(default_factory=list)\n\n    def deposit(self, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"deposit must be positive\")\n        self.balance += amount\n        self.history.append({\"op\": \"deposit\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        return self.balance\n\n    def withdraw(self, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"withdraw must be positive\")\n        if amount > self.balance:\n            raise ValueError(\"insufficient funds\")\n        self.balance -= amount\n        self.history.append({\"op\": \"withdraw\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        return self.balance\n\n    def transfer(self, other, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"transfer must be positive\")\n        if amount > self.balance:\n            raise ValueError(\"insufficient funds\")\n        self.balance -= amount\n        self.history.append({\"op\": \"transfer_out\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        other.balance += amount\n        other.history.append({\"op\": \"transfer_in\", \"amount\": amount, \"memo\": memo, \"balance\": other.balance})\n        return self.balance\n\n    def statement(self):\n        lines = [f\"Account: {self.name}\"]\n        for h in self.history:\n            lines.append(f\"  {h['op']:<9} {h['amount']:>10.2f}  -> {h['balance']:>10.2f}  {h['memo']}\")\n        lines.append(f\"  {'final':<9} {'':>10}     {self.balance:>10.2f}\")\n        return \"\\n\".join(lines)\n\n    def to_json(self):\n        return json.dumps({\"name\": self.name, \"balance\": self.balance, \"history\": self.history}, indent=2)\n```\n\nWait, I need to reconsider. The problem says \"withdraws from self and deposits into other, recording both.\" This suggests"
+        },
+        "prose": {
+          "decode_tok_s": 34.86,
+          "prefill_tok_s": 279.9,
+          "ttft_s": 0.24,
+          "completion_tokens": 512,
+          "draft_n": null,
+          "draft_accepted": null,
+          "accept": null,
+          "wall_s": 14.9,
+          "text": "The silence is not merely an absence of sound but a physical weight, pressing down on the shoulders of the town like a heavy, white quilt. The snow has stopped falling, leaving behind a world that has been scrubbed clean of its jagged edges and chaotic textures. Every surface, from the shingles of the old general store to the rusted hood of the abandoned pickup truck in the square, is coated in a thick, unbroken layer of white. The air is crisp and biting, carrying a scent that is purely mineral and cold, a sharpness that stings the lungs with every breath. It is a smell that belongs to the earth itself, stripped of the usual organic decay and replaced by the sterile purity of frozen water.\n\nLight begins to creep over the eastern ridge, not as the warm, golden glow of a summer morning, but as a pale, silvery haze that diffuses through the thinning clouds. This light does not cast harsh shadows; instead, it softens the landscape, turning the deep blue shadows of the pines into shades of violet and indigo. The town, usually a clutter of parked cars and scattered debris, now appears as a single, continuous entity. The boundaries between the road, the sidewalks, and the lawns have dissolved, creating a seamless expanse of white that stretches out toward the tree line. The only interruptions are the dark, vertical spikes of the evergreens, their branches bowed low under the weight of the fresh accumulation, looking like ancient sentinels standing guard over the sleeping streets.\n\nA single crow lands on the roof of the post office, its black feathers stark against the white shingles. It tilts its head, scanning the quiet street, and then takes flight, its wings beating slowly against the still air. The sound of its wings is the only disruption in the profound quiet, a rhythmic flapping that seems to echo unnaturally in the vacuum of the morning. As the bird disappears into the tree line, the silence rushes back in to fill the void, heavier than before. The cold is beginning to bite deeper, a numbing sensation that creeps into the fingertips and toes, reminding the observer of the raw power of the winter.\n\nTime seems to move differently here, slowed by the stillness. There is no rush, no urgency, only the slow, inevitable creep of the sun higher into the sky. The light begins to change, shifting from silver to a soft, pearlescent white, illuminating the intricate patterns of the snowflakes that"
+        }
+      }
+    },
+    "ngram+mtp": {
+      "gpu0_mib": 26966,
+      "prompts": {
+        "copy": {
+          "decode_tok_s": 222.75,
+          "prefill_tok_s": 36.4,
+          "ttft_s": 0.112,
+          "completion_tokens": 512,
+          "draft_n": 498,
+          "draft_accepted": 486,
+          "accept": 0.976,
+          "wall_s": 2.41,
+          "text": "The maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that the trend analysis had predicted three weeks earlier. The bearing temperature stayed within tolerance throughout, which ruled out lubrication starvation as the cause. The revised schedule moves the next full teardown forward by one quarter to align with the shutdown window, reducing the number of separate isolation events and the associated permit overhead.\n\nThe maintenance log for pump station 7 records every inspection since commissioning. Each entry lists the inspector, the date, the measured discharge pressure in kilopascals, the vibration amplitude in millimetres per second, and any corrective action taken. Entries flagged critical require a follow-up within seventy-two hours, and the supervisor must countersign the closure. The seal replacement in March followed a slow rise in vibration that"
+        },
+        "code": {
+          "decode_tok_s": 123.36,
+          "prefill_tok_s": 773.3,
+          "ttft_s": 0.624,
+          "completion_tokens": 512,
+          "draft_n": 589,
+          "draft_accepted": 441,
+          "accept": 0.749,
+          "wall_s": 4.77,
+          "text": "```python\nimport json\nfrom dataclasses import dataclass, field\n\n\n@dataclass\nclass Account:\n    \"\"\"A ledger account with a running balance and an audit trail.\"\"\"\n    name: str\n    balance: float = 0.0\n    history: list = field(default_factory=list)\n\n    def deposit(self, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"deposit must be positive\")\n        self.balance += amount\n        self.history.append({\"op\": \"deposit\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        return self.balance\n\n    def withdraw(self, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"withdraw must be positive\")\n        if amount > self.balance:\n            raise ValueError(\"insufficient funds\")\n        self.balance -= amount\n        self.history.append({\"op\": \"withdraw\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        return self.balance\n\n    def transfer(self, other, amount, memo=\"\"):\n        if amount <= 0:\n            raise ValueError(\"transfer must be positive\")\n        if amount > self.balance:\n            raise ValueError(\"insufficient funds\")\n        self.balance -= amount\n        self.history.append({\"op\": \"transfer_out\", \"amount\": amount, \"memo\": memo, \"balance\": self.balance})\n        other.balance += amount\n        other.history.append({\"op\": \"transfer_in\", \"amount\": amount, \"memo\": memo, \"balance\": other.balance})\n        return self.balance\n\n    def statement(self):\n        lines = [f\"Account: {self.name}\"]\n        for h in self.history:\n            lines.append(f\"  {h['op']:<9} {h['amount']:>10.2f}  -> {h['balance']:>10.2f}  {h['memo']}\")\n        lines.append(f\"  {'final':<9} {'':>10}     {self.balance:>10.2f}\")\n        return \"\\n\".join(lines)\n\n    def to_json(self):\n        return json.dumps({\"name\": self.name, \"balance\": self.balance, \"history\": self.history}, indent=2)\n```\n\nWait, I need to reconsider. The problem says \"withdraws from self and deposits into other, recording both.\" This suggests"
+        },
+        "prose": {
+          "decode_tok_s": 57.1,
+          "prefill_tok_s": 257.0,
+          "ttft_s": 0.259,
+          "completion_tokens": 512,
+          "draft_n": 471,
+          "draft_accepted": 274,
+          "accept": 0.582,
+          "wall_s": 9.21,
+          "text": "The silence is not merely an absence of sound but a physical weight, pressing down on the shoulders of the town like a heavy, white quilt. The snow has stopped falling, leaving behind a world that has been scrubbed clean of its jagged edges and chaotic textures. Every surface, from the shingles of the old general store to the rusted hood of the abandoned pickup truck in the square, is coated in a thick, unbroken layer of white. The air is crisp and biting, carrying a scent that is purely mineral and cold, a sharpness that stings the lungs with every breath. It is a smell that belongs to the earth before it was paved, before it was planted, before it was touched by human hands.\n\nLight begins to creep over the eastern ridge, painting the sky in shades of bruised purple and pale pink. As the sun rises, it does not shine so much as it glows, diffused by the high altitude and the lingering haze of the storm. The light catches the snow, turning the entire valley into a blinding expanse of diamond dust. Shadows stretch long and thin across the main street, sharp and black against the white, creating a stark contrast that feels almost violent in its clarity. The town, usually a hive of activity with the clatter of boots and the murmur of conversation, is now a tableau of stillness. The wind, which had howled through the night, has died down to a whisper, occasionally stirring the loose flakes that cling to the eaves of the houses.\n\nA single crow lands on the roof of the church, its black feathers a smudge of ink on the pristine canvas. It tilts its head, scanning the empty streets, and then takes flight, its wings beating a slow, deliberate rhythm against the quiet air. The sound of its wings is the only movement in the world, a reminder that life persists even in this frozen pause. The snow continues to settle, filling the cracks in the pavement and softening the edges of the world. It is a time of suspension, a breath held between the chaos of the storm and the return of the day. The town waits, wrapped in its white shroud, silent and still, as if it has been erased from the map, existing only in the memory of the mountains that surround it. The cold is a constant companion, seeping into the bones, a reminder of the power of nature and the fragility of human presence. In this hour, the town is not a place of commerce or"
+        }
+      }
+    }
+  },
+  "identity": {
+    "copy": {
+      "none": true,
+      "draft-mtp": true,
+      "ngram-mod": true,
+      "ngram+mtp": true
+    },
+    "code": {
+      "none": true,
+      "draft-mtp": true,
+      "ngram-mod": true,
+      "ngram+mtp": true
+    },
+    "prose": {
+      "none": true,
+      "draft-mtp": false,
+      "ngram-mod": true,
+      "ngram+mtp": false
+    }
+  },
+  "finished": "2026-09-11 10:35:46"
+}

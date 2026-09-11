@@ -182,6 +182,33 @@ Nobody comes out of this file looking infallible, which is the point.
 - **A quick in-run speed claim reused the wrong power data.** GPU power statistics computed for the killed first
   Turbo run were nearly carried into the final write-up of the re-run; recomputed from the right arm first.
 
+### 2026-09-11 prompt-lookup speculative-decoding test (the assistant)
+
+- **Conflated "a server with `-np 4`" with "four concurrent streams".** The first recommendation warned that
+  raising `-np` from 2 to 4 "lowers per-agent speed". Wrong: `-np` is capacity, not a per-stream tax. The owner
+  corrected the mental model, and a direct test confirmed a *lone* stream runs at full speed (125 tok/s) on an
+  np1/np2/np4 server alike. The per-stream drop only happens when N streams actually run at once — unavoidable
+  bandwidth sharing, and something np2 can't even do (it queues). Corrected recommendation: `-np 4` is near-free
+  headroom.
+  - **Rule:** benchmark the thing you'll actually run. "N slots" and "N simultaneous streams" are different
+    measurements; don't let one stand in for the other.
+- **Left production down by calling `main()` past its restore guard.** The concurrency harness stops production
+  and restores it in a `try/finally` inside `if __name__ == "__main__"`. Running it via `import harness; harness.main()`
+  executed `main()` (which stops production) but never the `__main__` `finally`, so `qwen38.service` was left
+  stopped and 8080 returned 000. Caught on the next status read and restarted immediately.
+  - **Rule:** cleanup that must always run belongs in `main()`'s own `try/finally`, not the module's `__main__`
+    guard. Import-and-call is a supported entry point.
+- **`pgrep -f "... --port 8085"` matched its own command line** and reported a "stray server up" that did not
+  exist (the ssh/grep command string contained `--port 8085`). This is the exact trap already in
+  [METHODOLOGY](METHODOLOGY.md) #36 — and it still caught me. Re-checked with `pgrep -af` and it was gone/absent.
+- **Env-prefixed commands (`VAR=x python …`) and bash `for` loops sent over ssh to a fish login shell** parse-fail
+  ("Missing end to balance this for loop"). Same class as earlier fish traps; the fix is `ssh host 'bash -s' <<'EOF'`
+  with the env `export`ed inside, which [METHODOLOGY](METHODOLOGY.md) #47 already says to do.
+- **A single-stream re-run overwrote the concurrency results file** because it didn't set the merge flag, dropping
+  the `draft-mtp` grid. The numbers survived in the run transcript and were reassembled into the published data
+  file, but the on-disk JSON was clobbered. Incremental result files need append/merge, not overwrite, when a
+  later pass only fills part of the grid.
+
 ---
 
 ## 2. Explanations stated as findings before anyone tested them

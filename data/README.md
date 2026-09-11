@@ -40,6 +40,8 @@ generalised; values are untouched.
 | `loop_ab_results.json` | Loop A/B: 3 poem runs each for Turbo q8_0 KV, Turbo f16 KV, heretic q8_0; includes each finished poem. |
 | `quirks_report.json` | Output of `scripts/core19/analyze_traces.py` (draft reversal, per-line count accuracy, stated totals, bug-diagnosis positions). |
 | `core19_minicpm5_laptop_partial.json` | **Preliminary** MiniCPM5-2B laptop run, snapshot taken while attempt 2 was still running. |
+| `pld_matrix.json` | Single-stream n-gram / MTP matrix ([docs/12](../docs/12-prompt-lookup-decoding.md)): 4 configs × copy/code/prose, forced 512 tokens, with the output-identity result. From `scripts/core19/pld_test.py`. |
+| `pld_concurrency.json` | Concurrency scaling (per-stream and aggregate decode) at `-np` 1/2/4 for draft-mtp vs ngram→mtp, the single-stream-per-np check, and the KV/VRAM figures. Assembled from the `scripts/core19/pld_conc.py` run outputs. |
 
 **Field notes:**
 - **`infra_error`** is true only when the trial raised `RuntimeError` *and* the agent never started. A

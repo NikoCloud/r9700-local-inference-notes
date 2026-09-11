@@ -43,6 +43,8 @@ not as a polished tool.
 | `extract_traces.py` | Turns tee'd terminal logs from the two scripts above into structured JSONL traces and readable per-run markdown. |
 | `analyze_traces.py` | Heuristic trace detectors: drafts graded against the final answer (reversal), per-line word-count accuracy, stated totals, and where each planted bug is first diagnosed. Validate its hits against the text before quoting them. |
 | `build_core19_page.py` | Builds `data/core19/core19_ab.html` from the JSON in `data/core19/`. |
+| `pld_test.py` | Prompt-lookup / n-gram speculative decoding ([docs/12](../docs/12-prompt-lookup-decoding.md)): a sanity gate (n-gram alone must accept drafts on a copy task, else abort), then a matrix of none / draft-mtp / ngram-mod / ngram-mod,draft-mtp across copy/code/prose, with an output-identity check. Stops and restores production. |
+| `pld_conc.py` | Concurrency scaling for the same configs at `-np` 1/2/4 (relaunches the server with matching `-np`), reporting per-stream and aggregate decode. Reuses `pld_test.py` as a module. |
 
 ## Licence
 

@@ -1,0 +1,43 @@
+{
+  "note": "PLD (n-gram context lookup) vs production MTP on heretic Q4_K_S, llama.cpp 434ddbb Vulkan, 250 W. Forced 512 tokens per stream, temp 0, seed 42. Assembled from the run outputs of scripts/core19/pld_conc.py; server relaunched with matching -np for each level. Decode includes speculation.",
+  "single_stream": {
+    "note": "one request on a server launched with the given -np. Confirms -np is capacity, not a per-stream tax.",
+    "ngram+mtp": {
+      "np1": {"code_tok_s": 125.02, "copy_tok_s": 228.05},
+      "np2": {"code_tok_s": 123.84, "copy_tok_s": 225.06},
+      "np4": {"code_tok_s": 123.56, "copy_tok_s": 224.98}
+    }
+  },
+  "concurrent": {
+    "note": "N identical streams launched at once on a server with -np=N. per_stream is the mean decode across streams; aggregate is total server tokens/s.",
+    "code_edit": {
+      "draft-mtp": {
+        "np1": {"per_stream": 77.93, "aggregate": 76.76, "accept": 0.974},
+        "np2": {"per_stream": 51.03, "per_stream_min": 50.08, "aggregate": 93.89, "accept": 0.925},
+        "np4": {"per_stream": 26.46, "per_stream_min": 26.22, "aggregate": 96.82, "accept": 0.934}
+      },
+      "ngram+mtp": {
+        "np1": {"per_stream": 123.98, "aggregate": 120.95, "accept": 0.749},
+        "np2": {"per_stream": 72.66, "per_stream_min": 72.46, "aggregate": 132.81, "accept": 0.746},
+        "np4": {"per_stream": 39.20, "per_stream_min": 38.91, "aggregate": 139.01, "accept": 0.745}
+      }
+    },
+    "copy": {
+      "draft-mtp": {
+        "np1": {"per_stream": 78.84, "aggregate": 74.41, "accept": 0.98},
+        "np2": {"per_stream": 52.92, "aggregate": 97.88, "accept": 0.98},
+        "np4": {"per_stream": 26.68, "per_stream_min": 26.26, "aggregate": 98.65, "accept": 0.935}
+      },
+      "ngram+mtp": {
+        "np1": {"per_stream": 226.53, "aggregate": 192.56, "accept": 0.976},
+        "np2": {"per_stream": 133.99, "aggregate": 229.03, "accept": 0.976},
+        "np4": {"per_stream": 64.68, "per_stream_min": 50.42, "aggregate": 181.17, "accept": 0.926}
+      }
+    }
+  },
+  "kv_and_vram": {
+    "note": "-kvu (unified KV): n_ctx_slot stays 262144 at every -np (shared pool, not split per slot, not replicated).",
+    "n_ctx_slot": {"np1": 262144, "np2": 262144, "np4": 262144},
+    "gpu0_mib": {"np1": 26622, "np2": 27071, "np4": 27987}
+  }
+}

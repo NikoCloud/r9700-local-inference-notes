@@ -9,10 +9,11 @@ The most useful part is probably **[MISTAKES.md](MISTAKES.md)**. A lot of this p
 confidently wrong and then finding out why. Those errors are kept, not cleaned up, because the same
 traps will catch the next person.
 
-> **Status (2026-09-11):** living document. The two-model agentic benchmark (Core-19) has finished; see
-> [docs/08](docs/08-agentic-benchmark-core19.md), plus the sanity checks and reasoning-trace analysis in
-> [docs/11](docs/11-reasoning-traces-and-sanity-checks.md). Everything here is dated and measured on one
-> machine. Software on this platform moves weekly, so re-check anything you plan to rely on.
+> **Status (2026-09-11):** living document. The two-model agentic benchmark (Core-19) has finished
+> ([docs/08](docs/08-agentic-benchmark-core19.md), [docs/11](docs/11-reasoning-traces-and-sanity-checks.md)),
+> and production moved to an n-gram→MTP speculative chain ([docs/12](docs/12-prompt-lookup-decoding.md)).
+> Everything here is dated and measured on one machine. Software on this platform moves weekly, so re-check
+> anything you plan to rely on.
 
 ---
 
@@ -101,6 +102,12 @@ ComfyUI on the second card.
     - Turbo's reasoning looped in 1 of 4 runs.
     - Qwen3.6's "right answer, then talked out of it" quirk did not show up.
     ([docs/11](docs/11-reasoning-traces-and-sanity-checks.md))
+13. **Free speed on agent work: chain n-gram lookup in front of MTP.** llama.cpp's context n-gram drafter needs
+    no model and no VRAM, and helps exactly where agents quote their input back. `--spec-type ngram-mod,draft-mtp`
+    (n-gram first, MTP fallback) decoded **1.6× production MTP on a code-edit** and 2.9× on pure copy, stayed at
+    MTP speed on prose, and held its ~1.5× edge per-stream at 1/2/4 concurrent. `-np` is capacity, not a
+    per-stream tax (a lone stream runs full speed at any `-np`), and under `-kvu` raising it doesn't split the
+    context. Now in production. ([docs/12](docs/12-prompt-lookup-decoding.md))
 
 ---
 
@@ -122,6 +129,7 @@ ComfyUI on the second card.
 | [docs/09-comfyui-memory.md](docs/09-comfyui-memory.md) | Diffusion on the 16 GB card: RAM, eviction, quantised text encoders |
 | [docs/10-agent-harness-lessons.md](docs/10-agent-harness-lessons.md) | What the agent framework did to the inference server, and reasoning-trace replay |
 | [docs/11-reasoning-traces-and-sanity-checks.md](docs/11-reasoning-traces-and-sanity-checks.md) | Live sanity checks, a reasoning-loop A/B, what the traces show (self-checks, counting, rhyme, reversals), and why the two GGUFs differ |
+| [docs/12-prompt-lookup-decoding.md](docs/12-prompt-lookup-decoding.md) | n-gram (prompt-lookup) speculative decoding, chaining it in front of MTP, concurrency scaling, and the production switch |
 | [scripts/](scripts/) | The benchmark harnesses used, sanitised |
 | [data/](data/) | Raw qualification results (JSON) and the interactive chart |
 | [patches/](patches/) | The local llama.cpp patch for vision + speculative decoding |
