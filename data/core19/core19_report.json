@@ -1,0 +1,791 @@
+{
+  "generated": "2026-09-11T09:00:32",
+  "arms": {
+    "heretic": {
+      "job": "20260910-150019-terminal-bench-local-core19-full-terminus-2-qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf--Q4_K_S--mtp-n2--llama.cpp--vulkan-78cd9e89",
+      "tasks": {
+        "break-filter-js-from-html": {
+          "a1": {
+            "trial": "break-filter-js-from-html__boim8HD",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 19.69,
+            "steps": 13,
+            "input_tokens": 89775,
+            "cached_tokens": 76749,
+            "output_tokens": 47146,
+            "started": "2026-09-10T19:00:39.855588Z"
+          }
+        },
+        "build-cython-ext": {
+          "a1": {
+            "trial": "build-cython-ext__PN37Tc8",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 23.25,
+            "steps": 41,
+            "input_tokens": 1090970,
+            "cached_tokens": 1043374,
+            "output_tokens": 36272,
+            "started": "2026-09-10T19:20:54.504937Z"
+          }
+        },
+        "cobol-modernization": {
+          "a1": {
+            "trial": "cobol-modernization__DmYNf8v",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 45.85,
+            "steps": 28,
+            "input_tokens": 704855,
+            "cached_tokens": 658218,
+            "output_tokens": 145618,
+            "started": "2026-09-10T19:44:39.330163Z"
+          }
+        },
+        "configure-git-webserver": {
+          "a1": {
+            "trial": "configure-git-webserver__L8ixyZw",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 6.47,
+            "steps": 12,
+            "input_tokens": 57396,
+            "cached_tokens": 47293,
+            "output_tokens": 16907,
+            "started": "2026-09-10T20:31:03.213629Z"
+          },
+          "a2": {
+            "trial": "configure-git-webserver__Zs7VTsi",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 6.7,
+            "steps": 18,
+            "input_tokens": 118631,
+            "cached_tokens": 105348,
+            "output_tokens": 15160,
+            "started": "2026-09-11T01:35:03.561575Z"
+          }
+        },
+        "extract-elf": {
+          "a1": {
+            "trial": "extract-elf__NTXZQRn",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 59.59,
+            "steps": 19,
+            "input_tokens": 440363,
+            "cached_tokens": 381874,
+            "output_tokens": 138079,
+            "started": "2026-09-10T20:38:06.390583Z"
+          },
+          "a2": {
+            "trial": "extract-elf__PQWdtPh",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 39.71,
+            "steps": 19,
+            "input_tokens": 397262,
+            "cached_tokens": 361224,
+            "output_tokens": 130223,
+            "started": "2026-09-11T01:42:09.044488Z"
+          }
+        },
+        "fix-git": {
+          "a1": {
+            "trial": "fix-git__j9vBFXw",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 1.93,
+            "steps": 8,
+            "input_tokens": 25239,
+            "cached_tokens": 18990,
+            "output_tokens": 6263,
+            "started": "2026-09-10T21:38:13.037218Z"
+          }
+        },
+        "fix-ocaml-gc": {
+          "a1": {
+            "trial": "fix-ocaml-gc__tEQGCCo",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 12.33,
+            "steps": 29,
+            "input_tokens": 358704,
+            "cached_tokens": 338468,
+            "output_tokens": 14742,
+            "started": "2026-09-10T21:40:48.747288Z"
+          }
+        },
+        "headless-terminal": {
+          "a1": {
+            "trial": "headless-terminal__wtZsxXS",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 28.25,
+            "steps": 38,
+            "input_tokens": 935228,
+            "cached_tokens": 889769,
+            "output_tokens": 52943,
+            "started": "2026-09-10T22:00:55.870592Z"
+          }
+        },
+        "llm-inference-batching-scheduler": {
+          "a1": {
+            "trial": "llm-inference-batching-scheduler__GVQCWS2",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 66.25,
+            "steps": 22,
+            "input_tokens": 766017,
+            "cached_tokens": 704142,
+            "output_tokens": 179231,
+            "started": "2026-09-10T22:29:58.903345Z"
+          }
+        },
+        "mailman": {
+          "a1": {
+            "trial": "mailman__NUeBXvv",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 68.55,
+            "steps": 90,
+            "input_tokens": 4472272,
+            "cached_tokens": 4383134,
+            "output_tokens": 154353,
+            "started": "2026-09-10T23:36:42.905623Z"
+          }
+        },
+        "mteb-retrieve": {
+          "a1": {
+            "trial": "mteb-retrieve__okvowdx",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 5.99,
+            "steps": 19,
+            "input_tokens": 97365,
+            "cached_tokens": 85565,
+            "output_tokens": 9750,
+            "started": "2026-09-11T00:46:15.109246Z"
+          },
+          "a2": {
+            "trial": "mteb-retrieve__59rAdiY",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 7.94,
+            "steps": 18,
+            "input_tokens": 121952,
+            "cached_tokens": 107527,
+            "output_tokens": 15452,
+            "started": "2026-09-11T02:22:16.137973Z"
+          }
+        },
+        "nginx-request-logging": {
+          "a1": {
+            "trial": "nginx-request-logging__fzJ57Hs",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 3.8,
+            "steps": 4,
+            "input_tokens": 6937,
+            "cached_tokens": 3718,
+            "output_tokens": 12211,
+            "started": "2026-09-11T00:53:30.657943Z"
+          }
+        },
+        "openssl-selfsigned-cert": {
+          "a1": {
+            "trial": "openssl-selfsigned-cert__5NQSoe3",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 1.2,
+            "steps": 6,
+            "input_tokens": 21827,
+            "cached_tokens": 15023,
+            "output_tokens": 4158,
+            "started": "2026-09-11T00:57:49.286467Z"
+          }
+        },
+        "overfull-hbox": {
+          "a1": {
+            "trial": "overfull-hbox__FvyZ2FX",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 9.97,
+            "steps": 15,
+            "input_tokens": 135650,
+            "cached_tokens": 120763,
+            "output_tokens": 28360,
+            "started": "2026-09-11T00:59:33.798945Z"
+          }
+        },
+        "pypi-server": {
+          "a1": {
+            "trial": "pypi-server__8JGbANw",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 2.05,
+            "steps": 5,
+            "input_tokens": 15265,
+            "cached_tokens": 10105,
+            "output_tokens": 3534,
+            "started": "2026-09-11T01:10:20.042149Z"
+          }
+        },
+        "regex-log": {
+          "a1": {
+            "trial": "regex-log__6BZFsqj",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 5.7,
+            "steps": 4,
+            "input_tokens": 16837,
+            "cached_tokens": 8534,
+            "output_tokens": 22274,
+            "started": "2026-09-11T01:12:58.101499Z"
+          }
+        },
+        "sparql-university": {
+          "a1": {
+            "trial": "sparql-university__D5HxgmV",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 8.57,
+            "steps": 11,
+            "input_tokens": 63604,
+            "cached_tokens": 52876,
+            "output_tokens": 22778,
+            "started": "2026-09-11T01:19:14.841029Z"
+          }
+        },
+        "sqlite-with-gcov": {
+          "a1": {
+            "trial": "sqlite-with-gcov__KVDEHHx",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 6.01,
+            "steps": 22,
+            "input_tokens": 219418,
+            "cached_tokens": 200060,
+            "output_tokens": 10945,
+            "started": "2026-09-11T01:28:25.969242Z"
+          }
+        },
+        "git-leak-recovery": {
+          "a1": {
+            "trial": "git-leak-recovery__s9nWgTK",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 2.69,
+            "steps": 9,
+            "input_tokens": 35674,
+            "cached_tokens": 27253,
+            "output_tokens": 8730,
+            "started": "2026-09-10T18:56:06.123842Z",
+            "reused_from_smoke": "20260910-145544-terminal-bench-local-core19-smoke-terminus-2-qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf--Q4_K_S--mtp-n2--llama.cpp--vulkan-78cd9e89"
+          }
+        }
+      },
+      "job_attempt2": "20260910-150019-terminal-bench-local-core19-full-terminus-2-qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf--Q4_K_S--mtp-n2--llama.cpp--vulkan-78cd9e89-attempt2",
+      "summary": {
+        "scored_a1": 19,
+        "pass1": 16,
+        "pass1_of": 19,
+        "infra_errors_a1": [],
+        "pass1_excluding_infra": "16/19",
+        "pass2": 17,
+        "agent_minutes_total_a1": 378.1,
+        "output_tokens_total_a1": 914294,
+        "minutes_per_solved_a1": 23.6,
+        "output_tokens_per_solved_a1": 57143,
+        "median_minutes_solved_a1": 9.3,
+        "median_output_tokens_solved_a1": 22526
+      }
+    },
+    "turbo": {
+      "job": "20260911-015421-terminal-bench-local-core19-full-terminus-2-qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf--Q4_K_S--mtp-n2--llama.cpp--vulkan-9e6458d0",
+      "tasks": {
+        "break-filter-js-from-html": {
+          "a1": {
+            "trial": "break-filter-js-from-html__BvpST4i",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 3.08,
+            "steps": 8,
+            "input_tokens": 18982,
+            "cached_tokens": 15195,
+            "output_tokens": 7143,
+            "started": "2026-09-11T05:54:32.940468Z"
+          },
+          "a2": {
+            "trial": "break-filter-js-from-html__eyEBDPd",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 2.8,
+            "steps": 7,
+            "input_tokens": 14757,
+            "cached_tokens": 11369,
+            "output_tokens": 7233,
+            "started": "2026-09-11T08:34:43.295816Z"
+          }
+        },
+        "build-cython-ext": {
+          "a1": {
+            "trial": "build-cython-ext__WuCym6m",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 9.51,
+            "steps": 15,
+            "input_tokens": 128270,
+            "cached_tokens": 111739,
+            "output_tokens": 5362,
+            "started": "2026-09-11T05:58:10.776790Z"
+          },
+          "a2": {
+            "trial": "build-cython-ext__HhqCQtF",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 20.38,
+            "steps": 48,
+            "input_tokens": 1169259,
+            "cached_tokens": 1126311,
+            "output_tokens": 12814,
+            "started": "2026-09-11T08:38:01.962328Z"
+          }
+        },
+        "cobol-modernization": {
+          "a1": {
+            "trial": "cobol-modernization__8VbyRqn",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 7.74,
+            "steps": 17,
+            "input_tokens": 188341,
+            "cached_tokens": 166935,
+            "output_tokens": 22905,
+            "started": "2026-09-11T06:08:06.797619Z"
+          }
+        },
+        "configure-git-webserver": {
+          "a1": {
+            "trial": "configure-git-webserver__PCdSkE7",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 8.76,
+            "steps": 57,
+            "input_tokens": 1158093,
+            "cached_tokens": 1125945,
+            "output_tokens": 13658,
+            "started": "2026-09-11T06:16:19.705888Z"
+          }
+        },
+        "extract-elf": {
+          "a1": {
+            "trial": "extract-elf__mNbPhPX",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 6.57,
+            "steps": 19,
+            "input_tokens": 247242,
+            "cached_tokens": 223276,
+            "output_tokens": 16858,
+            "started": "2026-09-11T06:26:00.849327Z"
+          },
+          "a2": {
+            "trial": "extract-elf__BrEZys9",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          }
+        },
+        "fix-git": {
+          "a1": {
+            "trial": "fix-git__6SPEGEa",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 0.88,
+            "steps": 7,
+            "input_tokens": 15520,
+            "cached_tokens": 11396,
+            "output_tokens": 2177,
+            "started": "2026-09-11T06:34:58.046925Z"
+          }
+        },
+        "fix-ocaml-gc": {
+          "a1": {
+            "trial": "fix-ocaml-gc__9MJzQik",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          },
+          "a2": {
+            "trial": "fix-ocaml-gc__zUvZfW9",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          }
+        },
+        "git-leak-recovery": {
+          "a1": {
+            "trial": "git-leak-recovery__SaEkBJf",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          },
+          "a2": {
+            "trial": "git-leak-recovery__Jusq9pA",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          }
+        },
+        "headless-terminal": {
+          "a1": {
+            "trial": "headless-terminal__GG2HDrt",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 2.08,
+            "steps": 11,
+            "input_tokens": 46352,
+            "cached_tokens": 38961,
+            "output_tokens": 4893,
+            "started": "2026-09-11T06:40:38.341409Z"
+          }
+        },
+        "llm-inference-batching-scheduler": {
+          "a1": {
+            "trial": "llm-inference-batching-scheduler__XqYaXF3",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 67.79,
+            "steps": 58,
+            "input_tokens": 4362400,
+            "cached_tokens": 4217250,
+            "output_tokens": 109196,
+            "started": "2026-09-11T06:43:24.390502Z"
+          },
+          "a2": {
+            "trial": "llm-inference-batching-scheduler__FMdnHWM",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 34.53,
+            "steps": 41,
+            "input_tokens": 1766154,
+            "cached_tokens": 1676509,
+            "output_tokens": 42692,
+            "started": "2026-09-11T09:05:26.611264Z"
+          }
+        },
+        "mailman": {
+          "a1": {
+            "trial": "mailman__JtibTdH",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          },
+          "a2": {
+            "trial": "mailman__gEu983y",
+            "reward": 0.0,
+            "exception": "AgentTimeoutError",
+            "exception_message": "Agent execution timed out after 10800.0 seconds",
+            "infra_error": false,
+            "agent_minutes": 180.0,
+            "steps": 395,
+            "input_tokens": 52955311,
+            "cached_tokens": 52692896,
+            "output_tokens": 140658,
+            "started": "2026-09-11T09:41:53.060405Z"
+          }
+        },
+        "mteb-retrieve": {
+          "a1": {
+            "trial": "mteb-retrieve__qRqsG9P",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 6.54,
+            "steps": 10,
+            "input_tokens": 37037,
+            "cached_tokens": 29225,
+            "output_tokens": 4138,
+            "started": "2026-09-11T07:53:42.574827Z"
+          },
+          "a2": {
+            "trial": "mteb-retrieve__85s4jNH",
+            "reward": 0.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 7.28,
+            "steps": 13,
+            "input_tokens": 82151,
+            "cached_tokens": 70107,
+            "output_tokens": 4506,
+            "started": "2026-09-11T12:44:56.103231Z"
+          }
+        },
+        "nginx-request-logging": {
+          "a1": {
+            "trial": "nginx-request-logging__2CvVFws",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 3.19,
+            "steps": 3,
+            "input_tokens": 6079,
+            "cached_tokens": 1200,
+            "output_tokens": 8298,
+            "started": "2026-09-11T08:01:27.186622Z"
+          }
+        },
+        "openssl-selfsigned-cert": {
+          "a1": {
+            "trial": "openssl-selfsigned-cert__Bf7a4fj",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 1.19,
+            "steps": 5,
+            "input_tokens": 14290,
+            "cached_tokens": 9294,
+            "output_tokens": 3480,
+            "started": "2026-09-11T08:05:04.911554Z"
+          }
+        },
+        "overfull-hbox": {
+          "a1": {
+            "trial": "overfull-hbox__8uafVUT",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          },
+          "a2": {
+            "trial": "overfull-hbox__haKnDA6",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          }
+        },
+        "pypi-server": {
+          "a1": {
+            "trial": "pypi-server__Sq5qXFy",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 2.6,
+            "steps": 11,
+            "input_tokens": 51901,
+            "cached_tokens": 44153,
+            "output_tokens": 3121,
+            "started": "2026-09-11T08:08:54.003331Z"
+          }
+        },
+        "regex-log": {
+          "a1": {
+            "trial": "regex-log__3LKNh88",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          },
+          "a2": {
+            "trial": "regex-log__vgv6m4u",
+            "reward": null,
+            "exception": "RuntimeError",
+            "exception_message": "Command timed out after 120 seconds",
+            "infra_error": true,
+            "agent_minutes": null,
+            "steps": null,
+            "input_tokens": null,
+            "cached_tokens": null,
+            "output_tokens": null,
+            "started": null
+          }
+        },
+        "sparql-university": {
+          "a1": {
+            "trial": "sparql-university__X2bSsKz",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 6.63,
+            "steps": 14,
+            "input_tokens": 92348,
+            "cached_tokens": 82882,
+            "output_tokens": 9528,
+            "started": "2026-09-11T08:15:58.737927Z"
+          }
+        },
+        "sqlite-with-gcov": {
+          "a1": {
+            "trial": "sqlite-with-gcov__yk5PufZ",
+            "reward": 1.0,
+            "exception": null,
+            "exception_message": "",
+            "infra_error": false,
+            "agent_minutes": 5.89,
+            "steps": 18,
+            "input_tokens": 78785,
+            "cached_tokens": 69070,
+            "output_tokens": 2974,
+            "started": "2026-09-11T08:26:33.148094Z"
+          }
+        }
+      },
+      "job_attempt2": "20260911-015421-terminal-bench-local-core19-full-terminus-2-qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf--Q4_K_S--mtp-n2--llama.cpp--vulkan-9e6458d0-attempt2",
+      "summary": {
+        "scored_a1": 19,
+        "pass1": 9,
+        "pass1_of": 19,
+        "infra_errors_a1": [
+          "fix-ocaml-gc",
+          "git-leak-recovery",
+          "mailman",
+          "overfull-hbox",
+          "regex-log"
+        ],
+        "pass1_excluding_infra": "9/14",
+        "pass2": 9,
+        "agent_minutes_total_a1": 132.5,
+        "output_tokens_total_a1": 213731,
+        "minutes_per_solved_a1": 14.7,
+        "output_tokens_per_solved_a1": 23748,
+        "median_minutes_solved_a1": 3.2,
+        "median_output_tokens_solved_a1": 4893
+      }
+    }
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "heretic": {
+    "a1:break-filter-js-from-html": {
+      "requests": 12,
+      "peak_context": 26030,
+      "decode_tok_s": 55.3,
+      "prefill_tok_s": 770.1,
+      "mtp_accept": 0.612,
+      "generated": 47146
+    },
+    "a1:build-cython-ext": {
+      "requests": 40,
+      "peak_context": 47891,
+      "decode_tok_s": 59.7,
+      "prefill_tok_s": 635.8,
+      "mtp_accept": 0.797,
+      "generated": 36272
+    },
+    "a1:cobol-modernization": {
+      "requests": 27,
+      "peak_context": 60439,
+      "decode_tok_s": 56.2,
+      "prefill_tok_s": 689.7,
+      "mtp_accept": 0.742,
+      "generated": 145618
+    },
+    "a1:configure-git-webserver": {
+      "requests": 11,
+      "peak_context": 10853,
+      "decode_tok_s": 62.9,
+      "prefill_tok_s": 735.9,
+      "mtp_accept": 0.724,
+      "generated": 16907
+    },
+    "a1:extract-elf": {
+      "requests": 18,
+      "peak_context": 50332,
+      "decode_tok_s": 48.0,
+      "prefill_tok_s": 752.0,
+      "mtp_accept": 0.667,
+      "generated": 138079
+    },
+    "a1:fix-git": {
+      "requests": 7,
+      "peak_context": 7314,
+      "decode_tok_s": 66.3,
+      "prefill_tok_s": 745.6,
+      "mtp_accept": 0.787,
+      "generated": 6263
+    },
+    "a1:fix-ocaml-gc": {
+      "requests": 28,
+      "peak_context": 20409,
+      "decode_tok_s": 63.7,
+      "prefill_tok_s": 669.5,
+      "mtp_accept": 0.802,
+      "generated": 14742
+    },
+    "a1:headless-terminal": {
+      "requests": 36,
+      "peak_context": 45601,
+      "decode_tok_s": 56.5,
+      "prefill_tok_s": 664.4,
+      "mtp_accept": 0.689,
+      "generated": 52769
+    },
+    "a1:llm-inference-batching-scheduler": {
+      "requests": 21,
+      "peak_context": 65936,
+      "decode_tok_s": 53.2,
+      "prefill_tok_s": 692.6,
+      "mtp_accept": 0.69,
+      "generated": 179231
+    },
+    "a1:mailman": {
+      "requests": 89,
+      "peak_context": 89089,
+      "decode_tok_s": 49.3,
+      "prefill_tok_s": 509.8,
+      "mtp_accept": 0.69,
+      "generated": 154353
+    },
+    "a1:mteb-retrieve": {
+      "requests": 18,
+      "peak_context": 12162,
+      "decode_tok_s": 68.4,
+      "prefill_tok_s": 688.7,
+      "mtp_accept": 0.834,
+      "generated": 9750
+    },
+    "a1:nginx-request-logging": {
+      "requests": 3,
+      "peak_context": 10976,
+      "decode_tok_s": 67.2,
+      "prefill_tok_s": 798.0,
+      "mtp_accept": 0.81,
+      "generated": 12211
+    },
+    "a1:openssl-selfsigned-cert": {
+      "requests": 5,
+      "peak_context": 7260,
+      "decode_tok_s": 71.6,
+      "prefill_tok_s": 846.2,
+      "mtp_accept": 0.887,
+      "generated": 4158
+    },
+    "a1:overfull-hbox": {
+      "requests": 13,
+      "peak_context": 17185,
+      "decode_tok_s": 57.2,
+      "prefill_tok_s": 777.3,
+      "mtp_accept": 0.649,
+      "generated": 28154
+    },
+    "a1:pypi-server": {
+      "requests": 4,
+      "peak_context": 5662,
+      "decode_tok_s": 70.6,
+      "prefill_tok_s": 844.3,
+      "mtp_accept": 0.859,
+      "generated": 3534
+    },
+    "a1:regex-log": {
+      "requests": 3,
+      "peak_context": 22243,
+      "decode_tok_s": 68.2,
+      "prefill_tok_s": 918.1,
+      "mtp_accept": 0.872,
+      "generated": 22274
+    },
+    "a1:sparql-university": {
+      "requests": 10,
+      "peak_context": 16471,
+      "decode_tok_s": 63.7,
+      "prefill_tok_s": 787.4,
+      "mtp_accept": 0.776,
+      "generated": 22778
+    },
+    "a1:sqlite-with-gcov": {
+      "requests": 21,
+      "peak_context": 19539,
+      "decode_tok_s": 62.7,
+      "prefill_tok_s": 706.9,
+      "mtp_accept": 0.761,
+      "generated": 10945
+    },
+    "a2:configure-git-webserver": {
+      "requests": 17,
+      "peak_context": 14077,
+      "decode_tok_s": 64.2,
+      "prefill_tok_s": 699.9,
+      "mtp_accept": 0.764,
+      "generated": 15160
+    },
+    "a2:extract-elf": {
+      "requests": 18,
+      "peak_context": 50919,
+      "decode_tok_s": 56.3,
+      "prefill_tok_s": 749.2,
+      "mtp_accept": 0.725,
+      "generated": 130223
+    },
+    "a2:mteb-retrieve": {
+      "requests": 17,
+      "peak_context": 15629,
+      "decode_tok_s": 66.2,
+      "prefill_tok_s": 752.9,
+      "mtp_accept": 0.817,
+      "generated": 15452
+    }
+  },
+  "turbo": {
+    "a1:break-filter-js-from-html": {
+      "requests": 7,
+      "peak_context": 7016,
+      "decode_tok_s": 51.4,
+      "prefill_tok_s": 666.9,
+      "mtp_accept": 0.684,
+      "generated": 7143
+    },
+    "a1:build-cython-ext": {
+      "requests": 14,
+      "peak_context": 16945,
+      "decode_tok_s": 57.5,
+      "prefill_tok_s": 764.7,
+      "mtp_accept": 0.85,
+      "generated": 5362
+    },
+    "a1:cobol-modernization": {
+      "requests": 16,
+      "peak_context": 26577,
+      "decode_tok_s": 54.6,
+      "prefill_tok_s": 747.7,
+      "mtp_accept": 0.82,
+      "generated": 22905
+    },
+    "a1:configure-git-webserver": {
+      "requests": 56,
+      "peak_context": 32136,
+      "decode_tok_s": 52.1,
+      "prefill_tok_s": 592.5,
+      "mtp_accept": 0.774,
+      "generated": 13658
+    },
+    "a1:extract-elf": {
+      "requests": 18,
+      "peak_context": 24585,
+      "decode_tok_s": 51.8,
+      "prefill_tok_s": 760.9,
+      "mtp_accept": 0.744,
+      "generated": 16858
+    },
+    "a1:fix-git": {
+      "requests": 6,
+      "peak_context": 4347,
+      "decode_tok_s": 57.2,
+      "prefill_tok_s": 705.2,
+      "mtp_accept": 0.803,
+      "generated": 2177
+    },
+    "a1:headless-terminal": {
+      "requests": 10,
+      "peak_context": 7593,
+      "decode_tok_s": 56.5,
+      "prefill_tok_s": 719.5,
+      "mtp_accept": 0.796,
+      "generated": 4893
+    },
+    "a1:llm-inference-batching-scheduler": {
+      "requests": 57,
+      "peak_context": 145414,
+      "decode_tok_s": 46.1,
+      "prefill_tok_s": 495.6,
+      "mtp_accept": 0.866,
+      "generated": 109196
+    },
+    "a1:mteb-retrieve": {
+      "requests": 9,
+      "peak_context": 8244,
+      "decode_tok_s": 59.2,
+      "prefill_tok_s": 753.5,
+      "mtp_accept": 0.859,
+      "generated": 4138
+    },
+    "a1:nginx-request-logging": {
+      "requests": 2,
+      "peak_context": 9202,
+      "decode_tok_s": 56.2,
+      "prefill_tok_s": 924.6,
+      "mtp_accept": 0.8,
+      "generated": 8298
+    },
+    "a1:openssl-selfsigned-cert": {
+      "requests": 4,
+      "peak_context": 5303,
+      "decode_tok_s": 59.7,
+      "prefill_tok_s": 861.8,
+      "mtp_accept": 0.869,
+      "generated": 3480
+    },
+    "a1:pypi-server": {
+      "requests": 10,
+      "peak_context": 8062,
+      "decode_tok_s": 57.1,
+      "prefill_tok_s": 712.3,
+      "mtp_accept": 0.817,
+      "generated": 3121
+    },
+    "a1:sparql-university": {
+      "requests": 13,
+      "peak_context": 10884,
+      "decode_tok_s": 58.3,
+      "prefill_tok_s": 788.6,
+      "mtp_accept": 0.863,
+      "generated": 9528
+    },
+    "a1:sqlite-with-gcov": {
+      "requests": 17,
+      "peak_context": 9971,
+      "decode_tok_s": 56.0,
+      "prefill_tok_s": 724.3,
+      "mtp_accept": 0.786,
+      "generated": 2974
+    },
+    "a2:break-filter-js-from-html": {
+      "requests": 6,
+      "peak_context": 8255,
+      "decode_tok_s": 55.8,
+      "prefill_tok_s": 714.0,
+      "mtp_accept": 0.786,
+      "generated": 7233
+    },
+    "a2:build-cython-ext": {
+      "requests": 47,
+      "peak_context": 43298,
+      "decode_tok_s": 53.5,
+      "prefill_tok_s": 623.6,
+      "mtp_accept": 0.834,
+      "generated": 12814
+    },
+    "a2:llm-inference-batching-scheduler": {
+      "requests": 40,
+      "peak_context": 90123,
+      "decode_tok_s": 50.5,
+      "prefill_tok_s": 613.0,
+      "mtp_accept": 0.862,
+      "generated": 42692
+    },
+    "a2:mailman": {
+      "requests": 397,
+      "peak_context": 262143,
+      "decode_tok_s": 36.9,
+      "prefill_tok_s": 265.0,
+      "mtp_accept": 0.843,
+      "generated": 141823
+    },
+    "a2:mteb-retrieve": {
+      "requests": 12,
+      "peak_context": 12256,
+      "decode_tok_s": 59.3,
+      "prefill_tok_s": 774.0,
+      "mtp_accept": 0.88,
+      "generated": 4506
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "note": "Wall-clock timeline reconstructed from llama-server.log (log clock = time since process start; process start taken as tmux c19srv creation 2026-09-11 00:25:10, +/- ~2 s). Token counts are server-side.",
+  "server": "Turbo Q4_K_S MTP, Core-19 launch line (KV q8_0, ctx 262144, -np 2, MTP n=2)",
+  "requests": [
+    {
+      "task": "task1 poem (aborted, loop)",
+      "start": "2026-09-11 00:32:48",
+      "end": "2026-09-11 00:42:00",
+      "duration_s": 552.8,
+      "prompt_tokens": null,
+      "generated_tokens": 33539,
+      "ctx_at_end": 33914,
+      "decode_tok_s": null,
+      "mtp_accept": null,
+      "cancelled": false
+    },
+    {
+      "task": "task2 bug hunt",
+      "start": "2026-09-11 00:42:27",
+      "end": "2026-09-11 00:42:50",
+      "duration_s": 23.0,
+      "prompt_tokens": 371,
+      "generated_tokens": 1314,
+      "ctx_at_end": 1727,
+      "decode_tok_s": 58.5,
+      "mtp_accept": 0.82193,
+      "cancelled": false
+    },
+    {
+      "task": "task3 physics sim",
+      "start": "2026-09-11 00:42:50",
+      "end": "2026-09-11 00:47:25",
+      "duration_s": 275.3,
+      "prompt_tokens": 388,
+      "generated_tokens": 15676,
+      "ctx_at_end": 16105,
+      "decode_tok_s": 57.1,
+      "mtp_accept": 0.83359,
+      "cancelled": false
+    }
+  ]
+}

@@ -109,3 +109,21 @@ llama.cpp / vLLM on AMD, but most apply to any local-inference benchmarking.
     wrong conclusions; strike them and point to the correction.
 39. **An explanation that was never measured is a hypothesis.** Label it that way.
 40. **Record working configurations too.** The record naturally fills with problems.
+
+## Agentic benchmarks and trace analysis (added 2026-09-11)
+
+41. **Separate harness failures from model failures before scoring.** A trial that errors before the agent ever
+    runs (here: a 120 s tool-install timeout during container setup) is not a model result. Report pass rates
+    both ways, and compare models on the tasks both actually ran.
+42. **When one arm fails setup and the other didn't, look outside first.** All five setup errors here were
+    `ubuntu:24.04` images whose plain-HTTP apt mirror had started hanging overnight. Check the failing trials'
+    base images and probe the network they depend on before blaming the model or the machine.
+43. **Every rule a grader shows must be scored.** Printing a value "for eyeballing" hides failures.
+44. **Validate a text detector on the raw text before stating its numbers.** Pull the exact passage behind
+    several hits and spot-check random rows by hand; two of three first-pass results here were parser artifacts.
+45. **Keep traces.** Save reasoning *and* answers per model call as structured records (JSONL), not only a
+    terminal log. The interesting failures were only visible in the reasoning.
+46. **Don't let one run's environment reach the next.** Launch each run in a fresh shell or `env -i`; never
+    `exec` a shell that still carries exported run variables.
+47. **Match the remote shell.** A host whose login shell isn't bash needs `ssh host 'bash -s' <<'EOF'` for bash
+    syntax, or a watcher can fail silently forever.

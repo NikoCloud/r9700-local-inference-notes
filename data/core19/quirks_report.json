@@ -1,0 +1,813 @@
+{
+  "poem": [
+    {
+      "label": "task1 turn1",
+      "model": "turbo_kv-q8_262k",
+      "reasoning_chars": 102969,
+      "complete_drafts": 0,
+      "drafts": [],
+      "final_score": null,
+      "final_failed": null,
+      "final_words": null,
+      "reversal_flag": null,
+      "lost_checks": null,
+      "per_line": {
+        "n": 0,
+        "exact": 0,
+        "bias_mean": null,
+        "diffs": {},
+        "by_format": {},
+        "excluded_not_per_line": 0,
+        "examples_wrong": []
+      },
+      "totals": {
+        "n": 0,
+        "wrong_ge3": []
+      }
+    },
+    {
+      "label": "A_turbo_q8_262k run 1/3",
+      "model": "turbo_kv-q8_262k",
+      "reasoning_chars": 16643,
+      "complete_drafts": 5,
+      "drafts": [
+        {
+          "at_pct": 4.1,
+          "score": 6,
+          "failed": [
+            "140-160 words",
+            "thee/thou >= 3"
+          ],
+          "words": 173
+        },
+        {
+          "at_pct": 14.8,
+          "score": 6,
+          "failed": [
+            "140-160 words",
+            "thee/thou >= 3"
+          ],
+          "words": 173
+        },
+        {
+          "at_pct": 33.5,
+          "score": 6,
+          "failed": [
+            "thee/thou >= 3",
+            "last line ends with ?"
+          ],
+          "words": 145
+        },
+        {
+          "at_pct": 65.6,
+          "score": 8,
+          "failed": [],
+          "words": 144
+        },
+        {
+          "at_pct": 74.1,
+          "score": 8,
+          "failed": [],
+          "words": 144
+        }
+      ],
+      "final_score": 8,
+      "final_failed": [],
+      "final_words": 144,
+      "reversal_flag": false,
+      "lost_checks": [],
+      "per_line": {
+        "n": 45,
+        "exact": 34,
+        "bias_mean": -0.02,
+        "diffs": {
+          "-1": 6,
+          "0": 34,
+          "1": 5
+        },
+        "by_format": {
+          "text (n)": 45
+        },
+        "excluded_not_per_line": 20,
+        "examples_wrong": [
+          [
+            "text (n)",
+            8,
+            7,
+            "Wind the mainspring once again, my lad,"
+          ],
+          [
+            "text (n)",
+            8,
+            9,
+            "And watch the gears unwind what they had planned;"
+          ],
+          [
+            "text (n)",
+            8,
+            7,
+            "I've mended countless springs and broken thread,"
+          ],
+          [
+            "text (n)",
+            9,
+            10,
+            "Like sand that no one can hold back to save;"
+          ]
+        ]
+      },
+      "totals": {
+        "n": 1,
+        "wrong_ge3": [
+          {
+            "stated": 156,
+            "actual": 145,
+            "diff": 11,
+            "at_pct": 55.1,
+            "context": "rds: Stanza 1: 33 Stanza 2: 33 Stanza 3: 30 Stanza 4: 30 Stanza 5: 30 Total: 156 words. Perfect! Within 1"
+          }
+        ]
+      }
+    },
+    {
+      "label": "A_turbo_q8_262k run 2/3",
+      "model": "turbo_kv-q8_262k",
+      "reasoning_chars": 21902,
+      "complete_drafts": 3,
+      "drafts": [
+        {
+          "at_pct": 4.2,
+          "score": 6,
+          "failed": [
+            "140-160 words",
+            "last line ends with ?"
+          ],
+          "words": 126
+        },
+        {
+          "at_pct": 52.8,
+          "score": 8,
+          "failed": [],
+          "words": 155
+        },
+        {
+          "at_pct": 81.3,
+          "score": 8,
+          "failed": [],
+          "words": 159
+        }
+      ],
+      "final_score": 8,
+      "final_failed": [],
+      "final_words": 159,
+      "reversal_flag": false,
+      "lost_checks": [],
+      "per_line": {
+        "n": 10,
+        "exact": 7,
+        "bias_mean": -0.1,
+        "diffs": {
+          "-1": 2,
+          "0": 7,
+          "1": 1
+        },
+        "by_format": {
+          "text (n)": 6,
+          "enum lineK: w1 w2 =n": 4
+        },
+        "excluded_not_per_line": 27,
+        "examples_wrong": [
+          [
+            "enum lineK: w1 w2 =n",
+            8,
+            9,
+            "Stop when the final wheel at last halts  | enum 8 tokens"
+          ],
+          [
+            "enum lineK: w1 w2 =n",
+            9,
+            8,
+            "Will thou preserve what cannot be made w | enum 9 tokens"
+          ],
+          [
+            "enum lineK: w1 w2 =n",
+            7,
+            8,
+            "Is keeping what we have our only role? | enum 7 tokens"
+          ]
+        ]
+      },
+      "totals": {
+        "n": 5,
+        "wrong_ge3": [
+          {
+            "stated": 161,
+            "actual": 126,
+            "diff": 35,
+            "at_pct": 10.0,
+            "context": "B). Good. \"thou\" - 3. Total thee/thou: 3. Good. Word count: 32 words. Total: 161.  That's 161 words, one "
+          },
+          {
+            "stated": 100,
+            "actual": 126,
+            "diff": -26,
+            "at_pct": 15.2,
+            "context": "ced,(20) Only(21) endured(22) and(23) held(24) tight.(25) = 25 words. Total: 100.  Stanza 5: Stop(1) when"
+          },
+          {
+            "stated": 121,
+            "actual": 126,
+            "diff": -5,
+            "at_pct": 31.8,
+            "context": "not be replaced again, Only endured and gently held tight. (28 words, total 121)  **Stanza 5 (Stop):** S"
+          }
+        ]
+      }
+    },
+    {
+      "label": "A_turbo_q8_262k run 3/3",
+      "model": "turbo_kv-q8_262k",
+      "reasoning_chars": 13399,
+      "complete_drafts": 3,
+      "drafts": [
+        {
+          "at_pct": 18.0,
+          "score": 7,
+          "failed": [
+            "140-160 words"
+          ],
+          "words": 163
+        },
+        {
+          "at_pct": 77.2,
+          "score": 7,
+          "failed": [
+            "140-160 words"
+          ],
+          "words": 161
+        },
+        {
+          "at_pct": 93.7,
+          "score": 7,
+          "failed": [
+            "thee/thou >= 3"
+          ],
+          "words": 159
+        }
+      ],
+      "final_score": 7,
+      "final_failed": [
+        "thee/thou >= 3"
+      ],
+      "final_words": 159,
+      "reversal_flag": false,
+      "lost_checks": [
+        "thee/thou >= 3"
+      ],
+      "per_line": {
+        "n": 8,
+        "exact": 2,
+        "bias_mean": -1.0,
+        "diffs": {
+          "-2": 2,
+          "-1": 4,
+          "0": 2
+        },
+        "by_format": {
+          "text (n)": 4,
+          "text -> n": 4
+        },
+        "excluded_not_per_line": 0,
+        "examples_wrong": [
+          [
+            "text (n)",
+            7,
+            8,
+            "Wind the mainspring tight and hold it fast,"
+          ],
+          [
+            "text (n)",
+            8,
+            9,
+            "As I have done from youth unto this day."
+          ],
+          [
+            "text (n)",
+            8,
+            10,
+            "Each gear must catch and turn as I have cast,"
+          ],
+          [
+            "text (n)",
+            7,
+            8,
+            "And drive the works along their appointed way."
+          ]
+        ]
+      },
+      "totals": {
+        "n": 4,
+        "wrong_ge3": [
+          {
+            "stated": 159,
+            "actual": 163,
+            "diff": -4,
+            "at_pct": 55.5,
+            "context": "hould -> But we can wind the clock as you should. That saves 2 words. Total now 159.  Let me recount careful"
+          },
+          {
+            "stated": 141,
+            "actual": 161,
+            "diff": -20,
+            "at_pct": 89.6,
+            "context": ") -> \"Beyond thy skill or mine to understand.\" (7). So I lose 1 word. Total now 141.  But I lost a \"thee\". L"
+          },
+          {
+            "stated": 141,
+            "actual": 161,
+            "diff": -20,
+            "at_pct": 93.1,
+            "context": "nderstand.\" = 7 Total: 29 words.  Grand total: 32 + 25 + 29 + 28 + 27 = 141 words. \u2713  Final check of the p"
+          }
+        ]
+      }
+    },
+    {
+      "label": "B_turbo_f16_131k run 1/3",
+      "model": "turbo_kv-f16_131k",
+      "reasoning_chars": 16513,
+      "complete_drafts": 5,
+      "drafts": [
+        {
+          "at_pct": 4.9,
+          "score": 6,
+          "failed": [
+            "140-160 words",
+            "thee/thou >= 3"
+          ],
+          "words": 124
+        },
+        {
+          "at_pct": 13.3,
+          "score": 6,
+          "failed": [
+            "140-160 words",
+            "thee/thou >= 3"
+          ],
+          "words": 124
+        },
+        {
+          "at_pct": 33.3,
+          "score": 7,
+          "failed": [
+            "thee/thou >= 3"
+          ],
+          "words": 140
+        },
+        {
+          "at_pct": 62.4,
+          "score": 8,
+          "failed": [],
+          "words": 140
+        },
+        {
+          "at_pct": 91.7,
+          "score": 8,
+          "failed": [],
+          "words": 140
+        }
+      ],
+      "final_score": 8,
+      "final_failed": [],
+      "final_words": 140,
+      "reversal_flag": false,
+      "lost_checks": [],
+      "per_line": {
+        "n": 0,
+        "exact": 0,
+        "bias_mean": null,
+        "diffs": {},
+        "by_format": {},
+        "excluded_not_per_line": 1,
+        "examples_wrong": []
+      },
+      "totals": {
+        "n": 8,
+        "wrong_ge3": []
+      }
+    },
+    {
+      "label": "B_turbo_f16_131k run 2/3",
+      "model": "turbo_kv-f16_131k",
+      "reasoning_chars": 8811,
+      "complete_drafts": 3,
+      "drafts": [
+        {
+          "at_pct": 7.0,
+          "score": 8,
+          "failed": [],
+          "words": 141
+        },
+        {
+          "at_pct": 51.9,
+          "score": 8,
+          "failed": [],
+          "words": 148
+        },
+        {
+          "at_pct": 70.1,
+          "score": 8,
+          "failed": [],
+          "words": 148
+        }
+      ],
+      "final_score": 8,
+      "final_failed": [],
+      "final_words": 148,
+      "reversal_flag": false,
+      "lost_checks": [],
+      "per_line": {
+        "n": 25,
+        "exact": 15,
+        "bias_mean": 0.32,
+        "diffs": {
+          "-1": 1,
+          "0": 15,
+          "1": 9
+        },
+        "by_format": {
+          "text (n)": 25
+        },
+        "excluded_not_per_line": 20,
+        "examples_wrong": [
+          [
+            "text (n)",
+            8,
+            7,
+            "Wind the mainspring, boy, with patient hand,"
+          ],
+          [
+            "text (n)",
+            9,
+            8,
+            "For the work must be complete and good."
+          ],
+          [
+            "text (n)",
+            6,
+            5,
+            "Every wound is small command,"
+          ],
+          [
+            "text (n)",
+            7,
+            6,
+            "That the mechanism stay its blood."
+          ]
+        ]
+      },
+      "totals": {
+        "n": 0,
+        "wrong_ge3": []
+      }
+    },
+    {
+      "label": "B_turbo_f16_131k run 3/3",
+      "model": "turbo_kv-f16_131k",
+      "reasoning_chars": 29550,
+      "complete_drafts": 2,
+      "drafts": [
+        {
+          "at_pct": 21.2,
+          "score": 7,
+          "failed": [
+            "thee/thou >= 3"
+          ],
+          "words": 143
+        },
+        {
+          "at_pct": 59.3,
+          "score": 6,
+          "failed": [
+            "thee/thou >= 3",
+            "last line ends with ?"
+          ],
+          "words": 159
+        }
+      ],
+      "final_score": 8,
+      "final_failed": [],
+      "final_words": 155,
+      "reversal_flag": false,
+      "lost_checks": [],
+      "per_line": {
+        "n": 57,
+        "exact": 28,
+        "bias_mean": -0.67,
+        "diffs": {
+          "-2": 11,
+          "-1": 17,
+          "0": 28,
+          "1": 1
+        },
+        "by_format": {
+          "text (n)": 57
+        },
+        "excluded_not_per_line": 20,
+        "examples_wrong": [
+          [
+            "text (n)",
+            6,
+            8,
+            "Wind the mainspring tight, dear lad, my boy,"
+          ],
+          [
+            "text (n)",
+            7,
+            8,
+            "And heed the words I bid you hear"
+          ],
+          [
+            "text (n)",
+            6,
+            7,
+            "Though I depart, the craft shall stand"
+          ],
+          [
+            "text (n)",
+            6,
+            7,
+            "Tick goes the wheel, a ceaseless sound,"
+          ]
+        ]
+      },
+      "totals": {
+        "n": 2,
+        "wrong_ge3": [
+          {
+            "stated": 119,
+            "actual": 143,
+            "diff": -24,
+            "at_pct": 24.2,
+            "context": "ken, one by one, (5) Can never be made whole; is that past? (6) = 23  Total: 119. Still too few.  Let me "
+          },
+          {
+            "stated": 147,
+            "actual": 159,
+            "diff": -12,
+            "at_pct": 75.7,
+            "context": "thou see'st around (6) May lose or fade, it still can ring. (8) = 28  Total: 147. Good.  Now let me verif"
+          }
+        ]
+      }
+    },
+    {
+      "label": "C_heretic_q8_262k run 1/3",
+      "model": "heretic_kv-q8_262k",
+      "reasoning_chars": 44511,
+      "complete_drafts": 0,
+      "drafts": [],
+      "final_score": 8,
+      "final_failed": [],
+      "final_words": 143,
+      "reversal_flag": false,
+      "lost_checks": [],
+      "per_line": {
+        "n": 46,
+        "exact": 37,
+        "bias_mean": -0.13,
+        "diffs": {
+          "-4": 1,
+          "-2": 2,
+          "-1": 2,
+          "0": 37,
+          "1": 4
+        },
+        "by_format": {
+          "text (n)": 18,
+          "enum lineK: w1 w2 =n": 28
+        },
+        "excluded_not_per_line": 1,
+        "examples_wrong": [
+          [
+            "enum lineK: w1 w2 =n",
+            6,
+            10,
+            "- poem body (everything after title) mus | enum 6 tokens"
+          ],
+          [
+            "enum lineK: w1 w2 =n",
+            7,
+            8,
+            "Some breaks no oil can make less sore, | enum 7 tokens"
+          ],
+          [
+            "enum lineK: w1 w2 =n",
+            5,
+            7,
+            "Only kept in quiet bound. (bound) exact. | enum 5 tokens"
+          ],
+          [
+            "enum lineK: w1 w2 =n",
+            7,
+            6,
+            "Hold no part in vain device. | enum 34 tokens"
+          ]
+        ]
+      },
+      "totals": {
+        "n": 0,
+        "wrong_ge3": []
+      }
+    },
+    {
+      "label": "C_heretic_q8_262k run 2/3",
+      "model": "heretic_kv-q8_262k",
+      "reasoning_chars": 56076,
+      "complete_drafts": 3,
+      "drafts": [
+        {
+          "at_pct": 32.0,
+          "score": 8,
+          "failed": [],
+          "words": 151
+        },
+        {
+          "at_pct": 48.9,
+          "score": 8,
+          "failed": [],
+          "words": 150
+        },
+        {
+          "at_pct": 81.4,
+          "score": 8,
+          "failed": [],
+          "words": 151
+        }
+      ],
+      "final_score": 8,
+      "final_failed": [],
+      "final_words": 151,
+      "reversal_flag": false,
+      "lost_checks": [],
+      "per_line": {
+        "n": 59,
+        "exact": 59,
+        "bias_mean": 0.0,
+        "diffs": {
+          "0": 59
+        },
+        "by_format": {
+          "text (n)": 59
+        },
+        "excluded_not_per_line": 12,
+        "examples_wrong": []
+      },
+      "totals": {
+        "n": 8,
+        "wrong_ge3": []
+      }
+    },
+    {
+      "label": "C_heretic_q8_262k run 3/3",
+      "model": "heretic_kv-q8_262k",
+      "reasoning_chars": 41788,
+      "complete_drafts": 4,
+      "drafts": [
+        {
+          "at_pct": 26.8,
+          "score": 8,
+          "failed": [],
+          "words": 154
+        },
+        {
+          "at_pct": 53.1,
+          "score": 8,
+          "failed": [],
+          "words": 154
+        },
+        {
+          "at_pct": 84.2,
+          "score": 8,
+          "failed": [],
+          "words": 153
+        },
+        {
+          "at_pct": 88.8,
+          "score": 8,
+          "failed": [],
+          "words": 153
+        }
+      ],
+      "final_score": 8,
+      "final_failed": [],
+      "final_words": 153,
+      "reversal_flag": false,
+      "lost_checks": [],
+      "per_line": {
+        "n": 12,
+        "exact": 11,
+        "bias_mean": -0.25,
+        "diffs": {
+          "-3": 1,
+          "0": 11
+        },
+        "by_format": {
+          "text (n)": 11,
+          "text -> n": 1
+        },
+        "excluded_not_per_line": 0,
+        "examples_wrong": [
+          [
+            "text -> n",
+            10,
+            13,
+            "Need check line \"thee I have taught to keep the hours at bay"
+          ]
+        ]
+      },
+      "totals": {
+        "n": 7,
+        "wrong_ge3": []
+      }
+    }
+  ],
+  "bugs": [
+    {
+      "label": "task2 turn1",
+      "model": "turbo_kv-q8_262k",
+      "reasoning_chars": 2504,
+      "bugs": {
+        "mutable default result=[]": {
+          "first_diagnosis_pct": 20.4,
+          "mentions": 4,
+          "in_answer": true,
+          "dismissals": []
+        },
+        "touching intervals (< vs <=)": {
+          "first_diagnosis_pct": 29.3,
+          "mentions": 4,
+          "in_answer": true,
+          "dismissals": []
+        },
+        "sort mutates caller list": {
+          "first_diagnosis_pct": 15.3,
+          "mentions": 3,
+          "in_answer": true,
+          "dismissals": []
+        },
+        "p=100 index out of range": {
+          "first_diagnosis_pct": 70.8,
+          "mentions": 2,
+          "in_answer": true,
+          "dismissals": []
+        },
+        "empty input no ValueError": {
+          "first_diagnosis_pct": 55.8,
+          "mentions": 2,
+          "in_answer": true,
+          "dismissals": []
+        }
+      },
+      "all_diagnosed_by_pct": 70.8
+    },
+    {
+      "label": "task2 turn1",
+      "model": "heretic_kv-q8_262k",
+      "reasoning_chars": 110941,
+      "bugs": {
+        "mutable default result=[]": {
+          "first_diagnosis_pct": 1.0,
+          "mentions": 41,
+          "in_answer": true,
+          "dismissals": []
+        },
+        "touching intervals (< vs <=)": {
+          "first_diagnosis_pct": 7.8,
+          "mentions": 4,
+          "in_answer": false,
+          "dismissals": []
+        },
+        "sort mutates caller list": {
+          "first_diagnosis_pct": 1.2,
+          "mentions": 33,
+          "in_answer": true,
+          "dismissals": []
+        },
+        "p=100 index out of range": {
+          "first_diagnosis_pct": 5.3,
+          "mentions": 16,
+          "in_answer": false,
+          "dismissals": []
+        },
+        "empty input no ValueError": {
+          "first_diagnosis_pct": 5.2,
+          "mentions": 17,
+          "in_answer": true,
+          "dismissals": []
+        }
+      },
+      "all_diagnosed_by_pct": 7.8
+    }
+  ]
+}

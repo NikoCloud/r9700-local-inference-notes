@@ -1,7 +1,8 @@
-# 08 — Agentic quality A/B: Core-19 (in progress)
+# 08 — Agentic quality A/B: Core-19
 
-> **Status, 2026-09-10 evening:** the heretic arm is running (7 of 9 attempt-1 tasks passed so far), and the
-> Turbo arm follows automatically. This page will be updated with final results.
+> **Status, 2026-09-11:** both arms finished. Heretic ran 2026-09-10 15:00–22:31; Turbo ran 2026-09-11
+> 01:54–08:57 (after a killed first attempt, below). A third, much smaller model ran on a laptop as a side
+> experiment; its results are preliminary and listed at the end.
 
 ## Why this benchmark
 
@@ -18,12 +19,13 @@ each pass cost in time and tokens.
   labels them 3 easy, 13 medium and 3 hard.
 - **Runner:** Harbor 0.20.0, with the **Terminus-2** agent driving each container.
 - **Attempts:** up to **2 per task**; the second runs only if the first fails, after all first attempts finish.
-  **3-hour agent timeout** per attempt; no turn or output-token caps.
+  **3-hour agent timeout** per attempt; no turn or output-token caps. One task at a time.
 - **Grading:** a hidden per-task verifier runs once at the end of each attempt. The agent never sees it. It can
   only test itself.
-- **Context:** Terminus-2 summarises only when free context drops below ~8k tokens.
+- **Context:** Terminus-2 summarises only when *free* context drops below ~8k tokens (at ~254k used on a 262k
+  window). The setting name, `proactive_summarization_threshold=8000`, reads like "summarise at 8k"; it isn't.
 - **Recorded per task:** duration, input/cached/output tokens, agent steps, and a full step-by-step transcript
-  (ATIF format).
+  (ATIF format, including each step's reasoning).
 
 ## Arms
 
@@ -37,123 +39,187 @@ each pass cost in time and tokens.
 **Run identity passed to the runner:** `--platform r9700 --engine llama.cpp --engine-version 434ddbb+vision-patch
 --backend vulkan --backend-version mesa-26.2.2-radv --quant Q4_K_S --inference-profile mtp-n2`.
 
-**Captured during the run** (nothing else is recoverable afterwards):
-- the server log per arm (per-request timings, cache hits, draft acceptance, any stray requests)
-- GPU power and temperature every 30 s
+**Captured during the run:** the server log per arm (per-request timings, cache hits, draft acceptance) and GPU
+power and temperature every 30 s.
 
 ## Before it could run
 
 - **Docker Compose v2 was missing.** A handoff note said another agent had already installed the prerequisites.
-  No `docker compose` existed in any shell, plugin path or package. The owner installed the official user-level
-  plugin (checksum verified).
-- **One upstream unit test fails on a fresh clone** (a stale count of committed results). The runner's other 99
-  tests pass. Not a blocker.
+  The owner installed the official user-level plugin (checksum verified).
+- **One upstream unit test fails on a fresh clone** (a stale count of committed results). Not a blocker.
 - **Loopback works.** Terminus-2 makes its model calls from the host, so a server bound to `127.0.0.1` is
-  reachable. Confirmed by a smoke run.
-- **The runner reuses a matching earlier result.** The smoke run's `git-leak-recovery` pass (same model, quant,
-  engine and profile) was reused in the full heretic arm, which ran 18 tasks. The Turbo arm has no smoke run,
-  so it runs all 19.
+  reachable.
+- **The runner reuses a matching earlier result.** The smoke run's `git-leak-recovery` pass was reused in the
+  full heretic arm. The Turbo arm ran all 19.
 
-## Heretic arm: attempt 1 so far
+## The first Turbo run was killed
 
-| Task | Result | Minutes | Output tokens | Input tokens | Cache hit |
-|---|---|---|---|---|---|
-| git-leak-recovery (from smoke run) | pass | 3 | 8,730 | 35,674 | 76% |
-| break-filter-js-from-html | pass | 20 | 47,146 | 89,775 | 85% |
-| build-cython-ext | pass | 24 | 36,272 | 1,090,970 | 96% |
-| cobol-modernization | pass | 46 | 145,618 | 704,855 | 93% |
-| configure-git-webserver | **fail** | 7 | 16,907 | 57,396 | 82% |
-| extract-elf | **fail** | 60 | 138,079 | 440,363 | 87% |
-| fix-git | pass | 2 | 6,263 | 25,239 | 75% |
-| fix-ocaml-gc | pass | 20 | 14,742 | 358,704 | 94% |
-| headless-terminal | pass | 29 | 52,943 | 935,228 | 95% |
-| llm-inference-batching-scheduler | running | | | | |
+The first Turbo arm started 2026-09-10 22:31. After **1 h 50 min on its first task**
+(`break-filter-js-from-html`: 77 agent steps, context grown to 98k, repeatedly trying variations of the same
+kind of XSS bypass) the owner stopped it. Heretic had solved that task in 20 minutes with 12 steps.
 
-### Why the two failures failed
+That run is archived and **not counted**. The owner then asked for sanity checks with the reasoning streamed
+live before re-running ([11](11-reasoning-traces-and-sanity-checks.md)). They found the model working (both code
+tasks passed) but prone to intermittent loops, so the benchmark was re-run on the unchanged server line.
 
-- **`configure-git-webserver`** (serve git pushes through a web server over SSH):
-  - The verifier's first step, a clone over SSH, got `connect to host localhost port 22: Connection refused`.
-  - The agent had built the bare repository and a web server, and carefully verified HTTP 200 on two
-    addresses, but **never started an SSH server**. It also used Python's `http.server` instead of Nginx.
-  - It declared the task done after 7 minutes.
-- **`extract-elf`** (parse an ELF binary and export memory values):
-  - Output format passed, and no values were wrong, but it found **66.7% of the expected values against a
-    required 75%**.
-  - The agent's own final check reported "93.1% coverage", measured against *its own estimate* of the total.
-  - That's 60 minutes and 138k output tokens of confident near-miss.
-
-**Common pattern:** thorough self-testing against the agent's *own* reading of the task. It verified what it
-remembered to build, not what was asked. Two tasks aren't enough to call it a trait.
-
-### Observations while watching
-
-- **"4 passed, 10 failed" mid-task was the agent's own test script, not the grader.** It fixed the
-  implementation within two minutes (14/14 on its own tests), and the task passed the verifier.
-- **Context stayed small:** peaks of 5–18% of 262k on finished tasks, and no summarisation. Terminus-2 doesn't
-  send earlier reasoning back ([10](10-agent-harness-lessons.md)), so 145k generated tokens produced a 46.5k
-  peak context.
-- **The GPU alternates between ~270 W bursts and ~15 W idle** while the agent waits on long commands in its
-  container, polling every 20–30 s. That's normal: a stall looks different (no new transcript steps, no server
-  activity).
-- **The server log stayed clean:** no truncated prompts, context shifts or error lines.
-
-## Results (pending: filled in when both arms finish)
+## Results
 
 ### Summary
 
 | | heretic Q4_K_S | Turbo Q4_K_S |
 |---|---|---|
-| **pass@1** (attempt 1) | _TBD_ / 19 | _TBD_ / 19 |
-| **pass@2** (with conditional retry) | _TBD_ / 19 | _TBD_ / 19 |
-| Total agent time, attempt 1 | _TBD_ | _TBD_ |
-| Output tokens, attempt 1 | _TBD_ | _TBD_ |
-| Minutes per solved task (attempt 1) | _TBD_ | _TBD_ |
-| Output tokens per solved task (attempt 1) | _TBD_ | _TBD_ |
-| Tasks solved per hour (attempt 1) | _TBD_ | _TBD_ |
-| Peak context, median / max | _TBD_ | _TBD_ |
+| **pass@1** (attempt 1) | **16 / 19** | 9 / 19 |
+| **pass@1 excluding setup errors** (see below) | 16 / 19 | **9 / 14** |
+| **pass@1 on those same 14 tasks** | **11 / 14** | 9 / 14 |
+| **pass@2** (with conditional retry) | **17 / 19** | 9 / 19 (no retry flipped) |
+| Agent time, attempt 1 | 378 min | 133 min (14 tasks that ran) |
+| Output tokens, attempt 1 | 914k | 214k (14 tasks that ran) |
+| Minutes per solved task (attempt 1) | 23.6 | **14.7** |
+| Output tokens per solved task (attempt 1) | 57.1k | **23.7k** |
+| Median solved task | 9.3 min · 22.5k tokens | **3.2 min · 4.9k tokens** |
+| Tasks solved per agent-hour (attempt 1) | 2.5 | **4.1** |
+| Peak context per task, median / max (attempt 1) | 20.0k / 89.1k | 9.6k / 145.4k (262k in one retry) |
+
+- **Heretic solves more;** Turbo solves what it solves **much faster and cheaper**.
+- **On the 8 tasks both passed,** Turbo used **30 minutes vs 98** and **57k output tokens vs 258k**.
+- **On the 14 tasks both could run,** Turbo won one heretic lost (`configure-git-webserver`) and lost three
+  heretic won (`break-filter-js-from-html`, `build-cython-ext`, `llm-inference-batching-scheduler`).
+- **Retries helped heretic only:** `mteb-retrieve` flipped to a genuine pass. None of Turbo's ten retries did.
+
+An interactive chart of everything on this page: [data/core19/core19_ab.html](../data/core19/core19_ab.html).
+
+### Setup errors: an outside outage, not the model
+
+Five Turbo tasks never reached the agent in attempt 1. In attempt 2, four of them failed setup again (`mailman`
+got through and ran into the 3 h timeout instead), and so did `extract-elf`, whose attempt 1 had set up fine.
+Every one was `RuntimeError: Command timed out after 120 seconds` during agent setup:
+
+- **What Terminus-2 does first:** installs `tmux` and `asciinema` inside the task container, with a hard-coded
+  **120 s limit per command** (`_TOOL_INSTALL_TIMEOUT_SEC = 120` in Harbor's `tmux_session.py`).
+- **What broke:** overnight, the **plain-HTTP Ubuntu apt mirrors hung** (archive.ubuntu.com, security.ubuntu.com:
+  connect, then no response), from two machines on the same connection. HTTPS to the same mirror, Debian's mirror,
+  PyPI, GitHub and Docker Hub all responded normally.
+- **Who it hit:** every failing task is `FROM ubuntu:24.04`; every `python:3.13-slim-bookworm` task set up fine.
+  Heretic's arm ran the same Ubuntu tasks the previous afternoon without errors.
+- A read-only log of the mirror checks (every 10 minutes) showed it still failing intermittently at 08:30.
+
+These are counted as **setup errors, not model failures**, and the table shows pass@1 both ways. The fair
+comparison is the **14 tasks both models actually ran**. Re-running only the five affected Turbo tasks once the
+mirror is healthy is an open item.
 
 ### Per task
 
-| Task | heretic: result, min, output tokens | Turbo: result, min, output tokens |
-|---|---|---|
-| break-filter-js-from-html | _TBD_ | _TBD_ |
-| build-cython-ext | _TBD_ | _TBD_ |
-| cobol-modernization | _TBD_ | _TBD_ |
-| configure-git-webserver | _TBD_ | _TBD_ |
-| extract-elf | _TBD_ | _TBD_ |
-| fix-git | _TBD_ | _TBD_ |
-| fix-ocaml-gc | _TBD_ | _TBD_ |
-| git-leak-recovery | _TBD_ | _TBD_ |
-| headless-terminal | _TBD_ | _TBD_ |
-| llm-inference-batching-scheduler | _TBD_ | _TBD_ |
-| mailman | _TBD_ | _TBD_ |
-| mteb-retrieve | _TBD_ | _TBD_ |
-| nginx-request-logging | _TBD_ | _TBD_ |
-| openssl-selfsigned-cert | _TBD_ | _TBD_ |
-| overfull-hbox | _TBD_ | _TBD_ |
-| pypi-server | _TBD_ | _TBD_ |
-| regex-log | _TBD_ | _TBD_ |
-| sparql-university | _TBD_ | _TBD_ |
-| sqlite-with-gcov | _TBD_ | _TBD_ |
+`a1` / `a2` = attempt 1 / 2. Minutes and output tokens are per attempt.
+
+| Task | heretic a1 | heretic a2 | Turbo a1 | Turbo a2 |
+|---|---|---|---|---|
+| break-filter-js-from-html | **pass** · 19.7 · 47.1k | – | fail · 3.1 · 7.1k | fail · 2.8 · 7.2k |
+| build-cython-ext | **pass** · 23.3 · 36.3k | – | fail · 9.5 · 5.4k | fail · 20.4 · 12.8k |
+| cobol-modernization | **pass** · 45.9 · 145.6k | – | **pass** · 7.7 · 22.9k | – |
+| configure-git-webserver | fail · 6.5 · 16.9k | fail · 6.7 · 15.2k | **pass** · 8.8 · 13.7k | – |
+| extract-elf | fail · 59.6 · 138.1k | fail · 39.7 · 130.2k | fail · 6.6 · 16.9k | setup error |
+| fix-git | **pass** · 1.9 · 6.3k | – | **pass** · 0.9 · 2.2k | – |
+| fix-ocaml-gc | **pass** · 12.3 · 14.7k | – | setup error | setup error |
+| git-leak-recovery | **pass** · 2.7 · 8.7k (smoke run) | – | setup error | setup error |
+| headless-terminal | **pass** · 28.3 · 52.9k | – | **pass** · 2.1 · 4.9k | – |
+| llm-inference-batching-scheduler | **pass** · 66.3 · 179.2k | – | fail · 67.8 · 109.2k | fail · 34.5 · 42.7k |
+| mailman | **pass** · 68.6 · 154.4k | – | setup error | 3 h timeout · 180 · 140.7k |
+| mteb-retrieve | fail · 6.0 · 9.8k | **pass** · 7.9 · 15.5k | fail · 6.5 · 4.1k | fail · 7.3 · 4.5k |
+| nginx-request-logging | **pass** · 3.8 · 12.2k | – | **pass** · 3.2 · 8.3k | – |
+| openssl-selfsigned-cert | **pass** · 1.2 · 4.2k | – | **pass** · 1.2 · 3.5k | – |
+| overfull-hbox | **pass** · 10.0 · 28.4k | – | setup error | setup error |
+| pypi-server | **pass** · 2.1 · 3.5k | – | **pass** · 2.6 · 3.1k | – |
+| regex-log | **pass** · 5.7 · 22.3k | – | setup error | setup error |
+| sparql-university | **pass** · 8.6 · 22.8k | – | **pass** · 6.6 · 9.5k | – |
+| sqlite-with-gcov | **pass** · 6.0 · 10.9k | – | **pass** · 5.9 · 3.0k | – |
 
 ### Failure analysis
 
-_TBD: for each failed task in either arm, what the verifier checked and what the agent actually did._
+**Heretic** (3 tasks failed attempt 1):
+- **`configure-git-webserver`** (serve git pushes through a web server over SSH): the verifier's SSH clone got
+  `Connection refused`. The agent built the repository and a web server, verified HTTP 200 carefully, but **never
+  started an SSH server**, and declared the task done after 7 minutes. Attempt 2 failed the same way.
+- **`extract-elf`** (parse an ELF binary and export memory values): **66.7% of the expected values against a
+  required 75%**. Its own final check reported "93.1% coverage", measured against *its own estimate* of the
+  total. Attempt 2: another 40 minutes, still short.
+- **`mteb-retrieve`** (rank documents with a pinned embedding model): attempt 1 passed an invalid
+  `task_name="retrieval"` to the model's query/passage prompt mode, then fell back to plain encoding and ranked
+  the right document 7th instead of 5th. **Attempt 2 fixed the actual bug** (a valid retrieval task name with the
+  proper prompt types) and passed.
+
+**Turbo** (5 genuine attempt-1 failures, all failing again on retry except `extract-elf`, whose retry hit the
+setup outage):
+- **`break-filter-js-from-html`** (craft HTML that survives an XSS filter and still fires an alert): used a meta
+  refresh to a base64 `data:` URL, which browsers block. Its own test script produced no output and exited 0, and
+  Turbo concluded "the test script exited with code 0, confirming the bypass works".
+- **`build-cython-ext`:** verifier: `chelpers Cython extension is not built`. Turbo's last message: "All three
+  Cython extensions … are compiled and loaded from .so files."
+- **`extract-elf`:** **0%** of expected values (heretic got 66.7%). Turbo's last message: "The extract.js program is
+  complete and working."
+- **`llm-inference-batching-scheduler`:** one latency metric 2.3% over its limit (2.76e8 vs 2.7e8). Turbo
+  *knew* ("> 2.7e8 by 2.3%") and stopped at what it called the best achievable configuration. Attempt 1 ran 68
+  minutes and grew the context to 145k. Heretic passed it.
+- **`mteb-retrieve`:** returned the wrong document, then "The task is complete."
+- **`mailman` (attempt 2 only; attempt 1 was a setup error):** the full 3 hours, 397 model calls, context filled
+  to **262,143 tokens**, no result.
+
+**Pattern:** heretic's failures were thorough work against its *own reading* of the task. Four of Turbo's five
+were **confident completion claims on a check that was wrong or never run**, the same self-verification gap
+found in the sanity-check traces ([11](11-reasoning-traces-and-sanity-checks.md)).
+
+### Speed during the run
+
+From each arm's server log, token-weighted per context-depth bin, all requests in both attempts:
+
+| Context depth | heretic decode | Turbo decode | heretic MTP acc. | Turbo MTP acc. | heretic prefill | Turbo prefill |
+|---|---|---|---|---|---|---|
+| 0–10k | **64.6** | 55.9 | 0.75 | **0.79** | 794 | 795 |
+| 10–20k | **60.2** | 55.3 | 0.71 | **0.82** | 767 | 716 |
+| 20–40k | **56.0** | 52.1 | 0.70 | **0.81** | 677 | 595 |
+| 40–60k | **51.0** | 50.5 | 0.71 | **0.86** | 598 | 543 |
+| 60–90k | **48.1** | 45.8 | 0.71 | **0.86** | 433 | 447 |
+| 90k+ | – | 35.2 | – | 0.86 | – | 244 |
+
+Decode and prefill are in tok/s. Prefill is counted only for prompts adding ≥ 256 new tokens.
+
+- **Turbo decodes 1–14% slower at every depth despite much higher MTP acceptance.** That fits its heavier output
+  head (16-bit, 2.4 GB) being read for every token ([11](11-reasoning-traces-and-sanity-checks.md#why-the-two-ggufs-differ-in-size-and-speed)).
+- **The gap is larger than the 6–8% measured in qualification** at shallow depth, and it shrinks with depth.
+- **Turbo's 90k+ bin is almost entirely one timed-out retry** (`mailman`).
+- **Power and heat:** both arms averaged ~250 W while busy (heretic 251 W, Turbo 249 W), at the 250 W cap.
+  The driver's averaged power read above 300 W in **4.4% of Turbo samples vs 0.3% of heretic's** (peaks 359 vs
+  345 W; caps don't bound short windows, see [06](06-power-and-stability.md)). Turbo ran cooler (junction
+  67 °C vs 71 °C while busy).
 
 ### Verdict
 
-_TBD: whether Turbo Q4_K_S replaces heretic in production is the owner's decision, made after both arms
-finish._
+Whether Turbo replaces heretic in production is the owner's decision; no production change was made. Production
+was restored to heretic when the Turbo arm ended.
 
-## Planned comparison
+Evidence for that decision, as measured:
+- **Reliability:** heretic 16/19 (17/19 with retries); Turbo 9/14 on the tasks it ran, no retries rescued, plus
+  intermittent reasoning loops and confident false completion claims.
+- **Cost:** Turbo is ~3× faster and ~4.5× cheaper in output tokens on the tasks both solve.
+- **Unresolved:** five Turbo tasks lost to the mirror outage. Heretic passed all five, so even a clean re-run
+  can at most bring Turbo to 14/19.
 
-- **Pass rate:** pass@1 and pass@2 per arm, broken down per task. The hard tier is where differences are
-  expected to show.
-- **Efficiency per task,** from the runner's own records, **attempt 1 only** (attempt 2 only exists for
-  failures, which would skew totals):
-  - minutes and output tokens per *solved* task
-  - tasks solved per hour
-- **What efficiency can and can't show:**
-  - Turbo generates 6–8% slower ([07](07-model-qualification.md)), so it needs about that much less output per
-    task to break even on time.
-  - In this harness, a model thinking less saves generation time only. It doesn't shrink later prompts.
+## Side experiment: MiniCPM5-2B on a laptop (preliminary)
+
+A test of whether a ~2B model could serve as a cheap worker or critic in a swarm. **Quality only;** the hardware
+makes the speed numbers meaningless for the intended target (a 16 GB RX 9070 XT).
+
+- **Setup:** openbmb/MiniCPM5-2B official 4-bit (asymmetric GPTQ W4 g128, repacked in AWQ format), vLLM 0.29.0,
+  GTX 1660 Ti Max-Q 6 GB, 65,536-token context (78k-token KV pool), **2 tasks at a time**, same runner and suite.
+- **Attempt 1 (final):** **2 / 19 passed** (`git-leak-recovery`, `sqlite-with-gcov`); **2 / 16** excluding 3
+  setup errors from the same Ubuntu mirror outage. Attempt 2 was still running at the time of writing and had
+  flipped nothing yet.
+- **How it failed:**
+  - Declared success with requirements missing: no SSH account; a date not in the required YYYY-MM-DD format.
+  - Admitted it couldn't solve a task (`extract-elf`: "cannot find the reference solution values"). That's a
+    useful signal: a worker that reports uncertainty can be escalated rather than looped.
+  - Killed its own container while trying to free a port (`nginx-request-logging`).
+  - Ran into the 3 h timeout on 4 tasks, in one of them repeating the same analysis verbatim step after step
+    (`sparql-university`).
+- **Throughput collapsed at depth on this card:** ~20 tok/s combined early on, then turns dominated by
+  30+ second prompt processing at 40–60k context (no FlashAttention on Turing). That's a laptop limit, not a
+  model result.

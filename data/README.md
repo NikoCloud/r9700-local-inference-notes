@@ -27,3 +27,35 @@ generalised; values are untouched.
 - **`forced_length_honored`** (pass C) is true when `completion_tokens == max_tokens`.
 - **`disqualified_accept_lt_0.50`** (pass A) is a script flag that does *not* match the owner's criteria (MTP
   acceptance was a bonus, not a gate). It's kept as written; see [MISTAKES](../MISTAKES.md).
+
+## `core19/`: the 2026-09-10/11 agentic A/B ([docs/08](../docs/08-agentic-benchmark-core19.md), [docs/11](../docs/11-reasoning-traces-and-sanity-checks.md))
+
+| File | What it is |
+|---|---|
+| `core19_ab.html` | Interactive chart page (per-task outcomes, minutes and tokens per task, speed and MTP acceptance by depth). Open in a browser; fully offline. |
+| `core19_report.json` | Per task, per arm, per attempt: reward, exception, setup-error flag, agent minutes, steps, input/cached/output tokens; plus arm summaries. From `scripts/core19/c19_report.py`. |
+| `per_trial_server_stats.json` | Per trial, from the server log: model calls, peak context, decode/prefill tok/s, MTP acceptance, generated tokens. |
+| `speed_by_depth.json` | Token-weighted decode/prefill/acceptance per context-depth bin, both arms. |
+| `sanity_results_turbo.json`, `sanity_results_heretic.json`, `sanity_timeline_turbo.json` | The three-task sanity check: per-call stats and checks, and a timestamped timeline. |
+| `loop_ab_results.json` | Loop A/B: 3 poem runs each for Turbo q8_0 KV, Turbo f16 KV, heretic q8_0; includes each finished poem. |
+| `quirks_report.json` | Output of `scripts/core19/analyze_traces.py` (draft reversal, per-line count accuracy, stated totals, bug-diagnosis positions). |
+| `core19_minicpm5_laptop_partial.json` | **Preliminary** MiniCPM5-2B laptop run, snapshot taken while attempt 2 was still running. |
+
+**Field notes:**
+- **`infra_error`** is true only when the trial raised `RuntimeError` *and* the agent never started. A
+  `RuntimeError` after the agent ran (e.g. the agent killed its own container) counts as a model failure.
+- **`git-leak-recovery`** for heretic is the smoke run's result, reused by the runner (`reused_from_smoke`).
+
+## `traces/`: full reasoning and answers
+
+JSONL, one record per model call: model/condition, label, prompt, stats, checks, full `reasoning` and `answer`.
+Extracted from the live terminal logs by `scripts/core19/extract_traces.py` (lengths verified against the
+harness's own character counts).
+
+| File | Contents |
+|---|---|
+| `sanity_and_loopab_traces.jsonl` | Turbo sanity check (including the 103k-character looping poem) and all 9 loop-A/B poem runs |
+| `sanity_heretic_traces.jsonl` | Heretic's bug hunt and physics build |
+
+Core-19's own per-step reasoning lives in each trial's ATIF `trajectory.json` in the runner's job directories
+(not copied here; they're large).

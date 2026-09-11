@@ -9,10 +9,10 @@ The most useful part is probably **[MISTAKES.md](MISTAKES.md)**. A lot of this p
 confidently wrong and then finding out why. Those errors are kept, not cleaned up, because the same
 traps will catch the next person.
 
-> **Status (2026-09-10):** living document. A two-model agentic benchmark (Core-19) is running as
-> this is written; see [docs/08-agentic-benchmark-core19.md](docs/08-agentic-benchmark-core19.md).
-> Everything here is dated and measured on one machine. Software on this platform moves weekly, so
-> re-check anything you plan to rely on.
+> **Status (2026-09-11):** living document. The two-model agentic benchmark (Core-19) has finished; see
+> [docs/08](docs/08-agentic-benchmark-core19.md), plus the sanity checks and reasoning-trace analysis in
+> [docs/11](docs/11-reasoning-traces-and-sanity-checks.md). Everything here is dated and measured on one
+> machine. Software on this platform moves weekly, so re-check anything you plan to rely on.
 
 ---
 
@@ -87,9 +87,20 @@ ComfyUI on the second card.
 10. **ComfyUI's default `--cache-ram` lets its inactive model cache grow to 100% of system RAM.** On
     32 GB that pushed everything else into swap. Capping it (`--cache-ram 2 4`) took image runs from
     98–229 s to 25–28 s. ([docs/09](docs/09-comfyui-memory.md))
-11. **Agentic quality A/B (Core-19): results pending.** heretic vs Turbo Q4_K_S on 19 real terminal tasks,
-    same server and harness, comparing pass rate plus time and tokens per solved task.
+11. **Agentic quality A/B (Core-19): the careful model solved more; the fast one solved faster.** Same server
+    line and harness, 19 real terminal tasks:
+    - **heretic: 16/19** first attempt, 17/19 with retries.
+    - **Turbo: 9/14** on the tasks it actually ran (heretic 11/14 on those same tasks), and no retry flipped. Five
+      tasks were lost to an overnight Ubuntu apt-mirror outage during container setup.
+    - On what it solves, Turbo is **~3× faster and ~4.5× cheaper in output tokens**.
+    - In four of its five genuine failures Turbo **declared success on a wrong or missing check**.
     ([docs/08](docs/08-agentic-benchmark-core19.md))
+12. **Reasoning traces show *how* they differ.** On a constrained poem:
+    - Word counts: heretic numbered every word and was exact on 91% of lines; Turbo estimated per line, 59%.
+    - Rhyme: Turbo wrote alternating rhyme against an AABB rule in 3 of 6 poems, and its own checklist approved it.
+    - Turbo's reasoning looped in 1 of 4 runs.
+    - Qwen3.6's "right answer, then talked out of it" quirk did not show up.
+    ([docs/11](docs/11-reasoning-traces-and-sanity-checks.md))
 
 ---
 
@@ -107,9 +118,10 @@ ComfyUI on the second card.
 | [docs/05-rocm-vs-vulkan.md](docs/05-rocm-vs-vulkan.md) | Backend comparison and the 16k cliff |
 | [docs/06-power-and-stability.md](docs/06-power-and-stability.md) | Hard power-offs, transients, caps, what was and wasn't the cause |
 | [docs/07-model-qualification.md](docs/07-model-qualification.md) | The four-model speed qualification (PP, TG, batching, MTP, VRAM) |
-| [docs/08-agentic-benchmark-core19.md](docs/08-agentic-benchmark-core19.md) | Quality A/B on 19 agentic terminal tasks (in progress) |
+| [docs/08-agentic-benchmark-core19.md](docs/08-agentic-benchmark-core19.md) | Quality A/B on 19 agentic terminal tasks: results, setup-error outage, failure analysis, speed by depth |
 | [docs/09-comfyui-memory.md](docs/09-comfyui-memory.md) | Diffusion on the 16 GB card: RAM, eviction, quantised text encoders |
 | [docs/10-agent-harness-lessons.md](docs/10-agent-harness-lessons.md) | What the agent framework did to the inference server, and reasoning-trace replay |
+| [docs/11-reasoning-traces-and-sanity-checks.md](docs/11-reasoning-traces-and-sanity-checks.md) | Live sanity checks, a reasoning-loop A/B, what the traces show (self-checks, counting, rhyme, reversals), and why the two GGUFs differ |
 | [scripts/](scripts/) | The benchmark harnesses used, sanitised |
 | [data/](data/) | Raw qualification results (JSON) and the interactive chart |
 | [patches/](patches/) | The local llama.cpp patch for vision + speculative decoding |

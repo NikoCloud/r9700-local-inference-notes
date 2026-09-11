@@ -1,0 +1,555 @@
+{
+  "started": "2026-09-11 00:48:47",
+  "runs_per_condition": 3,
+  "loop_repeats": 30,
+  "conditions": {
+    "A_turbo_q8_262k": {
+      "model": "qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf",
+      "ctx": "262144",
+      "kv": "q8_0",
+      "gpu0_mib": 28599,
+      "runs": [
+        {
+          "label": "A_turbo_q8_262k run 1/3",
+          "wall_s": 106.0,
+          "loop": null,
+          "reasoning_chars": 16644,
+          "answer_chars": 795,
+          "completion_tokens": 5967,
+          "tg_tok_s": 56.6,
+          "mtp_accept": 0.789,
+          "checks_passed": 8,
+          "checks_total": 8,
+          "checks": [
+            {
+              "check": "title line exact",
+              "ok": true,
+              "detail": "# The Clockmaker's Last Apprentice"
+            },
+            {
+              "check": "5 stanzas",
+              "ok": true,
+              "detail": "5"
+            },
+            {
+              "check": "4 lines per stanza",
+              "ok": true,
+              "detail": "[4, 4, 4, 4, 4]"
+            },
+            {
+              "check": "140-160 words",
+              "ok": true,
+              "detail": "144"
+            },
+            {
+              "check": "stanza first words Wind/Tick/Rust/Chime/Stop",
+              "ok": true,
+              "detail": "['Wind', 'Tick', 'Rust', 'Chime', 'Stop']"
+            },
+            {
+              "check": "no \"time\"/\"times\"",
+              "ok": true,
+              "detail": "[]"
+            },
+            {
+              "check": "thee/thou >= 3",
+              "ok": true,
+              "detail": "3"
+            },
+            {
+              "check": "last line ends with ?",
+              "ok": true,
+              "detail": "e -\nCan keeping close, then, be our aid?"
+            }
+          ],
+          "answer": "# The Clockmaker's Last Apprentice\n\nWind the mainspring, lad, as I have told;\nMy hands are spent; the work's grown cold.\nThe bench must pass to thee, my boy;\nTake up the tools I've used and enjoy.\n\nTick by tick, the wheels go round;\nI've kept them working on this ground.\nBut some springs break beyond repair;\nWe keep them close, and that's quite fair.\n\nRust claims iron, slow and sure;\nNo oil stops the creeping blur.\nWe cannot mend what age has worn;\nWe guard what's left; that's all we yearn.\n\nChime the bell when work is done;\nLeave the bench for me, my son.\nThe old clocks stop, but thou dost keep\nTheir ticking memory while you sleep.\n\nStop and think, my lad: what can we save\nWhen even brass will fade?\nWe hold what breaks; that's all thou'dst crave -\nCan keeping close, then, be our aid?",
+          "server_started": "2026-09-11 00:48:56",
+          "server_ended": "2026-09-11 00:50:41",
+          "server_ctx_at_end": 6240
+        },
+        {
+          "label": "A_turbo_q8_262k run 2/3",
+          "wall_s": 127.8,
+          "loop": null,
+          "reasoning_chars": 21903,
+          "answer_chars": 940,
+          "completion_tokens": 7385,
+          "tg_tok_s": 57.9,
+          "mtp_accept": 0.827,
+          "checks_passed": 8,
+          "checks_total": 8,
+          "checks": [
+            {
+              "check": "title line exact",
+              "ok": true,
+              "detail": "# The Clockmaker's Last Apprentice"
+            },
+            {
+              "check": "5 stanzas",
+              "ok": true,
+              "detail": "5"
+            },
+            {
+              "check": "4 lines per stanza",
+              "ok": true,
+              "detail": "[4, 4, 4, 4, 4]"
+            },
+            {
+              "check": "140-160 words",
+              "ok": true,
+              "detail": "159"
+            },
+            {
+              "check": "stanza first words Wind/Tick/Rust/Chime/Stop",
+              "ok": true,
+              "detail": "['Wind', 'Tick', 'Rust', 'Chime', 'Stop']"
+            },
+            {
+              "check": "no \"time\"/\"times\"",
+              "ok": true,
+              "detail": "[]"
+            },
+            {
+              "check": "thee/thou >= 3",
+              "ok": true,
+              "detail": "3"
+            },
+            {
+              "check": "last line ends with ?",
+              "ok": true,
+              "detail": "?\nIs keeping what we have our only role?"
+            }
+          ],
+          "answer": "# The Clockmaker's Last Apprentice\n\nWind up the mainspring, feel the deep strain\nThat runs within each silver and copper vein;\nThe years have worn the wheels and tiny springs,\nYet still the steady, patient motion clings.\n\nTick by tick, the brass escapement swings,\nReleasing each controlled and measured thing.\nI taught thee how the balance and the wheel\nDivide the hours into equal spell.\n\nRust creeps across each surface worn and bare,\nIn every lever made of brass or steel;\nThou cannot bar the slow decline of gear,\nNor summon back the strength that years stole.\n\nChime though it does, the bell grows weak and thin,\nIts voice grows faint, its power wearing slight;\nSome losses cannot be mended, that's the way,\nOnly endured and kept through dark and day.\n\nStop when the final wheel at last halts still,\nWhen springs unwind and gears fulfill their will;\nWill thou preserve what cannot be made whole?\nIs keeping what we have our only role?",
+          "server_started": "2026-09-11 00:50:42",
+          "server_ended": "2026-09-11 00:52:49",
+          "server_ctx_at_end": 7659
+        },
+        {
+          "label": "A_turbo_q8_262k run 3/3",
+          "wall_s": 84.0,
+          "loop": null,
+          "reasoning_chars": 13400,
+          "answer_chars": 846,
+          "completion_tokens": 4818,
+          "tg_tok_s": 57.5,
+          "mtp_accept": 0.815,
+          "checks_passed": 7,
+          "checks_total": 8,
+          "checks": [
+            {
+              "check": "title line exact",
+              "ok": true,
+              "detail": "# The Clockmaker's Last Apprentice"
+            },
+            {
+              "check": "5 stanzas",
+              "ok": true,
+              "detail": "5"
+            },
+            {
+              "check": "4 lines per stanza",
+              "ok": true,
+              "detail": "[4, 4, 4, 4, 4]"
+            },
+            {
+              "check": "140-160 words",
+              "ok": true,
+              "detail": "159"
+            },
+            {
+              "check": "stanza first words Wind/Tick/Rust/Chime/Stop",
+              "ok": true,
+              "detail": "['Wind', 'Tick', 'Rust', 'Chime', 'Stop']"
+            },
+            {
+              "check": "no \"time\"/\"times\"",
+              "ok": true,
+              "detail": "[]"
+            },
+            {
+              "check": "thee/thou >= 3",
+              "ok": false,
+              "detail": "2"
+            },
+            {
+              "check": "last line ends with ?",
+              "ok": true,
+              "detail": ",\nTo guard, not fix, what we have tried?"
+            }
+          ],
+          "answer": "# The Clockmaker's Last Apprentice\n\nWind the mainspring tight and hold it fast,\nAs I have done from youth unto this day.\nEach gear must catch and turn as I have cast,\nAnd drive the works along their appointed way.\n\nTick by tick the pendulum swings,\nA measure thou must learn to hear.\nNo clock can stop the flow it brings,\nNo matter how many wheels appear.\n\nRust will come to every iron part,\nThough oil may stay it for a little span.\nSome things decay and that is nature's art,\nBeyond thy skill or mine to understand.\n\nChime by chime the hours pass away,\nEach marking off a moment gone for good.\nWe cannot mend the years or make them play,\nBut we can wind the clock as you should.\n\nStop the clock at last when I am gone,\nAnd take my tools to keep the bench supplied.\nThou must remember lessons I have drawn,\nTo guard, not fix, what we have tried?",
+          "server_started": "2026-09-11 00:52:49",
+          "server_ended": "2026-09-11 00:54:13",
+          "server_ctx_at_end": 5093
+        }
+      ]
+    },
+    "B_turbo_f16_131k": {
+      "model": "qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf",
+      "ctx": "131072",
+      "kv": "f16",
+      "gpu0_mib": 27318,
+      "runs": [
+        {
+          "label": "B_turbo_f16_131k run 1/3",
+          "wall_s": 100.0,
+          "loop": null,
+          "reasoning_chars": 16514,
+          "answer_chars": 796,
+          "completion_tokens": 5957,
+          "tg_tok_s": 59.9,
+          "mtp_accept": 0.852,
+          "checks_passed": 8,
+          "checks_total": 8,
+          "checks": [
+            {
+              "check": "title line exact",
+              "ok": true,
+              "detail": "# The Clockmaker's Last Apprentice"
+            },
+            {
+              "check": "5 stanzas",
+              "ok": true,
+              "detail": "5"
+            },
+            {
+              "check": "4 lines per stanza",
+              "ok": true,
+              "detail": "[4, 4, 4, 4, 4]"
+            },
+            {
+              "check": "140-160 words",
+              "ok": true,
+              "detail": "140"
+            },
+            {
+              "check": "stanza first words Wind/Tick/Rust/Chime/Stop",
+              "ok": true,
+              "detail": "['Wind', 'Tick', 'Rust', 'Chime', 'Stop']"
+            },
+            {
+              "check": "no \"time\"/\"times\"",
+              "ok": true,
+              "detail": "[]"
+            },
+            {
+              "check": "thee/thou >= 3",
+              "ok": true,
+              "detail": "3"
+            },
+            {
+              "check": "last line ends with ?",
+              "ok": true,
+              "detail": "ht\nWhen old Ben has now gone from sight?"
+            }
+          ],
+          "answer": "# The Clockmaker's Last Apprentice\n\nWind the mainspring slow and steady true,\nAs I taught to thee this patient view.\nSome gears grind, some springs unwind,\nBut steady hands and faithful hearts abide.\n\nTick by tick, the silent hours pass,\nToo much weight, too heavy, on the mass\nThat presses on thee, still so fair;\nBreathe within the measured, cool, calm air.\n\nRust will come to every tiny tooth,\nThough we scrub it, scour, and smooth.\nWhat is lost can never be restored,\nBut we guard what still remains, what is spared.\n\nChime by chime, the bronze bell declares\nThat the work is done, my cares.\nTake the bench, the tools, the trade,\nAnd the deep wisdom I have made.\n\nStop and hear the silence now,\nAs the final pendulum bows.\nWill thou keep the flame alight\nWhen old Ben has now gone from sight?",
+          "server_started": "2026-09-11 00:54:24",
+          "server_ended": "2026-09-11 00:56:03",
+          "server_ctx_at_end": 6232
+        },
+        {
+          "label": "B_turbo_f16_131k run 2/3",
+          "wall_s": 55.3,
+          "loop": null,
+          "reasoning_chars": 8812,
+          "answer_chars": 822,
+          "completion_tokens": 3246,
+          "tg_tok_s": 58.9,
+          "mtp_accept": 0.824,
+          "checks_passed": 8,
+          "checks_total": 8,
+          "checks": [
+            {
+              "check": "title line exact",
+              "ok": true,
+              "detail": "# The Clockmaker's Last Apprentice"
+            },
+            {
+              "check": "5 stanzas",
+              "ok": true,
+              "detail": "5"
+            },
+            {
+              "check": "4 lines per stanza",
+              "ok": true,
+              "detail": "[4, 4, 4, 4, 4]"
+            },
+            {
+              "check": "140-160 words",
+              "ok": true,
+              "detail": "148"
+            },
+            {
+              "check": "stanza first words Wind/Tick/Rust/Chime/Stop",
+              "ok": true,
+              "detail": "['Wind', 'Tick', 'Rust', 'Chime', 'Stop']"
+            },
+            {
+              "check": "no \"time\"/\"times\"",
+              "ok": true,
+              "detail": "[]"
+            },
+            {
+              "check": "thee/thou >= 3",
+              "ok": true,
+              "detail": "3"
+            },
+            {
+              "check": "last line ends with ?",
+              "ok": true,
+              "detail": "Will thou keep what I have taught to do?"
+            }
+          ],
+          "answer": "# The Clockmaker's Last Apprentice\n\nWind the mainspring, boy, with patient hand,\nFor the work must be complete and good.\nEvery wound is small command,\nThat the mechanism stay its blood.\n\nTick by tick the moments pass away,\nOne by one, like sand through fingers poured.\nThou wilt learn to count them day by day,\nBut never know what they have cost or stored.\n\nRust will find each iron part,\nCreeping in where oil could not go.\nWhat thou seekest cannot restart;\nSome must simply be preserved, I know.\n\nChime will fade to stillness at the end,\nBut the frame remains for someone dear.\nKeep the case, the face, each dial, friend,\nEven when the hands refuse to steer.\n\nStop me when the final work is past,\nFor my hands are weary and worn through.\nTell me, lad, when I'm laid in the grass,\nWill thou keep what I have taught to do?",
+          "server_started": "2026-09-11 00:56:04",
+          "server_ended": "2026-09-11 00:56:59",
+          "server_ctx_at_end": 3520
+        },
+        {
+          "label": "B_turbo_f16_131k run 3/3",
+          "wall_s": 170.4,
+          "loop": null,
+          "reasoning_chars": 29551,
+          "answer_chars": 836,
+          "completion_tokens": 10261,
+          "tg_tok_s": 60.3,
+          "mtp_accept": 0.868,
+          "checks_passed": 8,
+          "checks_total": 8,
+          "checks": [
+            {
+              "check": "title line exact",
+              "ok": true,
+              "detail": "# The Clockmaker's Last Apprentice"
+            },
+            {
+              "check": "5 stanzas",
+              "ok": true,
+              "detail": "5"
+            },
+            {
+              "check": "4 lines per stanza",
+              "ok": true,
+              "detail": "[4, 4, 4, 4, 4]"
+            },
+            {
+              "check": "140-160 words",
+              "ok": true,
+              "detail": "155"
+            },
+            {
+              "check": "stanza first words Wind/Tick/Rust/Chime/Stop",
+              "ok": true,
+              "detail": "['Wind', 'Tick', 'Rust', 'Chime', 'Stop']"
+            },
+            {
+              "check": "no \"time\"/\"times\"",
+              "ok": true,
+              "detail": "[]"
+            },
+            {
+              "check": "thee/thou >= 3",
+              "ok": true,
+              "detail": "3"
+            },
+            {
+              "check": "last line ends with ?",
+              "ok": true,
+              "detail": ",\nCan never be made whole; is that past?"
+            }
+          ],
+          "answer": "# The Clockmaker's Last Apprentice\n\nWind the mainspring tight, dear lad, my faithful boy,\nAnd heed the words I bid you hear today:\nThough I depart, the craft shall stand\nAs long as thou art drawing near.\n\nTick goes the wheel, a ceaseless sound,\nLike breath of some small living thing;\nNo matter what thou see'st around\nMay lose or fade, it still can ring.\n\nRust creeps along my iron case,\nAs years always wear down the brass and steel inside;\nSome gears may soon break in their embrace,\nBeyond what any wrench can heal or guide.\n\nChime will the bell at hours due,\nThough I shall not remain to hear it sound,\nWhat once was bright, now faded too,\nStill marks the path for thee to walk around.\n\nStop now my hand; the work is done,\nAnd I must lay my tools at last.\nSome things once broken, one by one,\nCan never be made whole; is that past?",
+          "server_started": "2026-09-11 00:56:59",
+          "server_ended": "2026-09-11 00:59:49",
+          "server_ctx_at_end": 10534
+        }
+      ]
+    },
+    "C_heretic_q8_262k": {
+      "model": "qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf",
+      "ctx": "262144",
+      "kv": "q8_0",
+      "gpu0_mib": 26966,
+      "runs": [
+        {
+          "label": "C_heretic_q8_262k run 1/3",
+          "wall_s": 216.7,
+          "loop": null,
+          "reasoning_chars": 44512,
+          "answer_chars": 783,
+          "completion_tokens": 13471,
+          "tg_tok_s": 62.3,
+          "mtp_accept": 0.722,
+          "checks_passed": 8,
+          "checks_total": 8,
+          "checks": [
+            {
+              "check": "title line exact",
+              "ok": true,
+              "detail": "# The Clockmaker's Last Apprentice"
+            },
+            {
+              "check": "5 stanzas",
+              "ok": true,
+              "detail": "5"
+            },
+            {
+              "check": "4 lines per stanza",
+              "ok": true,
+              "detail": "[4, 4, 4, 4, 4]"
+            },
+            {
+              "check": "140-160 words",
+              "ok": true,
+              "detail": "143"
+            },
+            {
+              "check": "stanza first words Wind/Tick/Rust/Chime/Stop",
+              "ok": true,
+              "detail": "['Wind', 'Tick', 'Rust', 'Chime', 'Stop']"
+            },
+            {
+              "check": "no \"time\"/\"times\"",
+              "ok": true,
+              "detail": "[]"
+            },
+            {
+              "check": "thee/thou >= 3",
+              "ok": true,
+              "detail": "4"
+            },
+            {
+              "check": "last line ends with ?",
+              "ok": true,
+              "detail": "ne away,\nCan kept love last another day?"
+            }
+          ],
+          "answer": "# The Clockmaker's Last Apprentice\nWind, soft and slow, across my hair,\nThee must learn my patient care.\nSome broken parts no oil can make less sore,\nOnly gently tend them at the door.\n\nTick by tick my hands grow weak,\nThee must keep my counsel, gentle and meek.\nA cracked spring will not be sound,\nOnly kept in still and quiet bound.\n\nRust shall claim the gears I have known,\nThee, dear boy, my counsel is your own.\nWhat has worn beyond its final grace,\nMay be kept in tender place.\n\nChime by chime the quiet evening nears,\nThee must wipe the soft and silent tears.\nSome things fail beyond all repair,\nYet their keeping still fills the air.\n\nStop thy tools at the bench, my last advice:\nHold no part in vain device.\nWhen the hour has quite gone away,\nCan kept love last another day?",
+          "server_started": "2026-09-11 01:00:15",
+          "server_ended": "2026-09-11 01:03:51",
+          "server_ctx_at_end": 13745
+        },
+        {
+          "label": "C_heretic_q8_262k run 2/3",
+          "wall_s": 278.6,
+          "loop": null,
+          "reasoning_chars": 56077,
+          "answer_chars": 832,
+          "completion_tokens": 17119,
+          "tg_tok_s": 61.5,
+          "mtp_accept": 0.717,
+          "checks_passed": 8,
+          "checks_total": 8,
+          "checks": [
+            {
+              "check": "title line exact",
+              "ok": true,
+              "detail": "# The Clockmaker's Last Apprentice"
+            },
+            {
+              "check": "5 stanzas",
+              "ok": true,
+              "detail": "5"
+            },
+            {
+              "check": "4 lines per stanza",
+              "ok": true,
+              "detail": "[4, 4, 4, 4, 4]"
+            },
+            {
+              "check": "140-160 words",
+              "ok": true,
+              "detail": "151"
+            },
+            {
+              "check": "stanza first words Wind/Tick/Rust/Chime/Stop",
+              "ok": true,
+              "detail": "['Wind', 'Tick', 'Rust', 'Chime', 'Stop']"
+            },
+            {
+              "check": "no \"time\"/\"times\"",
+              "ok": true,
+              "detail": "[]"
+            },
+            {
+              "check": "thee/thou >= 3",
+              "ok": true,
+              "detail": "3"
+            },
+            {
+              "check": "last line ends with ?",
+              "ok": true,
+              "detail": "it near,\nShall I ask if mending is here?"
+            }
+          ],
+          "answer": "# The Clockmaker's Last Apprentice\nWind will fold around thee waiting hand,\nWhen I can no more the bench command.\nHold the broken springs as made,\nSome wounds are kept, but gently swayed.\n\nTick by tick, thou hear the slow decay,\nOf gears that will not come back today.\nKeep hollows near thy breast, I pray,\nFor lost things live where they stay.\n\nRust may climb where polish used to gleam,\nAnd silver lose its old and steady beam.\nYet thou canst keep fragments, near and dear,\nWhere patient hands keep them through the year.\n\nChime will not rise from the cracked bell's tongue,\nNor spring restore the hush of the young.\nKeep the broken note, as I said,\nFor what is kept may softly spread.\n\nStop, dear boy, when the day grows dim,\nAnd lay down the oil and thin rim.\nWhat cannot be mended, keep it near,\nShall I ask if mending is here?",
+          "server_started": "2026-09-11 01:03:51",
+          "server_ended": "2026-09-11 01:08:30",
+          "server_ctx_at_end": 17392
+        },
+        {
+          "label": "C_heretic_q8_262k run 3/3",
+          "wall_s": 210.4,
+          "loop": null,
+          "reasoning_chars": 41789,
+          "answer_chars": 816,
+          "completion_tokens": 12718,
+          "tg_tok_s": 60.6,
+          "mtp_accept": 0.685,
+          "checks_passed": 8,
+          "checks_total": 8,
+          "checks": [
+            {
+              "check": "title line exact",
+              "ok": true,
+              "detail": "# The Clockmaker's Last Apprentice"
+            },
+            {
+              "check": "5 stanzas",
+              "ok": true,
+              "detail": "5"
+            },
+            {
+              "check": "4 lines per stanza",
+              "ok": true,
+              "detail": "[4, 4, 4, 4, 4]"
+            },
+            {
+              "check": "140-160 words",
+              "ok": true,
+              "detail": "153"
+            },
+            {
+              "check": "stanza first words Wind/Tick/Rust/Chime/Stop",
+              "ok": true,
+              "detail": "['Wind', 'Tick', 'Rust', 'Chime', 'Stop']"
+            },
+            {
+              "check": "no \"time\"/\"times\"",
+              "ok": true,
+              "detail": "[]"
+            },
+            {
+              "check": "thee/thou >= 3",
+              "ok": true,
+              "detail": "3"
+            },
+            {
+              "check": "last line ends with ?",
+              "ok": true,
+              "detail": ", let it be;\nShall I trust thee with me?"
+            }
+          ],
+          "answer": "# The Clockmaker's Last Apprentice\nWind my lad, the dust on thy bench doth fall,\nI have loved thy care through each winter's call.\nI have taught thee to keep the hours at bay,\nTill this last day the light doth play.\n\nTick by tick, the little silver tick\nHath worn its path, and no hand makes it quick.\nYet keep what fades: the wound we cannot fix\nDoth ask for tenderness, not proud tricks.\n\nRust creeps in where polish used to dwell,\nAnd sets a slow and sorrowful spell.\nTo thee I say, when springs are past repair,\nWe keep the shape, and let the ache be there.\n\nChime boy, when voices fail,\nThe kept thing speaks; none prevail.\nWe do not mend the thread;\nWe keep the loss, and softly tread.\n\nStop my lad, when mending doth cease,\nWhat remains to bless our peace?\nKeep it near, let it be;\nShall I trust thee with me?",
+          "server_started": "2026-09-11 01:08:30",
+          "server_ended": "2026-09-11 01:12:00",
+          "server_ctx_at_end": 12992
+        }
+      ]
+    }
+  },
+  "finished": "2026-09-11 01:12:00",
+  "timestamp_note": "server_started/ended reconstructed from each condition's llama-server log (log clock since process start; start = log file birth time)"
+}

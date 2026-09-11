@@ -36,6 +36,13 @@ not as a polished tool.
 | `core19_campaign.sh` | Stops production (restore line first), starts each arm's server on `127.0.0.1:8085` with the production flags, starts per-arm capture (server log + GPU sampler), runs `doctor`, then kyuz0/terminal-bench-mini with full run identity. Modes: `smoke`, `full` (both arms back-to-back), `full-arm <name>`. Restores production on exit. |
 | `gpu_sampler.sh` | One JSON line every 30 s: timestamp plus `rocm-smi` power and temperature for both GPUs. |
 | `monitor_poll.sh` | Prints only *new* events since the last call (campaign log lines, one line per finished trial with reward/time/tokens, liveness alerts). Designed to be polled by a remote monitor so every line is worth a notification. |
+| `c19_report.py` | Builds the per-task, per-attempt report and arm summaries (pass@1 raw and excluding setup errors, pass@2, minutes and tokens per solved task) from the runner's job directories. |
+| `c19_live_speed.py` | Parses each arm's llama-server log: per-request prefill/decode/MTP acceptance by context depth, and per-task stats matched to each trial's agent time window. |
+| `sanity_live.py` | The three-task sanity check (constrained poem, bug hunt with hidden tests, stdlib physics build with recomputed checks), streamed live; saves every call as a JSONL trace. |
+| `loop_ab.py` | Loop A/B: relaunches the server per condition (KV type, model) and runs the poem N times, cancelling only on a detected reasoning loop. |
+| `extract_traces.py` | Turns tee'd terminal logs from the two scripts above into structured JSONL traces and readable per-run markdown. |
+| `analyze_traces.py` | Heuristic trace detectors: drafts graded against the final answer (reversal), per-line word-count accuracy, stated totals, and where each planted bug is first diagnosed. Validate its hits against the text before quoting them. |
+| `build_core19_page.py` | Builds `data/core19/core19_ab.html` from the JSON in `data/core19/`. |
 
 ## Licence
 

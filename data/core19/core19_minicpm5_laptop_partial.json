@@ -1,0 +1,363 @@
+{
+  "job": "20260910-230418-terminal-bench-local-core19-full-terminus-2-minicpm5-2b-gptq--GPTQ-W4-g128-asym-AWQpacked--no-spec-c2--vllm--cuda-6ff60bf0",
+  "tasks": {
+    "openssl-selfsigned-cert": {
+      "a1": {
+        "trial": "openssl-selfsigned-cert__7TN83uD",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 18.69,
+        "steps": 16,
+        "input_tokens": 110551,
+        "cached_tokens": 0,
+        "output_tokens": 5301,
+        "started": "2026-09-11T04:02:11.719234Z"
+      },
+      "a2": {
+        "trial": "openssl-selfsigned-cert__vxQkC5w",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 25.42,
+        "steps": 27,
+        "input_tokens": 271786,
+        "cached_tokens": 0,
+        "output_tokens": 8714,
+        "started": "2026-09-11T12:29:41.337885Z"
+      }
+    },
+    "headless-terminal": {
+      "a1": {
+        "trial": "headless-terminal__NvK96pJ",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 9.86,
+        "steps": 14,
+        "input_tokens": 100784,
+        "cached_tokens": 0,
+        "output_tokens": 5496,
+        "started": "2026-09-11T07:27:51.120743Z"
+      }
+    },
+    "cobol-modernization": {
+      "a1": {
+        "trial": "cobol-modernization__VuqBsjD",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 96.46,
+        "steps": 38,
+        "input_tokens": 613848,
+        "cached_tokens": 0,
+        "output_tokens": 11033,
+        "started": "2026-09-11T10:29:42.309702Z"
+      }
+    },
+    "sqlite-with-gcov": {
+      "a1": {
+        "trial": "sqlite-with-gcov__4hYMVm4",
+        "reward": 1.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 28.74,
+        "steps": 27,
+        "input_tokens": 292046,
+        "cached_tokens": 0,
+        "output_tokens": 3483,
+        "started": "2026-09-11T06:17:52.451940Z"
+      }
+    },
+    "mteb-retrieve": {
+      "a1": {
+        "trial": "mteb-retrieve__9gQ6xN2",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 21.41,
+        "steps": 29,
+        "input_tokens": 301268,
+        "cached_tokens": 0,
+        "output_tokens": 4643,
+        "started": "2026-09-11T08:29:33.188595Z"
+      }
+    },
+    "pypi-server": {
+      "a1": {
+        "trial": "pypi-server__CgT9Hws",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 20.14,
+        "steps": 38,
+        "input_tokens": 357175,
+        "cached_tokens": 0,
+        "output_tokens": 6882,
+        "started": "2026-09-11T08:06:21.873317Z"
+      }
+    },
+    "build-cython-ext": {
+      "a1": {
+        "trial": "build-cython-ext__LQvRkqB",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 35.42,
+        "steps": 37,
+        "input_tokens": 451102,
+        "cached_tokens": 0,
+        "output_tokens": 5510,
+        "started": "2026-09-11T06:52:48.097338Z"
+      }
+    },
+    "nginx-request-logging": {
+      "a1": {
+        "trial": "nginx-request-logging__hamhMra",
+        "reward": null,
+        "exception": "RuntimeError",
+        "exception_message": "nginx-request-logging__hamhMra__env: failed to send non-blocking keys: command=\"tmux send-keys -t terminus-2 -- 'sleep 2\\n'\", return_code=1, stderr=None, stdout='service \"main\" is not running\\n'",
+        "infra_error": false,
+        "agent_minutes": 25.39,
+        "steps": 39,
+        "input_tokens": 556904,
+        "cached_tokens": 0,
+        "output_tokens": 7762,
+        "started": "2026-09-11T07:40:41.533135Z"
+      }
+    },
+    "extract-elf": {
+      "a1": {
+        "trial": "extract-elf__y7GPRCe",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 55.76,
+        "steps": 54,
+        "input_tokens": 1084359,
+        "cached_tokens": 0,
+        "output_tokens": 17921,
+        "started": "2026-09-11T03:05:39.022337Z"
+      },
+      "a2": {
+        "trial": "extract-elf__mz5HcAH",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 34.67,
+        "steps": 20,
+        "input_tokens": 314715,
+        "cached_tokens": 0,
+        "output_tokens": 10293,
+        "started": "2026-09-11T12:08:41.216443Z"
+      }
+    },
+    "git-leak-recovery": {
+      "a1": {
+        "trial": "git-leak-recovery__Cmrwxvo",
+        "reward": 1.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 4.79,
+        "steps": 11,
+        "input_tokens": 32436,
+        "cached_tokens": 0,
+        "output_tokens": 2155,
+        "started": "2026-09-11T03:11:00.105322Z"
+      }
+    },
+    "fix-ocaml-gc": {
+      "a1": {
+        "trial": "fix-ocaml-gc__ygKLoGz",
+        "reward": 0.0,
+        "exception": "AgentTimeoutError",
+        "exception_message": "Agent execution timed out after 10800.0 seconds",
+        "infra_error": false,
+        "agent_minutes": 180.0,
+        "steps": 62,
+        "input_tokens": 2052927,
+        "cached_tokens": 0,
+        "output_tokens": 12743,
+        "started": "2026-09-11T08:56:25.482744Z"
+      }
+    },
+    "configure-git-webserver": {
+      "a1": {
+        "trial": "configure-git-webserver__vD5ofBq",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 5.41,
+        "steps": 11,
+        "input_tokens": 62981,
+        "cached_tokens": 0,
+        "output_tokens": 2187,
+        "started": "2026-09-11T03:04:55.121678Z"
+      },
+      "a2": {
+        "trial": "configure-git-webserver__xJuxAr7",
+        "reward": null,
+        "exception": "RuntimeError",
+        "exception_message": "Command timed out after 120 seconds",
+        "infra_error": true,
+        "agent_minutes": null,
+        "steps": null,
+        "input_tokens": null,
+        "cached_tokens": null,
+        "output_tokens": null,
+        "started": null
+      }
+    },
+    "fix-git": {
+      "a1": {
+        "trial": "fix-git__p6aUBg7",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 5.12,
+        "steps": 13,
+        "input_tokens": 52928,
+        "cached_tokens": 0,
+        "output_tokens": 2378,
+        "started": "2026-09-11T07:22:10.117715Z"
+      }
+    },
+    "overfull-hbox": {
+      "a1": {
+        "trial": "overfull-hbox__r8zUZj2",
+        "reward": null,
+        "exception": "RuntimeError",
+        "exception_message": "Command timed out after 120 seconds",
+        "infra_error": true,
+        "agent_minutes": null,
+        "steps": null,
+        "input_tokens": null,
+        "cached_tokens": null,
+        "output_tokens": null,
+        "started": null
+      }
+    },
+    "llm-inference-batching-scheduler": {
+      "a1": {
+        "trial": "llm-inference-batching-scheduler__He58NPv",
+        "reward": 0.0,
+        "exception": "AgentTimeoutError",
+        "exception_message": "Agent execution timed out after 10800.0 seconds",
+        "infra_error": false,
+        "agent_minutes": 180.0,
+        "steps": 42,
+        "input_tokens": 1177878,
+        "cached_tokens": 0,
+        "output_tokens": 26842,
+        "started": "2026-09-11T04:21:31.671219Z"
+      }
+    },
+    "mailman": {
+      "a1": {
+        "trial": "mailman__KdMWcVJ",
+        "reward": null,
+        "exception": "RuntimeError",
+        "exception_message": "Command timed out after 120 seconds",
+        "infra_error": true,
+        "agent_minutes": null,
+        "steps": null,
+        "input_tokens": null,
+        "cached_tokens": null,
+        "output_tokens": null,
+        "started": null
+      }
+    },
+    "break-filter-js-from-html": {
+      "a1": {
+        "trial": "break-filter-js-from-html__2CLGgw8",
+        "reward": 0.0,
+        "exception": "AgentTimeoutError",
+        "exception_message": "Agent execution timed out after 10800.0 seconds",
+        "infra_error": false,
+        "agent_minutes": 180.0,
+        "steps": 109,
+        "input_tokens": 3492009,
+        "cached_tokens": 0,
+        "output_tokens": 39780,
+        "started": "2026-09-11T07:28:56.775035Z"
+      }
+    },
+    "sparql-university": {
+      "a1": {
+        "trial": "sparql-university__YDzkF6h",
+        "reward": 0.0,
+        "exception": "AgentTimeoutError",
+        "exception_message": "Agent execution timed out after 10800.0 seconds",
+        "infra_error": false,
+        "agent_minutes": 180.0,
+        "steps": 54,
+        "input_tokens": 1592543,
+        "cached_tokens": 0,
+        "output_tokens": 31794,
+        "started": "2026-09-11T03:16:30.051133Z"
+      },
+      "a2": {
+        "trial": "sparql-university__EKJ8eD7",
+        "reward": 0.0,
+        "exception": null,
+        "exception_message": "",
+        "infra_error": false,
+        "agent_minutes": 17.93,
+        "steps": 11,
+        "input_tokens": 72747,
+        "cached_tokens": 0,
+        "output_tokens": 3516,
+        "started": "2026-09-11T12:10:03.876428Z"
+      }
+    },
+    "regex-log": {
+      "a1": {
+        "trial": "regex-log__u6KXjRM",
+        "reward": null,
+        "exception": "RuntimeError",
+        "exception_message": "Command timed out after 120 seconds",
+        "infra_error": true,
+        "agent_minutes": null,
+        "steps": null,
+        "input_tokens": null,
+        "cached_tokens": null,
+        "output_tokens": null,
+        "started": null
+      }
+    }
+  },
+  "job_attempt2": "20260910-230418-terminal-bench-local-core19-full-terminus-2-minicpm5-2b-gptq--GPTQ-W4-g128-asym-AWQpacked--no-spec-c2--vllm--cuda-6ff60bf0-attempt2",
+  "summary": {
+    "scored_a1": 19,
+    "pass1": 2,
+    "pass1_of": 19,
+    "infra_errors_a1": [
+      "overfull-hbox",
+      "mailman",
+      "regex-log"
+    ],
+    "pass1_excluding_infra": "2/16",
+    "pass2": 2,
+    "agent_minutes_total_a1": 1047.2,
+    "output_tokens_total_a1": 185910,
+    "minutes_per_solved_a1": 523.6,
+    "output_tokens_per_solved_a1": 92955,
+    "median_minutes_solved_a1": 16.8,
+    "median_output_tokens_solved_a1": 2819
+  },
+  "snapshot_note": "PARTIAL: laptop run still in attempt 2 at snapshot time",
+  "snapshot_time": "2026-09-11T09:01:43"
+}

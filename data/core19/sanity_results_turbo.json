@@ -1,0 +1,180 @@
+{
+  "started": "2026-09-11 00:42:27",
+  "base": "http://127.0.0.1:8085/v1",
+  "tasks": {
+    "1_poem": {
+      "aborted": "Reasoning loop, aborted by operator after ~33539 generated tokens: 656 attempts to rhyme with 'ceases' cycling 7 words (boom/call/ring/sing/sound/strike/toll), cycle locked in by attempt ~15; never revised the fixed line; no answer produced.",
+      "stats": [],
+      "checks": [],
+      "passed": 0,
+      "total": 0
+    },
+    "2_bugs": {
+      "stats": [
+        {
+          "wall_s": 23.4,
+          "ttft_s": 0.9,
+          "finish": "stop",
+          "prompt_tokens": 413,
+          "completion_tokens": 1314,
+          "reasoning_chars": 2505,
+          "answer_chars": 1988,
+          "pp_tok_s": 719.7,
+          "tg_tok_s": 58.4,
+          "mtp_accept": 0.822
+        }
+      ],
+      "checks": [
+        {
+          "check": "corrected module in a python block",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: merge basic",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: merge touching",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: merge no state leak between calls",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: merge does not modify caller list",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: merge contained",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: merge empty",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: merge tuples input",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: percentile p=100",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: percentile p=0",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: percentile p=50",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: percentile single element",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "hidden test: percentile empty raises ValueError",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "passed": 13,
+      "total": 13
+    },
+    "3_sim": {
+      "stats": [
+        {
+          "wall_s": 275.4,
+          "ttft_s": 0.63,
+          "finish": "stop",
+          "prompt_tokens": 430,
+          "completion_tokens": 15676,
+          "reasoning_chars": 50426,
+          "answer_chars": 3488,
+          "pp_tok_s": 761.3,
+          "tg_tok_s": 57.0,
+          "mtp_accept": 0.834
+        }
+      ],
+      "turns": [
+        {
+          "turn": 1,
+          "checks": [
+            {
+              "check": "program in a python block",
+              "ok": true,
+              "detail": ""
+            },
+            {
+              "check": "exits 0",
+              "ok": true,
+              "detail": "rc=0 "
+            },
+            {
+              "check": "runtime < 20 s",
+              "ok": true,
+              "detail": "0.8s"
+            },
+            {
+              "check": "final JSON line parses with 12x5 states",
+              "ok": true,
+              "detail": ""
+            },
+            {
+              "check": "t_end == 4.0",
+              "ok": true,
+              "detail": "4.0"
+            },
+            {
+              "check": "masses in [1,3] and unchanged",
+              "ok": true,
+              "detail": ""
+            },
+            {
+              "check": "initial disks non-overlapping",
+              "ok": true,
+              "detail": "worst overlap 0.0000 r"
+            },
+            {
+              "check": "energy drift < 0.5% (recomputed)",
+              "ok": true,
+              "detail": "E0=138.577366 E1=138.341602 drift=0.1701%"
+            },
+            {
+              "check": "final overlap <= 1% r",
+              "ok": true,
+              "detail": "worst 0.0000 r"
+            },
+            {
+              "check": "all disks inside box",
+              "ok": true,
+              "detail": "min wall margin 0.01241"
+            },
+            {
+              "check": "collisions counted > 0",
+              "ok": true,
+              "detail": "487"
+            }
+          ],
+          "passed": 11,
+          "total": 11
+        }
+      ]
+    }
+  },
+  "model": "/mnt/models/llm/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau/qwen3.8-27b-turbo-fable-cold-fusion-735-heretic-davidau-mtp-q4_k_s.gguf",
+  "finished": "2026-09-11 00:47:26"
+}

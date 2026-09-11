@@ -151,6 +151,37 @@ Nobody comes out of this file looking infallible, which is the point.
   at default verbosity (zero `POST` lines). Counting distinct server task IDs against the requests
   each script sent gave an exact match.
 
+### 2026-09-11 Core-19, sanity checks and trace analysis (the assistant)
+
+- **A poem grader that never checked rhyme.** It auto-checked title, stanza shape, word count, first words,
+  banned word, thee/thou and the closing question mark, and only *printed* each stanza's end words "for
+  eyeballing". Nobody eyeballed them. Turbo's poems scored "8/8" while three of six were written ABAB
+  throughout against an AABB rule.
+  - **Caught by:** a manual audit of the end words while checking a trace. Heretic 15/15 stanzas correct, Turbo
+    ~8/30.
+  - **Rule:** a check that is displayed but not scored is not a check.
+- **Parser false starts presented as findings.** The per-line word-count accuracy for heretic was reported as
+  58%, then "~69%", then 91%, as successive parser bugs were fixed: running totals mistaken for line counts,
+  and label tokens (`Line2:`, `Count:`) counted as words. A "draft regression 8 → 6 → 8" was a numbered recount
+  of the same poem, not a new draft.
+  - **Caught by:** pulling the exact text behind each flagged hit, and a 10-row hand spot-check per model before
+    stating the final numbers.
+- **An environment variable leaked between runs.** A resumed Turbo run exported `TASK1_NOTE` in a script that
+  ended with `exec bash`, so the tmux shell kept it. The heretic sanity run launched later from that shell
+  inherited it, and wrote Turbo's "reasoning loop, aborted" note into *heretic's* results file.
+  - **Caught by:** the heretic summary listing a task heretic never ran. The entry was removed with a backup and
+    a note.
+- **The first relaunch of a test server copied the campaign's launch command verbatim**, including its
+  `>> full-turbo/llama-server.log` redirect, so 16 startup lines of an unrelated server went into the finished
+  Turbo arm's log. Split out with a backup before any analysis.
+- **A watcher that could never fire.** It used bash process substitution (`<(…)`) inside a command sent over ssh
+  to a host whose login shell is fish. It would have silently polled for 33 hours. Replaced with an explicit
+  `bash -s` heredoc before the event it watched for.
+- **Scheduled one-shot checks that didn't run.** Two session-scheduled health checks came due while the session
+  was busy handling other events and never fired; both checks were run manually a few minutes late.
+- **A quick in-run speed claim reused the wrong power data.** GPU power statistics computed for the killed first
+  Turbo run were nearly carried into the final write-up of the re-run; recomputed from the right arm first.
+
 ---
 
 ## 2. Explanations stated as findings before anyone tested them
@@ -283,6 +314,19 @@ These are worse than bad numbers because they spread into later decisions.
 - **An upstream unit test in terminal-bench-mini fails on a fresh clone.** It expects 3 committed runs of one
   model and finds 5, because it's stale against newer committed results. The runner itself passes its
   other 99 tests. Not a blocker, but it looks like one.
+- **A setting name that reads backwards.** Terminus-2's `proactive_summarization_threshold=8000` looks like
+  "summarise at 8k tokens" (the owner read it that way). Its docstring says it's the number of *free* tokens
+  below which summarisation starts, i.e. at ~254k used on a 262k window.
+- **"Unsloth" on a model card.** A fine-tune card tagged `unsloth` and describing an Unsloth collaboration led to
+  the belief that its GGUFs were Unsloth "UD" dynamic quants. The collaboration was the *training* stack. The
+  tensor headers show a standard llama.cpp Q4_K_S layer mix with the fine-tuner's own importance matrix, a BF16
+  output head and a Q8_0 MTP block.
+- **A KL-divergence figure without its reference.** The same card reports KL 0.0025, which reads as "very close
+  to base Qwen". The table's reference is the model's *own previous build stage*. Distance from base isn't
+  reported.
+- **Harness setup errors that look like model failures.** `RuntimeError: Command timed out after 120 seconds`
+  on five tasks, only in one arm. The cause was external: plain-HTTP Ubuntu apt mirrors hanging overnight,
+  hitting only `ubuntu:24.04` task images during the agent's tool install.
 
 ---
 
