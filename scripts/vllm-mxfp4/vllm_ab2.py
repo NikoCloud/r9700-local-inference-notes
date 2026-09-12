@@ -22,7 +22,7 @@ PORT = int(sys.argv[2]) if len(sys.argv) > 2 else 8085
 DEPTHS = [int(x) for x in sys.argv[3:]] or [2000, 32000, 60000]
 GEN = 512
 URL = f"http://127.0.0.1:{PORT}/v1/chat/completions"
-MODEL = "Qwen3.8-PARO"
+MODEL = os.environ.get("BENCH_MODEL", "Qwen3.8-PARO")
 OUTDIR = os.path.expanduser("~/benchmarks")
 
 PARA = (
@@ -146,7 +146,7 @@ def main():
             )
     import os
 
-    os.makedirs(os.path.expanduser("~/benchmarks"), exist_ok=True)
+    os.makedirs(OUTDIR, exist_ok=True)
     p = f"{OUTDIR}/vllm_ab2_{TAG}.json"
     json.dump({"tag": TAG, "gen": GEN, "rows": rows}, open(p, "w"), indent=2)
     print(f"wrote {p}", flush=True)

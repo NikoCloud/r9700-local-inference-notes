@@ -1,0 +1,42 @@
+{
+  "tag": "spec5_330w_real",
+  "gen": 512,
+  "rows": [
+    {
+      "depth": 2000,
+      "task": "prose",
+      "prompt_tokens": 3495,
+      "completion_tokens": 512,
+      "prefill_tok_s": 3239.9,
+      "decode_tok_s": 66.19,
+      "tail_distinct_ratio": 0.81
+    },
+    {
+      "depth": 2000,
+      "task": "code_edit",
+      "prompt_tokens": 3590,
+      "completion_tokens": 512,
+      "prefill_tok_s": 6003.9,
+      "decode_tok_s": 92.66,
+      "tail_distinct_ratio": 0.74
+    },
+    {
+      "depth": 32000,
+      "task": "prose",
+      "prompt_tokens": 55254,
+      "completion_tokens": 512,
+      "prefill_tok_s": 3014.4,
+      "decode_tok_s": 62.02,
+      "tail_distinct_ratio": 0.75
+    },
+    {
+      "depth": 32000,
+      "task": "code_edit",
+      "prompt_tokens": 55349,
+      "completion_tokens": 512,
+      "prefill_tok_s": 59495.6,
+      "decode_tok_s": 78.14,
+      "tail_distinct_ratio": 0.82
+    }
+  ]
+}

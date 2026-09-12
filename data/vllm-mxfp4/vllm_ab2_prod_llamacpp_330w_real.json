@@ -1,0 +1,42 @@
+{
+  "tag": "prod_llamacpp_330w_real",
+  "gen": 512,
+  "rows": [
+    {
+      "depth": 2000,
+      "task": "prose",
+      "prompt_tokens": 2690,
+      "completion_tokens": 512,
+      "prefill_tok_s": 999.2,
+      "decode_tok_s": 52.53,
+      "tail_distinct_ratio": 0.96
+    },
+    {
+      "depth": 2000,
+      "task": "code_edit",
+      "prompt_tokens": 2785,
+      "completion_tokens": 512,
+      "prefill_tok_s": 3712.4,
+      "decode_tok_s": 65.3,
+      "tail_distinct_ratio": 0.91
+    },
+    {
+      "depth": 32000,
+      "task": "prose",
+      "prompt_tokens": 41817,
+      "completion_tokens": 512,
+      "prefill_tok_s": 914.7,
+      "decode_tok_s": 44.77,
+      "tail_distinct_ratio": 0.84
+    },
+    {
+      "depth": 32000,
+      "task": "code_edit",
+      "prompt_tokens": 41912,
+      "completion_tokens": 512,
+      "prefill_tok_s": 35163.2,
+      "decode_tok_s": 53.63,
+      "tail_distinct_ratio": 0.91
+    }
+  ]
+}

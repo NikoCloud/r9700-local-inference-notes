@@ -1,7 +1,8 @@
 # 13 — MXFP4 W4A8 on RDNA4's fp8 WMMA: the first thing that actually uses them
 
-> **Date:** 2026-09-12. One Radeon AI PRO R9700 (gfx1201), **TP=1**, undervolted with memory OC,
-> **250 W cap**. Model: `Launch80/Qwen3.8-27B-PARO-MXFP4` served through
+> **Date:** 2026-09-12. One Radeon AI PRO R9700 (gfx1201), **TP=1**, undervolted with memory OC.
+> §1–6 at the **250 W cap**; §6b repeats the key measurements at **330 W** and adds a matched
+> llama.cpp reference taken the same hour. Model: `Launch80/Qwen3.8-27B-PARO-MXFP4` served through
 > [`radiance-vllm-mxfp4`](https://codeberg.org/ggz14/radiance-vllm-mxfp4) (image
 > `stilldeadcode/vllm-radiance:0.9.3`, **vLLM 0.27.1**, ROCm 7.14, torch 2.11). Production
 > (llama.cpp) was evicted for every run. Nothing here is a production recommendation — this was an
@@ -59,6 +60,11 @@ feature you enable spends it.**
 | 4 | compiled | 0.96 | 96 | DFlash2 | 6.38 GiB | **58,709** | 9,202 | 3.58× @16k |
 | 5 | compiled | 0.96 | 96 | — | 4.06 GiB | **80,956** | 19,940 | *failed, see §5* |
 | 6 | compiled | 0.96 | 84 | — | 4.48 GiB | **89,630** | 20,006 | 5.47× @16k |
+
+> **KV figures carry ~25% run-to-run variance.** Row 6's configuration, re-profiled later at 330 W
+> (which cannot change memory), reported **5.74 GiB / 115,651 tokens** instead of 4.48 GiB / 89,630.
+> vLLM's memory profiling is a measurement, not a constant. Treat every row as ±25% and re-read the
+> startup log rather than trusting a remembered number.
 
 What each step costs:
 
@@ -188,6 +194,90 @@ while one physical core sat at 94–100% and the 24-thread mean never exceeded 9
 vLLM's spinning loop and does not scale with load, so disabling SMT would buy nothing — and would cost
 compile time, since hipcc/clang is the one workload that benefits from SMT.
 
+## 6b. The 330 W power cap, and a matched llama.cpp reference (2026-09-12, later)
+
+§6 established the concurrency plateau was **not** compute- or bandwidth-bound while board power sat
+pegged at the 250 W cap. Raising the R9700's cap to its 330 W ceiling — keeping the undervolt and
+memory OC, changing only the limit — confirms it.
+
+**Card indices are inverted between LACT and HIP. Check before touching a cap.**
+
+| index | LACT / sysfs | HIP / rocm-smi |
+|---|---|---|
+| 0 | RX 9070 XT, 16304 MiB, `0x7550`, cap_max **374 W** | **R9700** |
+| 1 | **R9700**, 32624 MiB, `0x7551`, cap_max **330 W** | RX 9070 XT |
+
+`sudo lact cli set-power-cap --gpu-id 1 330` targets the R9700; `--gpu-id 0` would raise the
+*16 GB card that runs ComfyUI*. `lact cli ... power-limit get` reads unprivileged; `set` goes through
+the daemon.
+
+**Effect on the MXFP4 serve** (SPEC=5, `MAXLEN=65536`, `MAXSEQS=8`, util 0.96 — KV identical at
+5.13 GiB / 103,268 both times, so the config is byte-identical and the delta is purely power):
+
+| metric | 250 W | 330 W | delta |
+|---|--:|--:|--:|
+| PP @2k | 3,134.8 | **3,542.2** | +13.0% |
+| PP @32k | 2,818.2 | **3,238.3** | +14.9% |
+| PP @60k | 4,493.7 | **5,128.1** | +14.1% |
+| decode, prose shallow / deep | 61.9 / 58.0 | **66.2 / 62.0** | +7.0% |
+| decode, code-edit shallow / deep | 86.5 / 72.9 | **92.7 / 78.1** | +7.1% |
+| peak concurrent aggregate | 331.4 @ n=64 | **385.8 @ n=24** | +16% |
+
+PP gains ~14%, decode ~7%, and the concurrency peak rises **and arrives at a third the stream count**
+with near-perfect fairness (16.07 / 16.10 at n=24; `16.08 × 24 = 386` = the measured 385.8, so all 24
+were resident). At 330 W, 5,128 tok/s × ~47 GFLOP/token ≈ **241 TFLOPS** — above the 225 TF/s measured
+under a lower cap, which is consistent with that ceiling being a power ceiling too.
+
+**Thermals and transients:** junction climbed monotonically **82 → 91 °C** across a short run without
+reaching steady state, and board power sampled **up to 373 W against the 330 W cap** (+13%). This
+matches [06](06-power-and-stability.md): the cap does not bound transients. Idle recovery was clean
+(47 °C, 18 W). The hardlock class was attributed to TP=2 seesaw, absent here at TP=1.
+
+### Matched comparison: llama.cpp production vs MXFP4 vLLM, both at 330 W, same harnesses
+
+Production (`qwen38.service`, heretic Q4_K_S, `ngram-mod,draft-mtp`, `-np 4`, 262k) re-measured the
+same hour so nothing is cross-dated or cross-harness.
+
+| | llama.cpp production | MXFP4 vLLM TP=1 | |
+|---|--:|--:|--:|
+| PP @2k | 990.8 | **3,542.2** | **3.6×** |
+| PP @32k | 1,013.1 | **3,238.3** | **3.2×** |
+| PP @128k | 711.2 | *unreachable* | — |
+| decode, prose shallow | 52.5 | **66.2** | +26% |
+| decode, code-edit shallow | 65.3 | **92.7** | +42% |
+| decode, prose deep | 44.8 @42k | **62.0 @55k** | +39% |
+| decode, code-edit deep | 53.6 @42k | **78.1 @55k** | +46% |
+| **peak concurrent aggregate** | **95.7 @ n=2** | **385.8 @ n=24** | **4.0×** |
+| usable context | **262,144** | 103,268 (65k/request) | **llama.cpp** |
+
+- **vLLM wins every speed axis at matched power**, and the deep-decode rows favour it despite vLLM
+  being measured at a *deeper* context (55k vs 42k — the two harnesses calibrate tokens/word
+  differently on the same prose).
+- **llama.cpp saturates at n=2 and never exceeds ~96 tok/s aggregate**, with per-stream collapsing
+  70.1 → 12.75 and fairness falling apart (min 5.73 / max 35.26 at n=16). vLLM holds 16.07/16.10 at
+  n=24. This is the continuous-batching advantage, finally measured on equal footing.
+- **llama.cpp is no longer dispatch-bound.** [02](02-engines-llamacpp-vs-vllm.md) found one core pinned
+  at 100% on the builds of that time; here it used 15–30% of one core with a 2% 24-thread mean.
+- **Context remains the only axis llama.cpp wins, and it wins it by 2.5×.**
+
+### `SPEC=7` is not viable at TP=1
+
+The drafter warns it was trained at `block_size=8` (7 speculative tokens) and that acceptance is capped
+below its potential at `SPEC=5`. It cannot be honoured on one card — two extra speculative tokens cost
+roughly **4 GiB** of draft buffers and graphs:
+
+| config | KV available | needed for one max-len request | result |
+|---|--:|--:|---|
+| SPEC=5, `MAXLEN=65536`, util 0.96 | 5.13 GiB | — | serves |
+| SPEC=7, `MAXLEN=65536`, util 0.96 | **1.15 GiB** | 3.57 GiB | refuses |
+| SPEC=7, `MAXLEN=16384`, util 0.96 | **0.77 GiB** | 2.06 GiB | refuses |
+| SPEC=7, `MAXLEN=16384`, util 0.98, `MAXSEQS=4` | **1.49 GiB** | 2.06 GiB | refuses — *"estimated maximum model length is 1648"* |
+
+At the top of the documented utilisation range with only four sequence slots, SPEC=7 leaves room for a
+**1,648-token** context. Upstream's own sweep preferred SPEC=5 anyway (5 beat 7 by 8–13% aggregate),
+but that was at TP=2 — here the choice is made by memory, not by throughput. Another point for the
+second card.
+
 ## 7. Setup gotchas (all upstream, all fixed locally)
 
 - `setup-paroquant.sh` **rejects this checkpoint**: its validator gates on `quant_method=paroquant`
@@ -204,15 +294,18 @@ compile time, since hipcc/clang is the one workload that benefits from SMT.
 
 ## 8. Verdict and what is still open
 
-**Positive, directionally.** The fp8 WMMA path is real and delivers ~2.35× the FP16 figure; PP is
+**Positive, and stronger after the power cap.** At a matched 330 W against production measured the
+same hour, the MXFP4 vLLM serve wins **every speed axis**: PP 3.2–3.6×, realistic decode +26–46%, and
+peak concurrent aggregate **4.0×** (385.8 vs 95.7, where llama.cpp saturates at n=2). The fp8 WMMA
+path is real and delivers ~2.35× the FP16 figure; PP is
 2.6–3.5× production and improves with depth; decode clears every project gate once speculation is on;
 and n=8 concurrency beats the production line on both axes. **Context capacity is the loss** — 89k–103k
 usable tokens in a serving configuration against production's 262k, with per-request context capped at
 65k on one card. That is a direct argument for the second R9700, where weights halve per card and the
 freed memory becomes KV.
 
-Not yet measured: the 250 W → stock power cap (the only untested lever, and power was pegged on every
-rung); `SPEC=7` to match the drafter's trained block size; a heterogeneous text+image concurrency
+Now measured and folded into §6b: the power cap (+14% PP, +7% decode, +16% peak aggregate) and
+`SPEC=7` (not viable at TP=1 — it leaves room for a 1,648-token context). Still open: a heterogeneous text+image concurrency
 ladder (this is the VL checkpoint — `[radiance.vit] head_dim-72 attention installed`, encoder cache
 budget 16,384, `compile_mm_encoder: False` — and real traffic is not homogeneous); and quality, which
 has had **no** gate at all here. Note this is stock Qwen3.8-27B, **not heretic**, so it is not a

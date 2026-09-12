@@ -15,7 +15,7 @@ PORT = int(sys.argv[2]) if len(sys.argv) > 2 else 8085
 DEPTHS = [int(x) for x in sys.argv[3:]] or [2000, 32000, 60000]
 GEN = 512
 URL = f"http://127.0.0.1:{PORT}/v1/completions"
-MODEL = "Qwen3.8-PARO"
+MODEL = os.environ.get("BENCH_MODEL", "Qwen3.8-PARO")
 OUTDIR = os.path.expanduser("~/benchmarks")
 
 _tpw = [1.0]
@@ -114,7 +114,7 @@ def main():
     path = f"{OUTDIR}/vllm_ab_{TAG}.json"
     import os
 
-    os.makedirs(os.path.expanduser("~/benchmarks"), exist_ok=True)
+    os.makedirs(OUTDIR, exist_ok=True)
     with open(path, "w") as f:
         json.dump({"tag": TAG, "port": PORT, "gen": GEN, "rows": out}, f, indent=2)
     print(f"wrote {path}", flush=True)

@@ -63,6 +63,23 @@ harnesses in [../scripts/vllm-mxfp4](../scripts/vllm-mxfp4).
 | `vllm_conc2_spec5_ms96.json` | Concurrency ladder, DFlash2 `SPEC=5`, `MAXSEQS=96`, using `scripts/harness/conc_test.py`'s method. Peak **293 tok/s @ n=48**. |
 | `vllm_conc2_nospec_ms84.json` | Same ladder, no speculation, `MAXSEQS=84` (the Mamba-block ceiling). Peak **331 tok/s @ n=64**; near-perfect fairness to n=16. |
 
+**At the 330 W cap** ([docs/13 §6b](../docs/13-vllm-mxfp4-w4a8-rdna4.md)) — the R9700 raised to its
+330 W ceiling with the undervolt and memory OC kept, plus llama.cpp production re-measured the same
+hour with the same harnesses so the comparison is matched on power, harness and date:
+
+| File | What it is |
+|---|---|
+| `vllm_ab_spec5_330w.json` | PP by depth, SPEC=5, byte-identical config to `vllm_ab_dflash2_spec5.json` (KV 5.13 GiB / 103,268 both times). **PP valid**, decode column is the degenerate-loop artifact. |
+| `vllm_ab2_spec5_330w_real.json` | Realistic-task decode at 330 W. **Decode valid**, PP contaminated by prefix caching. |
+| `vllm_conc2_nospec_ms84_330w.json` | Concurrency ladder at 330 W. Peak **385.8 tok/s @ n=24**, all 24 resident and fair (16.07/16.10). |
+| `vllm_ab_prod_llamacpp_330w.json` | llama.cpp production PP by depth at 330 W, incl. 128k (which vLLM cannot reach at TP=1). Decode column is the artifact — and worse here, because production's n-gram PLD drafter is near-perfect on a repeating loop. |
+| `vllm_ab2_prod_llamacpp_330w_real.json` | llama.cpp production realistic-task decode at 330 W. |
+| `vllm_conc2_prod_llamacpp_330w.json` | llama.cpp production concurrency at 330 W (`-np 4`): peak **95.7 @ n=2**, flat thereafter, per-stream 70.1 → 12.75 with min 5.73 / max 35.26 at n=16. |
+
+**The two harnesses calibrate tokens/word differently on the same prose** (0.65 vs 0.86), so a
+nominal "32000" depth is ~55k tokens against vLLM and ~42k against llama.cpp. The deep-decode rows
+therefore *understate* vLLM's advantage rather than flattering it.
+
 **Field notes:**
 - **`aggregate` means decode concurrency** in the `conc2_*` files (~70-token prompt, `max_tokens=800`,
   so prefill is negligible) and **end-to-end throughput** in `vllm_conc_spec5.json` (8k prompts). Same

@@ -20,7 +20,7 @@ TAG = sys.argv[1] if len(sys.argv) > 1 else "conc2"
 PORT = int(sys.argv[2]) if len(sys.argv) > 2 else 8085
 MAX_N = int(sys.argv[3]) if len(sys.argv) > 3 else 96
 URL = f"http://127.0.0.1:{PORT}/v1/chat/completions"
-MODEL = "Qwen3.8-PARO"
+MODEL = os.environ.get("BENCH_MODEL", "Qwen3.8-PARO")
 OUTDIR = os.path.expanduser("~/benchmarks")
 MAXTOK = 800
 

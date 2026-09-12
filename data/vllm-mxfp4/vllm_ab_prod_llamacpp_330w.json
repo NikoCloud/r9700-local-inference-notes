@@ -1,0 +1,34 @@
+{
+  "tag": "prod_llamacpp_330w",
+  "port": 8080,
+  "gen": 512,
+  "rows": [
+    {
+      "depth": 2000,
+      "prompt_tokens": 2003,
+      "completion_tokens": 512,
+      "ttft_s": 2.022,
+      "total_s": 4.213,
+      "prefill_tok_s": 990.8,
+      "decode_tok_s": 233.66
+    },
+    {
+      "depth": 32000,
+      "prompt_tokens": 32193,
+      "completion_tokens": 512,
+      "ttft_s": 31.777,
+      "total_s": 34.31,
+      "prefill_tok_s": 1013.1,
+      "decode_tok_s": 202.13
+    },
+    {
+      "depth": 128000,
+      "prompt_tokens": 128310,
+      "completion_tokens": 512,
+      "ttft_s": 180.406,
+      "total_s": 184.001,
+      "prefill_tok_s": 711.2,
+      "decode_tok_s": 142.42
+    }
+  ]
+}

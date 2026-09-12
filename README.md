@@ -114,9 +114,12 @@ ComfyUI on the second card.
     silicon. Hand-written HIP kernels reach **225 TF/s** (~2.35× the FP16 figure), and the reason MXFP4 beats
     int4 is that e2m1 needs no zero point and its e8m0 scale folds at weight staging, leaving an inner loop with
     **zero VALU ops** (their ladder: 16 ops → 180–188 TF/s, 8 → 200, 0 → 225). On one R9700 at TP=1 this gives
-    **2.6–3.5× production prefill, rising with depth** where llama.cpp collapses, and n=8 concurrency that beats
-    the production line on per-stream *and* aggregate. It loses on **context capacity** (89–103k usable vs 262k),
-    because 19 GB of weights leave 4.5 GiB of KV — the clearest argument yet for the second card.
+    **2.6–3.5× production prefill, rising with depth** where llama.cpp collapses. Re-measured with both engines
+    at a matched **330 W** cap the same hour, it wins every speed axis: **PP 3.2–3.6×, realistic decode +26–46%,
+    and 4.0× peak concurrent aggregate** (385.8 tok/s at n=24 vs llama.cpp's 95.7, which saturates at n=2). It
+    loses on **context capacity** (103k usable, 65k per request, vs 262k), because 19 GB of weights leave ~5 GiB
+    of KV — the clearest argument yet for the second card. Raising the cap 250 → 330 W is worth +14% PP and +7%
+    decode on its own; `SPEC=7` is unreachable at TP=1 (it leaves room for a 1,648-token context).
     ([docs/13](docs/13-vllm-mxfp4-w4a8-rdna4.md))
 
 ---
