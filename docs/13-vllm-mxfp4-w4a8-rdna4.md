@@ -278,6 +278,86 @@ At the top of the documented utilisation range with only four sequence slots, SP
 but that was at TP=2 — here the choice is made by memory, not by throughput. Another point for the
 second card.
 
+## 6c. Vision: the image-token budget, and a wallclock A/B on real pages
+
+Test set: five webtoon pages from the manhwa project, **800 x 3,520-7,190 px** (aspect ratios to 1:9).
+Identical images, identical prompt (transcribe dialogue in order, then summarise), `max_tokens=700`,
+temp 0, one at a time. Both engines at the **330 W** cap.
+
+### The budget is a configured ceiling on both engines, and they do NOT default the same
+
+This is the confound that nearly invalidated the comparison. Native image tokens = pixels / 1024
+(patch 16, merge 2 -> 32x32 px per token).
+
+| engine | knob | default here | cap in tokens |
+|---|---|---|--:|
+| llama.cpp | `--image-min-tokens` / `--image-max-tokens` (both *"default: read from model"*) | production sets min=1024, leaves max at the model default | **~4,096** |
+| vLLM | checkpoint `preprocessor_config.json` -> `size.longest_edge` (a **pixel-area** budget, not an edge length) | `16777216` px | **16,384** |
+
+The llama.cpp ceiling is visible in the run itself — two pages came in at native and three were clipped:
+
+| page | px | native tokens | llama.cpp prompt | verdict |
+|---|--:|--:|--:|---|
+| 2 | 800x5120 | 4,000 | 4,102 | native |
+| 5 | 800x3520 | 2,750 | 2,852 | native |
+| 1 | 800x7190 | 5,617 | 4,113 | **clipped ~4,011** |
+| 3 | 800x7135 | 5,574 | 4,113 | **clipped ~4,011** |
+| 4 | 800x6925 | 5,410 | 4,050 | **clipped ~3,948** |
+
+Left at defaults, vLLM would have processed **40% more image tokens** on the tall pages — looking
+slower while doing more work and (probably) reading more text. Any vision comparison between these two
+engines is meaningless until the budgets are matched.
+
+Upstream's launcher has no passthrough for this, so `MM_KWARGS` was added locally:
+`MM_KWARGS='{"size": {"longest_edge": <tokens x 1024>, "shortest_edge": 65536}}'`.
+
+### Results
+
+| | llama.cpp (~4,096 cap) | vLLM **native** | vLLM **matched 4,096** |
+|---|--:|--:|--:|
+| total wallclock, 5 pages | 91.3 s | 81.0 s | **75.1 s** |
+| per page | 18.3 s | 16.2 s | **15.0 s** |
+| mean prompt tokens | 3,846 | 4,730 | 3,804 |
+| **mean TTFT** (ViT encode + prefill) | 6.42 s | 2.31 s | **1.78 s** |
+| prefill tok/s incl. encode | 446-734 | 1,940-2,372 | 2,058-2,373 |
+| decode tok/s | **59.3** | 46.8 | 45.4 |
+
+- **Matched, vLLM is 18% faster wallclock and 3.6x faster to first token**, despite losing decode by
+  23%. Image encode plus prefill dominates this workload — decode is about a fifth of the time — so
+  the fp8 prefill advantage decides it.
+- **vLLM at full native resolution (81.0 s) still beats llama.cpp at the reduced 4,096 cap (91.3 s).**
+  The quality-for-speed trade this workload used to require is gone: take native and finish sooner.
+- Matched token counts confirm the normalisation held (vLLM 4,071/4,060/4,071/4,008/2,810 vs
+  llama.cpp 4,113/4,102/4,113/4,050/2,852 — within ~1%).
+
+**Quality was NOT measured.** All three arms hit the 700-token cap with a large share spent on
+reasoning preamble, so the transcriptions were truncated. A real OCR comparison needs xhigh or
+thinking-off (where this model is known to do its best work) and a much larger output budget.
+
+## 6d. Two productions, mutually exclusive
+
+The box now has **two production inference endpoints**, and they cannot run together — each needs all
+of GPU0.
+
+| | llama production | vLLM production |
+|---|---|---|
+| unit | `qwen38.service` | `qwen_vllm.service` (installed 2026-09-12) |
+| port | **8080** | **8000** (vLLM default) |
+| engine | llama.cpp Vulkan `434ddbb` | radiance vLLM 0.27.1, MXFP4 W4A8 |
+| model | heretic Qwen3.8-27B Q4_K_S | **stock** Qwen3.8-27B PARO-MXFP4 |
+| context | **262,144** | 65,536/request, 103k pool |
+| strengths | context, decode, heretic behaviour | PP 3.2-3.6x, TTFT, vision wallclock, 4x concurrency |
+| launch | `systemctl --user start qwen38.service` | `systemctl --user start qwen_vllm.service` |
+
+`qwen_vllm.service` declares `Conflicts=qwen38.service` and is deliberately **static (no autostart)**,
+so it cannot race llama production at boot. Config lives in `~/launch_vllm_prod.sh`. First start after
+a config change recompiles Triton/inductor graphs and takes ~8-9 minutes; later starts reuse the cache.
+
+**The open blocker for making this the primary worker is the model, not the engine:** this is stock
+Qwen3.8-27B. A heretic or abliterated checkpoint in this format would need building — upstream ships
+`paroquant/build_hybrid.py`, which produces the format from bf16 base weights plus z-lab's rotations
+(400 modules in 91 s), so it is a real path rather than a wait for someone else to publish one.
+
 ## 7. Setup gotchas (all upstream, all fixed locally)
 
 - `setup-paroquant.sh` **rejects this checkpoint**: its validator gates on `quant_method=paroquant`

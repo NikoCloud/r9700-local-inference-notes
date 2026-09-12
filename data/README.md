@@ -76,6 +76,19 @@ hour with the same harnesses so the comparison is matched on power, harness and 
 | `vllm_ab2_prod_llamacpp_330w_real.json` | llama.cpp production realistic-task decode at 330 W. |
 | `vllm_conc2_prod_llamacpp_330w.json` | llama.cpp production concurrency at 330 W (`-np 4`): peak **95.7 @ n=2**, flat thereafter, per-stream 70.1 → 12.75 with min 5.73 / max 35.26 at n=16. |
 
+**Vision A/B** ([docs/13 §6c](../docs/13-vllm-mxfp4-w4a8-rdna4.md)) — five webtoon pages,
+800 x 3,520-7,190 px, identical images and prompt, both engines at 330 W:
+
+| File | What it is |
+|---|---|
+| `img_bench_llamacpp_prod_330w.json` | llama.cpp production. Its `--image-max-tokens` model default clips at ~4,096, so 3 of 5 pages ran below native. 91.3 s total. |
+| `img_bench_vllm_native.json` | vLLM at the checkpoint default (16,384-token cap) = native resolution on every page, 23% more image tokens than llama.cpp. **81.0 s** — still faster than llama.cpp at reduced resolution. |
+| `img_bench_vllm_matched4096.json` | vLLM with `MM_KWARGS` pinning the budget to llama.cpp's ~4,096. Token counts match within ~1%. **75.1 s, mean TTFT 1.78 s vs 6.42 s.** |
+
+**`sample` in these files is the first 180 characters of output, which is reasoning preamble, not the
+transcription** — all three arms hit the 700-token cap. These files measure **wallclock only**; no OCR
+quality conclusion can be drawn from them.
+
 **The two harnesses calibrate tokens/word differently on the same prose** (0.65 vs 0.86), so a
 nominal "32000" depth is ~55k tokens against vLLM and ~42k against llama.cpp. The deep-decode rows
 therefore *understate* vLLM's advantage rather than flattering it.

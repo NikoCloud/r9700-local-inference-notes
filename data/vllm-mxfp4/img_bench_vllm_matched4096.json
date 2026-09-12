@@ -1,0 +1,67 @@
+{
+  "tag": "vllm_matched4096",
+  "port": 8085,
+  "total_wall_s": 75.1,
+  "rows": [
+    {
+      "image": "1-0de11.jpg",
+      "prompt_tokens": 4071,
+      "completion_tokens": 566,
+      "ttft_s": 1.98,
+      "wall_s": 13.07,
+      "decode_tok_s": 51.01,
+      "prefill_tok_s": 2058.3,
+      "tail_distinct": 0.84,
+      "chars": 2209,
+      "sample": "The user wants a transcription of all dialogue/narration text from this webtoon page, in order, with speaker attribution where possible. Then a two-sentence summary.  Let me look c"
+    },
+    {
+      "image": "2-0de11.jpg",
+      "prompt_tokens": 4060,
+      "completion_tokens": 629,
+      "ttft_s": 1.9,
+      "wall_s": 14.31,
+      "decode_tok_s": 50.66,
+      "prefill_tok_s": 2138.6,
+      "tail_distinct": 0.94,
+      "chars": 2437,
+      "sample": "The user wants a transcription of all dialogue in order, with speaker attribution where possible, plus a two-sentence summary. Let me look carefully at the image panels top to bott"
+    },
+    {
+      "image": "3-0de11.jpg",
+      "prompt_tokens": 4071,
+      "completion_tokens": 496,
+      "ttft_s": 1.93,
+      "wall_s": 14.73,
+      "decode_tok_s": 38.75,
+      "prefill_tok_s": 2109.8,
+      "tail_distinct": 0.84,
+      "chars": 2143,
+      "sample": "The user wants a transcription of dialogue from a webtoon page, read top to bottom, with speaker attribution where possible, plus a two-sentence summary.  Let me look carefully at "
+    },
+    {
+      "image": "4-0de11.jpg",
+      "prompt_tokens": 4008,
+      "completion_tokens": 673,
+      "ttft_s": 1.91,
+      "wall_s": 18.09,
+      "decode_tok_s": 41.59,
+      "prefill_tok_s": 2096.0,
+      "tail_distinct": 0.87,
+      "chars": 2733,
+      "sample": "The user wants a transcription of all dialogue on this webtoon page, top to bottom, with speaker attribution where possible, plus a two-sentence summary.  Let me look carefully at "
+    },
+    {
+      "image": "5-0de11.jpg",
+      "prompt_tokens": 2810,
+      "completion_tokens": 613,
+      "ttft_s": 1.18,
+      "wall_s": 14.8,
+      "decode_tok_s": 45.03,
+      "prefill_tok_s": 2372.8,
+      "tail_distinct": 0.83,
+      "chars": 2524,
+      "sample": "The user wants a transcription of all dialogue on this webtoon page, in reading order, with speaker attribution where possible, followed by a two-sentence summary.  Let me look car"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "tag": "llamacpp_prod_330w",
+  "port": 8080,
+  "total_wall_s": 91.3,
+  "rows": [
+    {
+      "image": "1-0de11.jpg",
+      "prompt_tokens": 4113,
+      "completion_tokens": 700,
+      "ttft_s": 9.22,
+      "wall_s": 20.23,
+      "decode_tok_s": 63.54,
+      "prefill_tok_s": 446.2,
+      "tail_distinct": 0.88,
+      "chars": 2669,
+      "sample": "The user wants a transcription of all dialogue/narration text from this webtoon page, in order, with speaker attribution where possible. Then a two-sentence summary.  Let me look c"
+    },
+    {
+      "image": "2-0de11.jpg",
+      "prompt_tokens": 4102,
+      "completion_tokens": 700,
+      "ttft_s": 5.59,
+      "wall_s": 17.3,
+      "decode_tok_s": 59.79,
+      "prefill_tok_s": 734.0,
+      "tail_distinct": 0.88,
+      "chars": 2858,
+      "sample": "The user wants a transcription of all dialogue from a webtoon page, read top to bottom, with speaker attribution where possible. Then a two-sentence summary.  Let me carefully read"
+    },
+    {
+      "image": "3-0de11.jpg",
+      "prompt_tokens": 4113,
+      "completion_tokens": 700,
+      "ttft_s": 6.57,
+      "wall_s": 18.51,
+      "decode_tok_s": 58.62,
+      "prefill_tok_s": 625.8,
+      "tail_distinct": 0.91,
+      "chars": 2838,
+      "sample": "The user wants a transcription of dialogue from a webtoon page, read top to bottom, with speaker attribution where possible, followed by a two-sentence summary.  Let me carefully e"
+    },
+    {
+      "image": "4-0de11.jpg",
+      "prompt_tokens": 4050,
+      "completion_tokens": 700,
+      "ttft_s": 6.45,
+      "wall_s": 19.19,
+      "decode_tok_s": 54.93,
+      "prefill_tok_s": 628.1,
+      "tail_distinct": 0.78,
+      "chars": 2841,
+      "sample": "The user wants a transcription of all dialogue on this webtoon page, read top to bottom, with speaker attribution where possible. Then a two-sentence summary.  Let me look carefull"
+    },
+    {
+      "image": "5-0de11.jpg",
+      "prompt_tokens": 2852,
+      "completion_tokens": 700,
+      "ttft_s": 4.25,
+      "wall_s": 15.99,
+      "decode_tok_s": 59.62,
+      "prefill_tok_s": 671.1,
+      "tail_distinct": 0.8,
+      "chars": 3003,
+      "sample": "The user wants a transcription of all dialogue on this webtoon page, read top to bottom, with speaker attribution where possible. Then a two-sentence summary.  Let me look carefull"
+    }
+  ]
+}
