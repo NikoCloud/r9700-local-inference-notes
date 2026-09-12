@@ -109,6 +109,16 @@ ComfyUI on the second card.
     per-stream tax (a lone stream runs full speed at any `-np`), and under `-kvu` raising it doesn't split the
     context. Now in production. ([docs/12](docs/12-prompt-lookup-decoding.md))
 
+14. **RDNA4's fp8 WMMA works, and MXFP4 W4A8 is the first thing to use it.** `gfx1201` has native
+    `wmma_f32_16x16x16_fp8_fp8` and no Instinct spoof is needed — the gate was always the *libraries*, not the
+    silicon. Hand-written HIP kernels reach **225 TF/s** (~2.35× the FP16 figure), and the reason MXFP4 beats
+    int4 is that e2m1 needs no zero point and its e8m0 scale folds at weight staging, leaving an inner loop with
+    **zero VALU ops** (their ladder: 16 ops → 180–188 TF/s, 8 → 200, 0 → 225). On one R9700 at TP=1 this gives
+    **2.6–3.5× production prefill, rising with depth** where llama.cpp collapses, and n=8 concurrency that beats
+    the production line on per-stream *and* aggregate. It loses on **context capacity** (89–103k usable vs 262k),
+    because 19 GB of weights leave 4.5 GiB of KV — the clearest argument yet for the second card.
+    ([docs/13](docs/13-vllm-mxfp4-w4a8-rdna4.md))
+
 ---
 
 ## How to read this
@@ -130,6 +140,7 @@ ComfyUI on the second card.
 | [docs/10-agent-harness-lessons.md](docs/10-agent-harness-lessons.md) | What the agent framework did to the inference server, and reasoning-trace replay |
 | [docs/11-reasoning-traces-and-sanity-checks.md](docs/11-reasoning-traces-and-sanity-checks.md) | Live sanity checks, a reasoning-loop A/B, what the traces show (self-checks, counting, rhyme, reversals), and why the two GGUFs differ |
 | [docs/12-prompt-lookup-decoding.md](docs/12-prompt-lookup-decoding.md) | n-gram (prompt-lookup) speculative decoding, chaining it in front of MTP, concurrency scaling, and the production switch |
+| [docs/13-vllm-mxfp4-w4a8-rdna4.md](docs/13-vllm-mxfp4-w4a8-rdna4.md) | MXFP4 W4A8 on RDNA4's fp8 WMMA via vLLM: kernel verification, KV-availability budget per config, PP/TG by depth, concurrency to n=64, and four hard gfx1201 limits |
 | [scripts/](scripts/) | The benchmark harnesses used, sanitised |
 | [data/](data/) | Raw qualification results (JSON) and the interactive chart |
 | [patches/](patches/) | The local llama.cpp patch for vision + speculative decoding |

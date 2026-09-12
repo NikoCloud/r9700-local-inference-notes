@@ -49,6 +49,33 @@ generalised; values are untouched.
   `RuntimeError` after the agent ran (e.g. the agent killed its own container) counts as a model failure.
 - **`git-leak-recovery`** for heretic is the smoke run's result, reused by the runner (`reused_from_smoke`).
 
+## `vllm-mxfp4/`: the 2026-09-12 RDNA4 fp8-WMMA qualification ([docs/13](../docs/13-vllm-mxfp4-w4a8-rdna4.md))
+
+`Launch80/Qwen3.8-27B-PARO-MXFP4` on one R9700, TP=1, via the radiance vLLM container. Written by the
+harnesses in [../scripts/vllm-mxfp4](../scripts/vllm-mxfp4).
+
+| File | What it is |
+|---|---|
+| `vllm_ab_nospec.json` | PP + TG by depth (2k/32k/60k), compiled, no speculation. **PP valid** (unique random prompts, no cache hits); TG valid (content-independent). |
+| `vllm_ab_dflash2_spec5.json` | Same depths with the DFlash2-FP8 drafter at `SPEC=5`. **PP valid; the decode column is NOT** — `ignore_eos` on random filler made the model loop, inflating acceptance to 88–100%. Kept as the record of that trap. |
+| `vllm_ab2_dflash2_spec5_real.json` | Realistic tasks (novel prose, code edit) on real-prose context. **Decode valid** (acceptance 47–63%, `tail_distinct` 0.74–0.82); **PP is NOT** — shared prefixes gave a 45.6% prefix-cache hit rate. |
+| `vllm_conc_spec5.json` | First concurrency ladder, 8k context, N=1→8 plus a depth probe. **Superseded**: the aggregate is an end-to-end figure diluted by prefill, and `MAXSEQS=8` capped the ladder. Kept because the TTFT collapse (2.45 s → 112.7 s) is real and is the interactive-usability limit. |
+| `vllm_conc2_spec5_ms96.json` | Concurrency ladder, DFlash2 `SPEC=5`, `MAXSEQS=96`, using `scripts/harness/conc_test.py`'s method. Peak **293 tok/s @ n=48**. |
+| `vllm_conc2_nospec_ms84.json` | Same ladder, no speculation, `MAXSEQS=84` (the Mamba-block ceiling). Peak **331 tok/s @ n=64**; near-perfect fairness to n=16. |
+
+**Field notes:**
+- **`aggregate` means decode concurrency** in the `conc2_*` files (~70-token prompt, `max_tokens=800`,
+  so prefill is negligible) and **end-to-end throughput** in `vllm_conc_spec5.json` (8k prompts). Same
+  word, different quantity — see [MISTAKES](../MISTAKES.md).
+- **`tail_distinct`** is distinct ÷ total words in the last 300 characters of output: the degeneration
+  guard added after the looping-filler trap. Healthy runs sit at 0.74–0.93.
+- **`cpu_phys_max` / `cpu_sib_max`** are per-core busy % over the rung for CPUs 0–11 and 12–23. On this
+  5900X `N` and `N+12` are siblings, so `sib_max` near zero confirms the `--cpuset-cpus=0-11` pin held.
+- **`gpu_power_w`** is sampled mid-rung. It reads 245–267 W against a 250 W cap on every rung.
+- KV-pool and Mamba-block figures per configuration are tabulated in
+  [docs/13 §2](../docs/13-vllm-mxfp4-w4a8-rdna4.md) rather than in these files; they come from the
+  server's startup log, not the harness.
+
 ## `traces/`: full reasoning and answers
 
 JSONL, one record per model call: model/condition, label, prompt, stats, checks, full `reasoning` and `answer`.

@@ -46,6 +46,24 @@ not as a polished tool.
 | `pld_test.py` | Prompt-lookup / n-gram speculative decoding ([docs/12](../docs/12-prompt-lookup-decoding.md)): a sanity gate (n-gram alone must accept drafts on a copy task, else abort), then a matrix of none / draft-mtp / ngram-mod / ngram-mod,draft-mtp across copy/code/prose, with an output-identity check. Stops and restores production. |
 | `pld_conc.py` | Concurrency scaling for the same configs at `-np` 1/2/4 (relaunches the server with matching `-np`), reporting per-stream and aggregate decode. Reuses `pld_test.py` as a module. |
 
+## `vllm-mxfp4/`: the RDNA4 fp8-WMMA qualification ([docs/13](../docs/13-vllm-mxfp4-w4a8-rdna4.md))
+
+These drive an **OpenAI-compatible endpoint** rather than launching a server, because the server is a
+container started by the upstream launcher (`paroquant/run_paroquant.sh`). They assume the test port
+`127.0.0.1:8085` per the bench-port split.
+
+| File | Role |
+|---|---|
+| `vllm_ab.py` | PP + TG by depth: forced 512-token generation, temp 0, one stream, prefill derived from TTFT over a streamed response. Uses **unique random-word prompts**, which is what makes its PP numbers cache-free and trustworthy — and what makes its *speculative* decode numbers worthless (the model loops on the filler). Use it for PP only when a drafter is loaded. |
+| `vllm_ab2.py` | The decode counterpart: real-prose context with a real instruction (novel explanation, and a code edit), natural stopping, plus a `tail_distinct` degeneration guard. Trustworthy for decode; its PP is contaminated because each depth's context is a prefix of the next and prefix caching is on. |
+| `vllm_conc.py` | First concurrency ladder — deep (8k) context, per-stream and aggregate, GPU power and per-core CPU deltas, plus a degeneration probe at N=8 by depth. Its "aggregate" is **end-to-end** (prefill included), so it is not comparable to `harness/conc_test.py`; kept because its TTFT curve is the interactive-usability limit. |
+| `vllm_conc2.py` | Concurrency ladder reproducing `harness/conc_test.py`'s method (~70-token prompt, `max_tokens=800`) so the aggregate is **decode** concurrency and comparable with [docs/02](../docs/02-engines-llamacpp-vs-vllm.md). Ladder 1→96, counts reasoning tokens as well as content, records GPU power and physical-vs-sibling CPU load per rung. |
+
+**Launcher overrides these runs depend on** (see [docs/13 §5, §7](../docs/13-vllm-mxfp4-w4a8-rdna4.md)):
+`GPUS=0 TP=1` (auto-detection otherwise picks a mismatched TP=2 across the 32 GB and 16 GB cards),
+`R4D_KEY` matching what setup actually built, `PORT=8085`, and `CPUSET=0-11` / `NOSPEC=1` /
+`RADIANCE_FAST_DRAFT` passthrough, which required small local patches to the upstream launcher.
+
 ## Licence
 
 MIT (see [../LICENSE](../LICENSE)).

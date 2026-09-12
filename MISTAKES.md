@@ -396,6 +396,42 @@ Recorded in both directions, because either side can be the one who is wrong.
   showed as only 1–2% prefill on the current build. Neither side was wrong about their data; the software
   had moved.
 
+- **Benchmarked a degenerate loop and called it a 5× speedup** ([13](docs/13-vllm-mxfp4-w4a8-rdna4.md)).
+  A concurrency/decode harness built prompts from random words and forced generation with `ignore_eos`.
+  The model emitted a repeating cycle of the filler, which is the *easiest possible* case for a
+  speculative drafter: acceptance hit 88–100% and decode read 105 tok/s against a 21 tok/s floor. The
+  real figure on realistic tasks was 58–87 with acceptance 47–63%. Unspeculated decode and prefill were
+  unaffected — both are content-independent — so the same run was simultaneously valid and invalid
+  depending on the metric. **Check what the model actually emitted before trusting a speculative
+  number,** and keep a degeneration ratio in the output.
+- **Then broke prefill fixing decode.** Replacing random filler with repeated real prose made
+  generation realistic but made every prompt a *prefix* of the next, so with `enable_prefix_caching`
+  on, prefill read 55,081 tok/s — an order of magnitude above the roofline. Confirmed by the server's
+  own `Prefix cache hit rate: 45.6%`. Two harnesses, each valid for one metric and fiction for the
+  other; the fix was to report each metric from the run that measures it.
+- **Reported a concurrency plateau that was an artefact of my own metric.** Concluded "aggregate
+  plateaus at N=2" from a ladder that used 8k prompts, 512 generated tokens, `MAXSEQS=8`, and an
+  aggregate computed as completion tokens ÷ *total* wall — so prefill dominated the denominator and the
+  ladder could not exceed 8 anyway. The owner pointed at [02](docs/02-engines-llamacpp-vs-vllm.md),
+  where the same box reached n=80–96. Re-run with the historical harness's method (~70-token prompt,
+  `max_tokens=800`, seq cap lifted) it scaled to **331 tok/s at n=64**. **A metric that shares a name
+  with a prior result is not the same quantity — read the prior harness before claiming to contradict
+  it.**
+- **Guessed at SMT contention and was too quick to dismiss it.** Waved off disabling SMT by checking
+  that two busy threads were not siblings, while missing that C1 (23%) + C13 (76%) *were* one physical
+  core at ~99%, as were C4 + C16. The owner read the screenshot correctly and I did not. `lscpu -e`
+  settled it in one call — sibling of `N` is `N+12` on this part. Verify topology before reasoning
+  about it.
+- **Cited a roofline constant that did not apply to the model.** Used [01](docs/01-hardware-and-software.md)'s
+  54 GFLOP/token (dense 27B) for a hybrid checkpoint whose GEMM-active weight is ~23.4B, i.e. ~47
+  GFLOP/token. It inflated an "above the FP16 roofline" claim from 1.17× to 1.35× — enough to turn
+  "suggestive" into a conclusion I should not have drawn. The owner asked whether model size was
+  factored in, which is what caught it.
+- **Suggested tuning levers without checking they existed.** Proposed raising `--max-num-batched-tokens`
+  to fix prefill admission; it is capped by gfx1201's 64 KiB LDS and dies at 16384. Proposed
+  `RADIANCE_NUMA_BIND`; the 5900X reports a single NUMA node. Proposed `RADIANCE_FAST_DRAFT=0`; it is
+  hardcoded in the launcher and silently ignored the environment.
+
 ---
 
 ## 5. Patterns

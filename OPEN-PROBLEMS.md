@@ -45,6 +45,19 @@ the topic docs; this list is what someone picking this up would still have to de
 | **No direct quality metric for quants** | KL-divergence against a BF16 reference can't run: BF16 27B doesn't fit 48 GB VRAM / 32 GB RAM. | More RAM, or borrowed hardware. |
 | **Reasoning replay in the agent framework** | Hermes strips earlier reasoning by default (`model.reasoning_echo: false`). Turning it on would let models keep their earlier reasoning, at a large context cost. That's also where a short-thinking model saves most. | Owner decision; if tried, measure prompt growth per turn from server logs. |
 
+## vLLM MXFP4 W4A8 on RDNA4 ([13](docs/13-vllm-mxfp4-w4a8-rdna4.md))
+
+| Problem | What's known | Next step |
+|---|---|---|
+| **Context capacity is the loss, not speed** | A serving config yields 89–103k usable KV tokens vs production's 262k, and per-request context caps at **65,536** on one card ("A TP=1 serve on one 32 GB card needs MAXLEN <= 65536"). 19 GB of weights leave only 4.5–6.4 GiB of KV. | TP=2 on two R9700 halves weights per card and turns the freed memory into KV. This is the strongest measured argument for the second card. |
+| **What actually caps the concurrency plateau** | Peak 331 tok/s aggregate at n=64, resident batch ~18. **Not** compute (15 of 225 TF/s) and **not** bandwidth (357 of ~640 GB/s). Board power was pegged at 245–267 W against the 250 W cap on all 16 rungs. | Lift the cap to stock and re-run the ladder; if unchanged, profile GDN's 48-layer serial recurrent update as launch-bound. |
+| **`CHUNK` is hardware-capped at 8192** | 16384 dies with `OutOfResources: shared memory, Required: 131072, Hardware limit: 65536` — gfx1201's 64 KiB LDS. Chunked-prefill admission is what makes TTFT explode at deep concurrency (112.7 s at N=8 × 32k), and this closes the obvious fix. | Needs a kernel-side fix upstream (smaller block sizes or fewer stages), not a config change. |
+| **One Mamba cache block per decode sequence** | The hybrid's 48 linear-attention layers put per-sequence recurrent state in a page pool forced to the attention page size, so sequence slots and context tokens compete for one budget. Ceiling measured at **84** slots; raising MAXSEQS 8 → 96 halved tokens/GiB. | Find the MAXSEQS/context sweet spot deliberately rather than maximising either. Absent on pure-attention models, which is why [02](docs/02-engines-llamacpp-vs-vllm.md) reached n=80–96. |
+| **No quality gate at all** | Every number here is speed or capacity. Upstream reports GSM8K 97.6% on the served W4A8 path, but GSM8K is saturated and cannot discriminate. This is also **stock Qwen3.8-27B, not heretic**. | Core-19 pass@2 against heretic's 17/19, with refusals watched as a confound. |
+| **`SPEC=7` untested** | The drafter warns it was trained at `block_size=8` (7 speculative tokens) and that acceptance is capped below its potential at the launcher's default `SPEC=5`. Upstream's own sweep found 5 beat 7 by 8–13% aggregate — but at TP=2, where verify compute is cheaper per card. | Sweep `SPEC` 5 vs 7 at TP=1, recording PP and KV availability for each. |
+| **Homogeneous concurrency only** | Both ladders fire N identical requests, which flatters the scheduler: aligned sequence and generation lengths. Real traffic on this box includes image work, and this is the **VL** checkpoint (ViT kernels installed, encoder cache 16,384 tokens, `compile_mm_encoder: False`). | A heterogeneous text+image ladder with ragged lengths. |
+| **The int2 draft head is hardcoded on** | `RADIANCE_FAST_DRAFT` blows LDS above ~64 sequences (`radiance_drafthead.py::_apply_head_int2`) and the launcher passes `-e RADIANCE_FAST_DRAFT=1` literally, ignoring the environment. Patched locally. | Report upstream; it is an opt-in optimisation shipped as a non-overridable default. |
+
 ## Hardware limits
 
 - **32 GB system RAM** is the wall for ComfyUI video models, host-side prompt caching, and MoE models whose

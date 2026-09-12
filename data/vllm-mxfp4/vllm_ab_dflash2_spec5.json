@@ -1,0 +1,34 @@
+{
+  "tag": "dflash2_spec5",
+  "port": 8085,
+  "gen": 512,
+  "rows": [
+    {
+      "depth": 2000,
+      "prompt_tokens": 2042,
+      "completion_tokens": 512,
+      "ttft_s": 0.651,
+      "total_s": 5.531,
+      "prefill_tok_s": 3134.8,
+      "decode_tok_s": 104.93
+    },
+    {
+      "depth": 32000,
+      "prompt_tokens": 32193,
+      "completion_tokens": 512,
+      "ttft_s": 11.423,
+      "total_s": 16.612,
+      "prefill_tok_s": 2818.2,
+      "decode_tok_s": 98.66
+    },
+    {
+      "depth": 60000,
+      "prompt_tokens": 60355,
+      "completion_tokens": 512,
+      "ttft_s": 13.431,
+      "total_s": 18.827,
+      "prefill_tok_s": 4493.7,
+      "decode_tok_s": 94.88
+    }
+  ]
+}
