@@ -1,0 +1,127 @@
+{
+  "started": "2026-09-11 22:14:03",
+  "model": "qwen3.8-27b-heretic-trohrbaugh-q4_k_s.gguf",
+  "grid": {
+    "nathan_v075/none": {
+      "load_s": 8,
+      "gpu0_mib": 23500,
+      "depths": {
+        "2000": {
+          "pt": 979.4,
+          "prefill_tok_s": 979.4,
+          "decode_tok_s": 34.37,
+          "ttft_s": 3.259,
+          "accept": null,
+          "ct": 512
+        },
+        "32000": {
+          "pt": 828.8,
+          "prefill_tok_s": 828.8,
+          "decode_tok_s": 31.27,
+          "ttft_s": 57.505,
+          "accept": null,
+          "ct": 512
+        },
+        "128000": {
+          "pt": 445.6,
+          "prefill_tok_s": 445.6,
+          "decode_tok_s": 24.15,
+          "ttft_s": 338.678,
+          "accept": null,
+          "ct": 512
+        }
+      }
+    },
+    "nathan_v075/ngram+mtp": {
+      "load_s": 6,
+      "gpu0_mib": 25081,
+      "depths": {
+        "2000": {
+          "pt": 959.4,
+          "prefill_tok_s": 959.4,
+          "decode_tok_s": 51.99,
+          "ttft_s": 3.325,
+          "accept": 0.359,
+          "ct": 512
+        },
+        "32000": {
+          "pt": 786.9,
+          "prefill_tok_s": 786.9,
+          "decode_tok_s": 40.01,
+          "ttft_s": 60.625,
+          "accept": 0.342,
+          "ct": 512
+        },
+        "128000": {
+          "pt": 419.3,
+          "prefill_tok_s": 419.3,
+          "decode_tok_s": 26.96,
+          "ttft_s": 359.921,
+          "accept": 0.44,
+          "ct": 512
+        }
+      }
+    },
+    "prod_434ddbb/none": {
+      "load_s": 6,
+      "gpu0_mib": 23500,
+      "depths": {
+        "2000": {
+          "pt": 1044.7,
+          "prefill_tok_s": 1044.7,
+          "decode_tok_s": 34.37,
+          "ttft_s": 3.059,
+          "accept": null,
+          "ct": 512
+        },
+        "32000": {
+          "pt": 842.8,
+          "prefill_tok_s": 842.8,
+          "decode_tok_s": 31.22,
+          "ttft_s": 56.537,
+          "accept": null,
+          "ct": 512
+        },
+        "128000": {
+          "pt": 442.9,
+          "prefill_tok_s": 442.9,
+          "decode_tok_s": 23.89,
+          "ttft_s": 340.702,
+          "accept": null,
+          "ct": 512
+        }
+      }
+    },
+    "prod_434ddbb/ngram+mtp": {
+      "load_s": 6,
+      "gpu0_mib": 25381,
+      "depths": {
+        "2000": {
+          "pt": 989.1,
+          "prefill_tok_s": 989.1,
+          "decode_tok_s": 59.28,
+          "ttft_s": 3.229,
+          "accept": 0.406,
+          "ct": 512
+        },
+        "32000": {
+          "pt": 803.0,
+          "prefill_tok_s": 803.0,
+          "decode_tok_s": 46.41,
+          "ttft_s": 59.333,
+          "accept": 0.384,
+          "ct": 512
+        },
+        "128000": {
+          "pt": 418.0,
+          "prefill_tok_s": 418.0,
+          "decode_tok_s": 28.24,
+          "ttft_s": 361.001,
+          "accept": 0.428,
+          "ct": 512
+        }
+      }
+    }
+  },
+  "finished": "2026-09-11 22:45:15"
+}

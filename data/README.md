@@ -42,6 +42,7 @@ generalised; values are untouched.
 | `core19_minicpm5_laptop_partial.json` | **Preliminary** MiniCPM5-2B laptop run, snapshot taken while attempt 2 was still running. |
 | `pld_matrix.json` | Single-stream n-gram / MTP matrix ([docs/12](../docs/12-prompt-lookup-decoding.md)): 4 configs × copy/code/prose, forced 512 tokens, with the output-identity result. From `scripts/core19/pld_test.py`. |
 | `pld_concurrency.json` | Concurrency scaling (per-stream and aggregate decode) at `-np` 1/2/4 for draft-mtp vs ngram→mtp, the single-stream-per-np check, and the KV/VRAM figures. Assembled from the `scripts/core19/pld_conc.py` run outputs. |
+| `engine_ab.html` / `engine_ab_results.json` | Engine A/B ([docs/12](../docs/12-prompt-lookup-decoding.md#engine-ab-nathan-wilsons-vulkan-fork-gives-the-27b-nothing-2026-09-11)): Nathan Wilson's Vulkan fork (`v0.7.5-staging`) vs the production build on heretic, prefill+decode by depth, no-spec and PLD chain. Interactive chart + raw results. From `scripts/core19/engine_ab.py`. |
 
 **Field notes:**
 - **`infra_error`** is true only when the trial raised `RuntimeError` *and* the agent never started. A

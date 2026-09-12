@@ -1,0 +1,68 @@
+<title>Engine A/B: Nathan fork vs production</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1f23;--mut:#6b6f76;--line:#e3e1dc;--card:#fff;--nat:#b5562b;--prod:#2f6fb3}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--fg:#e8e6e1;--mut:#9aa0a6;--line:#2c3036;--card:#1c1f23;--nat:#e08a5c;--prod:#6ea3e0}}
+:root[data-theme="dark"]{--bg:#15171a;--fg:#e8e6e1;--mut:#9aa0a6;--line:#2c3036;--card:#1c1f23;--nat:#e08a5c;--prod:#6ea3e0}
+body{background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0}
+main{max-width:1000px;margin:0 auto;padding:26px 20px 60px}
+h1{font-size:21px;margin:0 0 4px}h2{font-size:15px;margin:26px 0 6px}
+.sub{color:var(--mut);margin:0 0 16px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--mut);font-size:12px;margin:6px 0 2px}
+.sw{display:inline-block;width:22px;height:0;border-top-width:2px;border-top-style:solid;vertical-align:middle;margin-right:5px}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px}
+svg{display:block;width:100%;height:auto}svg text{fill:var(--mut);font-size:11px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;margin-top:6px}
+th,td{padding:5px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}th{color:var(--mut);font-size:12px}
+.note{color:var(--mut);font-size:12.5px;margin-top:8px}
+b.nat{color:var(--nat)}b.prod{color:var(--prod)}
+</style>
+<main>
+<h1>Engine A/B — Nathan Wilson's Vulkan fork vs the production build</h1>
+<p class="sub">heretic Qwen3.8-27B Q4_K_S, R9700 (gfx1201) RADV, production evicted for the run. Forced 512-token decode, temp 0, one stream. 2026-09-11. <b class="nat">Nathan v0.7.5-staging</b> vs <b class="prod">production 434ddbb</b>.</p>
+
+<h2>Decode (token generation) by context depth</h2>
+<div class="legend">
+<span><span class="sw" style="border-color:var(--prod)"></span>prod + PLD chain</span>
+<span><span class="sw" style="border-color:var(--nat)"></span>Nathan + PLD chain</span>
+<span><span class="sw" style="border-color:var(--prod);border-top-style:dashed"></span>prod no-spec</span>
+<span><span class="sw" style="border-color:var(--nat);border-top-style:dashed"></span>Nathan no-spec</span>
+</div>
+<div class="wrap"><svg id="dec"></svg></div>
+
+<h2>Prefill (prompt processing) by context depth</h2>
+<div class="wrap"><svg id="pre"></svg></div>
+
+<h2>The numbers</h2>
+<div class="wrap"><table id="tbl"></table></div>
+<p class="note"><b>Verdict:</b> Nathan's fork gives the 27B nothing — decode is identical no-spec (34.4/31.3/24.2 both), production is slightly ahead on prefill, and production actually wins with the PLD chain (59.3 vs 52.0 at 2k, higher MTP acceptance). The fork's real work targets DeepSeek-V4-Flash / Qwen3-Next Vulkan, not 27B dense. Keep the production build.</p>
+</main>
+<script>
+const D=[2000,32000,128000];
+const S={
+ "prod +PLD":{c:"var(--prod)",dash:0,dec:[59.28,46.41,28.24],pre:[989.1,803.0,418.0],acc:[0.406,0.384,0.428]},
+ "Nathan +PLD":{c:"var(--nat)",dash:0,dec:[51.99,40.01,26.96],pre:[959.4,786.9,419.3],acc:[0.359,0.342,0.44]},
+ "prod no-spec":{c:"var(--prod)",dash:1,dec:[34.37,31.22,23.89],pre:[1044.7,842.8,442.9],acc:[null,null,null]},
+ "Nathan no-spec":{c:"var(--nat)",dash:1,dec:[34.37,31.27,24.15],pre:[979.4,828.8,445.6],acc:[null,null,null]},
+};
+function chart(id,key,ymax,ylab){
+ const W=960,H=300,L=54,R=18,T=18,B=40;
+ const x=i=>L+(W-L-R)*i/(D.length-1), y=v=>T+(H-T-B)*(1-v/ymax);
+ let s="";
+ for(let g=0;g<=ymax;g+=ymax/5){s+=`<line x1="${L}" x2="${W-R}" y1="${y(g)}" y2="${y(g)}" stroke="var(--line)"/><text x="${L-8}" y="${y(g)+4}" text-anchor="end">${Math.round(g)}</text>`;}
+ D.forEach((d,i)=>s+=`<text x="${x(i)}" y="${H-B+18}" text-anchor="middle">${d/1000}k</text>`);
+ s+=`<text x="${L}" y="${T-4}">${ylab}</text>`;
+ for(const [n,o] of Object.entries(S)){
+  const pts=o[key].map((v,i)=>v==null?null:x(i)+","+y(v)).filter(Boolean).join(" ");
+  s+=`<polyline fill="none" stroke="${o.c}" stroke-width="2" ${o.dash?'stroke-dasharray="5 4"':''} points="${pts}"/>`;
+  o[key].forEach((v,i)=>{if(v!=null)s+=`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="${o.c}"><title>${n} @${D[i]/1000}k: ${v}</title></circle>`;});
+ }
+ const el=document.getElementById(id);el.setAttribute("viewBox",`0 0 ${W} ${H}`);el.innerHTML=s;
+}
+chart("dec","dec",70,"tok/s");
+chart("pre","pre",1100,"tok/s");
+document.getElementById("tbl").innerHTML=`<tr><th>config</th><th>decode 2k</th><th>32k</th><th>128k</th><th>prefill 2k</th><th>32k</th><th>128k</th><th>MTP acc</th></tr>`+
+ Object.entries(S).map(([n,o])=>`<tr><td>${n}</td><td>${o.dec[0]}</td><td>${o.dec[1]}</td><td>${o.dec[2]}</td><td>${o.pre[0]}</td><td>${o.pre[1]}</td><td>${o.pre[2]}</td><td>${o.acc[0]??"–"}</td></tr>`).join("");
+</script>
+</main>

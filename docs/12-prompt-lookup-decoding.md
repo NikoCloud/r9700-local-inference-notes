@@ -111,6 +111,32 @@ Rationale: strictly faster on agent-overlap work, free on prose, lossless (the n
 prose-flip predates this), survives concurrency, and `-np 4` is near-free headroom for the planned swarm workers
 plus the two always-on agents.
 
+## Engine A/B: Nathan Wilson's Vulkan fork gives the 27B nothing (2026-09-11)
+
+A hobbyist ecosystem has grown around Qwen3.8-Flash-Next on AMD Strix Halo (Halogen, EngramHalo, Nathan
+Wilson's Vulkan fork). Most of it is gfx1151 + unified-memory specific, but Nathan's fork is *Vulkan* — the
+same backend as production here — so it was the one worth testing on gfx1201. Built `release/v0.7.5-staging`
+(213 commits ahead of upstream), evicted production, and A/B'd it against the production build (`434ddbb`) on
+heretic Q4_K_S, one stream, forced 512-token decode. Chart: [data/core19/engine_ab.html](../data/core19/engine_ab.html).
+
+| config | decode 2k/32k/128k | prefill 2k/32k/128k | MTP acc |
+|---|---|---|---|
+| Nathan v0.7.5, no-spec | 34.4 / 31.3 / 24.2 | 979 / 829 / 446 | – |
+| production 434ddbb, no-spec | 34.4 / 31.2 / 23.9 | 1045 / 843 / 443 | – |
+| Nathan v0.7.5, ngram→mtp | 52.0 / 40.0 / 27.0 | 959 / 787 / 419 | 0.36 |
+| **production 434ddbb, ngram→mtp** | **59.3 / 46.4 / 28.2** | 989 / 803 / 418 | 0.41 |
+
+- **No-spec decode is identical** — the fork does not move 27B dense generation.
+- **Production is slightly ahead on prefill** and **wins with the PLD chain** (59.3 vs 52.0 at 2k, higher
+  acceptance). So the fork is equal-to-slightly-worse on every axis for this model.
+- **Why:** its real work is in the DeepSeek-V4-Flash / Qwen3-Next branches (`dsv4-*`, `qwen4exp`), not general
+  dense 27B. `master` was 0 commits ahead of upstream — the perf lives only in the feature/release branches.
+- **Consistency check:** PLD acceptance here (0.34–0.44) is low because these were low-overlap filler prompts;
+  that matches the overlap-dependence measured above. The engine harness and the PLD findings agree.
+
+**Verdict: the production build stays.** Nathan's fork (and the wider Strix Halo stack) only pays off for the
+Flash-Next / DeepSeek-V4-Flash model class, which wants unified memory this discrete card doesn't have.
+
 ## Caveats and follow-ups
 
 - Single greedy runs at temp 0; real agents sample. The chain is still lossless in distribution, but the exact
