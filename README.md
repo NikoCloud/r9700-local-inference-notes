@@ -136,7 +136,12 @@ people's, and several of them are the only reason a result exists at all.
 - **[Launch80](https://huggingface.co/Launch80)** — [Qwen3.8-27B-PARO-MXFP4](https://huggingface.co/Launch80/Qwen3.8-27B-PARO-MXFP4),
   the checkpoint that showed MXFP4 W4A8 on RDNA4 was real. It is the reference every vLLM figure in
   [13](docs/13-vllm-mxfp4-w4a8-rdna4.md) is measured against, and the format we rebuilt a heretic model into.
-  Without that card on Hugging Face we would not have looked at the fp8 path at all.
+  **This one deserves spelling out.** RDNA4's fp8 path here was not unexplored — it was *tried and
+  abandoned*. We could reach the `wmma_*_fp8_*` instructions and never get throughput out of them; a whole
+  engine project was built against that wall and still came up short, and the working conclusion was that you
+  needed an Instinct part. That card is the evidence that made us go back to something already written off —
+  and the second attempt reached **225 TF/s**. Reviving a discarded line of work is worth more than pointing
+  at a new one.
 - **[ggz14](https://codeberg.org/ggz14/radiance-vllm-mxfp4)** — the hand-written HIP **fp8-WMMA kernels**, the
   ROCm path for the rotation extension, the vLLM quantization plugin, and `build_hybrid.py` (which rebuilt a
   27B into this format in 62 s). This is the work that made RDNA4's fp8 tensors usable at all; the gate was

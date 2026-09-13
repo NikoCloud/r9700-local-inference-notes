@@ -17,12 +17,16 @@
 
 ## Why this was worth a day
 
-RDNA4 has native FP8 WMMA in the ISA, and as far as we knew **nothing used it**. Earlier attempts on
-this box (the Hephaestus Mojo work) could *issue* the instruction but never got throughput out of it,
-and the working assumption became that you needed an Instinct part — which is partly why the
-kyuz0/Donato toolboxes present the R9700 as an Instinct card to get past library gates.
+RDNA4 has native FP8 WMMA in the ISA, and as far as we knew **nothing used it**. This was not an
+unexplored path here — it was a **closed** one. Earlier work on this box (the Hephaestus engine project)
+could *issue* the `wmma_*_fp8_*` instructions and never extract throughput from them; an entire engine was
+built against that wall and still came up short. The working conclusion was that the fp8 tensors were
+effectively unusable without an Instinct part — which is partly why the kyuz0/Donato toolboxes present the
+R9700 as an Instinct card to get past library gates.
 
-This checkpoint claims MXFP4 weights served W4A8 through that path. It checks out.
+**The checkpoint is what reopened it.** Seeing someone claim MXFP4 weights served W4A8 through that exact
+path was the reason to go back to a question already answered "no". It checks out — and the second attempt
+reached 225 TF/s (§1), which is throughput the first attempt never came close to.
 
 ## 1. The fp8 WMMA claim is real, and native
 
