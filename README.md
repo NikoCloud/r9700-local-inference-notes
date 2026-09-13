@@ -27,7 +27,7 @@ traps will catch the next person.
 
 If you read nothing else, these are the outliers.
 
-- **The trick that costs nothing: chain n-gram lookup in front of MTP.** `--spec-type ngram-mod,draft-mtp` needs no model and no extra VRAM, and decodes **123.4 tok/s on code edits / up to 222.8 on copy** where plain MTP does ~77 — 1.6× / 2.9×, holding ~1.5× per stream at 1/2/4 concurrent. ([12](docs/12-prompt-lookup-decoding.md))
+- **The trick that costs nothing: chain n-gram lookup in front of MTP.** Without speculation, a 27B at Q4 does **~23–35 tok/s** on this card (34.8 in the matched test; 23.3 at 184k depth). Adding `--spec-type ngram-mod,draft-mtp` — no extra model, no VRAM — decodes **123.4 tok/s on code edits / up to 222.8 on copy**: 1.6× / 2.9× over production MTP, **~3.5–6× over plain decode**, holding ~1.5× per stream at 1/2/4 concurrent. It surfaces in exactly the workflows agents produce — quoted input, repeated code. ([12](docs/12-prompt-lookup-decoding.md))
 - **The context price of vLLM's speed.** Same single card: llama.cpp keeps **262k** tokens of context; the vLLM config that wins prefill keeps **59k–225k depending on features** (103k with its drafter, 65,536 per request). A 27B's weights leave ~5 GiB for KV — the clearest measured argument for a second card. ([13 §2](docs/13-vllm-mxfp4-w4a8-rdna4.md))
 - **vLLM's "3× slower at depth" was three wrong defaults** — a ≤16k attention kernel, `--enforce-eager`, and prefix caching off. Configured, *unpatched* vLLM 0.27.1 decodes 32.0 tok/s at 35k. ([02](docs/02-engines-llamacpp-vs-vllm.md))
 - **A power cap does not bound transients.** Sub-millisecond peaks of **488 W and 584 W** were measured under a 250 W cap (934 W combined, no crash). ([06](docs/06-power-and-stability.md))
