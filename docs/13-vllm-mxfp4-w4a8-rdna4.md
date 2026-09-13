@@ -489,15 +489,18 @@ threshold:
 with a native context of **262,144** and recommended output budgets of 262,144 (reasoning) / 131,072
 (final response).
 
-**Attribution, checked 2026-09-13:** the sharper **sub-128k floor is the owner's own hands-on finding**,
-not a published figure. It is *not* in Qwen's card, and it is *not* DavidAU's either — his
-Qwen3.6-27B NEO-CODE card recommends the opposite (*"Context window min from 8k to 16k"*) and ships
-256K-context quants. An earlier revision of this document cited it to "Qwen's own Qwen3.6-27B model
-card"; that citation was wrong and is retracted. Treat it as a strong experiential prior from someone
-who runs this family daily — which is how [MISTAKES](../MISTAKES.md) says to treat his priors — not as
-vendor documentation. The supporting claims (heavy KV quantization raises the rate; **window *size* and
-*occupancy* are separate levers**, so the allocation matters regardless of how much is used) are from
-the same source.
+**The ≥128k floor is official Qwen guidance.** Qwen/Qwen3.6-27B model card, *Serving Qwen3.6*
+section, under an `[!Important]` callout:
+
+> The model has a default context length of 262,144 tokens. If you encounter out-of-memory (OOM)
+> errors, consider reducing the context window. **However, because Qwen3.6 leverages extended context
+> for complex tasks, we advise maintaining a context length of at least 128K tokens to preserve
+> thinking capabilities.**
+
+Note the phrasing — *"to preserve thinking capabilities"*. Qwen frames it as a capability that degrades,
+which is consistent with the gradient reading above rather than a cliff. The related claims (heavy KV
+quantization raises the rate; **window *size* and *occupancy* are separate levers**, so the allocation
+matters regardless of how much is used) are the owner's hands-on priors on top of that published floor.
 
 **This stack stacks several risk factors at once:**
 
