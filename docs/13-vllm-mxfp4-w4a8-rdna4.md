@@ -471,6 +471,39 @@ per-request ceiling, which §2 identified as this stack's real weakness, cost no
 That is a narrower claim than it looks: Core-19 agent contexts run a 10–40k median, and a workload that
 genuinely needs 262k would still be excluded.
 
+### CAVEAT THAT QUALIFIES EVERYTHING ABOVE: this serve is inside a documented degeneration envelope
+
+The Qwen3.5-family behaviour envelope (Qwen's own Qwen3.6-27B model card, and the owner's hands-on
+priors) states two failure conditions:
+
+- **allocated context below ~128k → degeneration**: the model rambles and emits tokens until the cap.
+  **Window *size* and window *occupancy* are separate levers** — ≥128k must be *allocated* to stay out
+  of the loop, independent of how much is actually used.
+- **heavy KV-cache quantization → the same catastrophic loop** (q4-class is fatal; q8-class is
+  tolerable but wants flash attention on).
+
+**This stack runs `--max-model-len 65536` — half the stated floor — with `--kv-cache-dtype fp8`.** It
+leans on both conditions at once, and §2 shows why: a TP=1 serve on one 32 GB card *cannot* allocate
+131,072 (the launcher's own comment caps it at 65,536).
+
+It was observed live. On the stock arm's `mailman` retry the KV cache traced a clean sawtooth —
+climbing ~15.5 points of the 103,268-token pool (~16k tokens), resetting, and climbing again on a
+~4-minute cycle for **57 minutes without the trajectory advancing a single step**, ending in the
+3-hour `AgentTimeoutError`. That is the documented signature, not a novel failure.
+
+**What this does and does not change:**
+
+- It does **not** invalidate heretic's 18/19. That score was achieved *inside* the envelope, which
+  makes it a floor rather than a ceiling.
+- It **does** mean the heretic-vs-stock divergence on `mailman` cannot be cleanly attributed to the
+  weights. The honest statement is that stock tripped a known envelope and heretic did not — plausibly
+  because heretic reached the answer in 28 steps against stock's 45 and so never accumulated the
+  context to trigger it. Which model degrades *less* under KV starvation is a real and useful property,
+  but it is not the same claim as which model reasons better.
+- It reframes the second R9700 from a capacity upgrade to a **correctness** one: TP=2 halves weights
+  per card, which is the only way this family gets its ≥128k allocation on this hardware. Until then
+  every result from this serve carries this asterisk.
+
 **Draft acceptance on agentic work: 55–57%** (mean accepted length ~3.8 of 6), against 40–46% on image
 description in §6c. Agents quote files back, so the drafter hits more often — the same overlap effect
 [12](12-prompt-lookup-decoding.md) measured for n-gram lookup, here in a trained drafter.
