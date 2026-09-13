@@ -479,17 +479,25 @@ its likelihood to an acceptable rate rather than eliminating it. It can still ha
 rarely. Every step of starving, compressing or quantizing the KV, or otherwise putting the model under
 pressure, moves the probability up. Do not read anything below as "crossed a line".
 
-Qwen's own Qwen3.8-27B card supports that reading by shipping a *dial* rather than a threshold:
+Qwen's own Qwen3.8-27B card supports the *gradient* reading by shipping a **dial** rather than a
+threshold:
 
 > For supported frameworks, you can adjust the `presence_penalty` parameter between 0 and 2 to reduce
 > endless repetition. However, using a higher value may occasionally result in language mixing and a
 > slight decrease in model performance.
 
 with a native context of **262,144** and recommended output budgets of 262,144 (reasoning) / 131,072
-(final response). The sharper sub-128k threshold comes from the Qwen3.6-27B card plus the owner's
-hands-on priors: allocated context below ~128k, or heavy KV quantization, each raise the rate sharply,
-and **window *size* and window *occupancy* are separate levers** — the allocation matters regardless of
-how much is used.
+(final response).
+
+**Attribution, checked 2026-09-13:** the sharper **sub-128k floor is the owner's own hands-on finding**,
+not a published figure. It is *not* in Qwen's card, and it is *not* DavidAU's either — his
+Qwen3.6-27B NEO-CODE card recommends the opposite (*"Context window min from 8k to 16k"*) and ships
+256K-context quants. An earlier revision of this document cited it to "Qwen's own Qwen3.6-27B model
+card"; that citation was wrong and is retracted. Treat it as a strong experiential prior from someone
+who runs this family daily — which is how [MISTAKES](../MISTAKES.md) says to treat his priors — not as
+vendor documentation. The supporting claims (heavy KV quantization raises the rate; **window *size* and
+*occupancy* are separate levers**, so the allocation matters regardless of how much is used) are from
+the same source.
 
 **This stack stacks several risk factors at once:**
 
@@ -498,16 +506,22 @@ how much is used.
 | allocated context | 262,144 native | **65,536** (TP=1 on one 32 GB card cannot allocate 131,072 — §2) |
 | KV dtype | — | **fp8** |
 | temperature, **thinking mode** | **1.0** | **0.7** |
-| top_p, thinking mode | 0.95 | 0.95 |
+| top_p, **thinking mode** | **0.95** | 0.95 |
 | presence_penalty | 0–2 available to suppress repetition | **0.0** (unset) |
 
-The temperature row is a genuine misconfiguration for this workload, not just a stacked risk: Core-19
-runs **thinking** mode (xhigh), where Qwen specifies `temperature=1.0`; 0.7 is the *instruct*-mode
-value, and lower temperature is the classic driver of repetition loops. It is deliberate upstream —
-`run_paroquant.sh` carries "2026-09-03 default sampling temperature 1.0 -> 0.7
-(`--override-generation-config`), fleet-wide across every vllm-switch target" — so it applies to every
-radiance serve, not just ours. `presence_penalty` is also left at 0.0, which is correct per Qwen for
-thinking mode but means the one dial they offer against this failure is unused.
+Qwen's published sampling is split by mode — **thinking: `temperature=1.0`, top_p=0.95, top_k=20,
+min_p=0.0, presence_penalty=0.0, repetition_penalty=1.0**; instruct/non-thinking: `temperature=0.7`,
+top_p=0.80, top_k=20, presence_penalty=1.5. Core-19 runs **thinking** mode (xhigh), so the specified
+temperature is **1.0** and this serve applies **0.7** — the instruct-mode value. Lower temperature is a
+known driver of repetition loops, so this is a deviation from spec in the direction that raises the
+risk, stacked on top of the context and KV factors above.
+
+It is upstream and fleet-wide, not introduced here: `run_paroquant.sh` records "2026-09-03 default
+sampling temperature 1.0 -> 0.7 (`--override-generation-config`), fleet-wide across every vllm-switch
+target". So it applies to every radiance serve, including the one behind Launch80's published numbers.
+
+`presence_penalty` at 0.0 is per spec for thinking mode, but it does leave the one dial Qwen offers
+against this failure mode unused.
 
 It was observed live. On the stock arm's `mailman` retry the KV cache traced a clean sawtooth —
 climbing ~15.5 points of the 103,268-token pool (~16k tokens), resetting, and climbing again on a
