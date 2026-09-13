@@ -9,7 +9,9 @@
 A month of running large language models at home on AMD's **Radeon AI PRO R9700** (RDNA4, `gfx1201`),
 written up for anyone else trying it: engines (llama.cpp vs vLLM), backends (Vulkan vs ROCm),
 multi-GPU, speculative decoding, power stability, model qualification — and one diffusion side quest.
-It keeps growing as the machine does.
+It keeps growing as the machine does. The findings are the point, not the machine — what actually
+moves what (caps, formats, builds, engines), so someone with similar hardware doesn't have to
+re-derive it.
 
 The most useful part is probably **[MISTAKES.md](MISTAKES.md)**. A lot of this project was being
 confidently wrong and then finding out why. Those errors are kept, not cleaned up, because the same
@@ -21,18 +23,25 @@ traps will catch the next person.
 
 ---
 
-## Start here
+## Start here — pick your goal
 
-| If you want to… | Go to |
-|---|---|
-| Set up one R9700 for local LLMs | [docs/02](docs/02-engines-llamacpp-vs-vllm.md) for the engine + configs, then [LEVERS.md](LEVERS.md) for what each knob buys |
-| Not re-derive what was already got wrong | [MISTAKES.md](MISTAKES.md) — read before trusting your own first results |
-| Benchmark honestly | [METHODOLOGY.md](METHODOLOGY.md) — 47 rules, each one from an incident |
-| See what is still broken or blocked | [OPEN-PROBLEMS.md](OPEN-PROBLEMS.md) |
-| Weigh a setting before flipping it (power cap, depth, speculation, caching) | [LEVERS.md](LEVERS.md) — measured deltas per knob, linked to the evidence |
-| Catch up on what's new | [FINDINGS.md](FINDINGS.md) — the ledger, newest first |
-| Pick engines / backends / quants | [docs/02](docs/02-engines-llamacpp-vs-vllm.md), [docs/05](docs/05-rocm-vs-vulkan.md), [docs/13](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
-| Browse the deep-dives | [docs/](docs/) — 13 dated write-ups, indexed in [docs/README.md](docs/README.md) |
+| What are you after? | The short answer, from this project | Where |
+|---|---|---|
+| Fastest token generation, single stream | llama.cpp + MTP `n_max=2`: **61.7 tok/s**; the n-gram→MTP chain adds 1.6× (code edits) to 2.9× (pure copy); DFlash2 is faster only alone (79.0 on code) and loses at 2+ streams | [04](docs/04-speculative-decoding.md) · [12](docs/12-prompt-lookup-decoding.md) |
+| Fastest prefill | vLLM + MXFP4 W4A8 (RDNA4's fp8 WMMA): **2.6–3.5× production**, rising with depth — at a matched 330 W it wins every speed axis | [13](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
+| Vision / image analysis | vLLM: **75.1 s vs 91.3 s** on the same five pages at a matched image budget; TTFT **1.78 s vs 6.42 s** — still ahead at full native resolution | [13 §6c](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
+| Many users at once | vLLM scales to **385.8 tok/s aggregate at n=24**; llama.cpp plateaus at 95.7 (figure below) | [13 §6b](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
+| Long-context agents, one card | llama.cpp (Vulkan): **262k context**, q8_0 KV, `-kvu`, `-np 4` — the context seat | [02](docs/02-engines-llamacpp-vs-vllm.md) · [12](docs/12-prompt-lookup-decoding.md) |
+| Quiet box / solar / capped power | what caps cost: llama.cpp −8.3% prefill / −16% decode (→ 250 W); vLLM only −1.9–2.8% decode (→ 225 W); lifting 250 → 330 W buys ~+14% prefill / +7% decode | [06](docs/06-power-and-stability.md) · [13 §6b](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
+| A second GPU | PP=2 with an uneven layer split: **3.6× the KV cache**; TP=2 works on RCCL 2.28.9; the mixed pair dies in a Tensile GEMM | [03](docs/03-multi-gpu.md) |
+| Model choice and quality | heretic **16/19** vs Turbo **9/14** on Core-19 — Turbo ~3× faster, ~4.5× cheaper in output tokens, and wrong-but-confident on 4 of its 5 real failures | [07](docs/07-model-qualification.md) · [08](docs/08-agentic-benchmark-core19.md) · [11](docs/11-reasoning-traces-and-sanity-checks.md) |
+| Image / video generation (second card) | ComfyUI: cap `--cache-ram` or it eats system RAM — **98–229 s → 25–28 s** per image | [09](docs/09-comfyui-memory.md) |
+| Weigh one knob before flipping it | measured deltas per knob — caps, depth, formats, caching, builds | [LEVERS.md](LEVERS.md) |
+| See what is still broken or blocked | the open list, with next steps | [OPEN-PROBLEMS.md](OPEN-PROBLEMS.md) |
+| Don't repeat our mistakes | every recorded wrong turn — read before trusting your own first results | [MISTAKES.md](MISTAKES.md) |
+| Benchmark your own hardware | 47 rules, each one from an incident | [METHODOLOGY.md](METHODOLOGY.md) |
+
+*Aimed at a different goal? The full record is [docs/](docs/) (indexed in [docs/README.md](docs/README.md)) and the ledger [FINDINGS.md](FINDINGS.md).*
 
 ---
 
@@ -49,32 +58,10 @@ traps will catch the next person.
 | Main engine | llama.cpp `master` @ `434ddbb` built natively for Vulkan, plus a local vision patch ([patches/](patches/)) |
 | Power profile | 250 W cap, undervolt, reduced memory clock (LACT); what changing the cap buys: [LEVERS.md](LEVERS.md) |
 
-Workload: two always-on AI agents sharing one llama.cpp server (long, deep contexts, tool use), plus
-ComfyUI on the second card.
+The numbers come from a specific workload: two interactive AI agents on one llama.cpp server (long,
+deep contexts, tool use), plus ComfyUI on the second card.
 
 ---
-
-## What we learned
-
-The one-line version of the project. Full detail in the linked docs; dates and the complete ledger in
-[FINDINGS.md](FINDINGS.md).
-
-| # | Finding | The number | Detail |
-|---|---|---|---|
-| 1 | llama.cpp + Vulkan wins the single-card agent seat — via speculative decoding, not raw speed | MTP: 61.7 tok/s single-stream | [02](docs/02-engines-llamacpp-vs-vllm.md) |
-| 2 | vLLM's "3× slower at depth" was three wrong defaults, not the card | 32.0 tok/s @ 35k, unpatched, once configured | [02](docs/02-engines-llamacpp-vs-vllm.md) · [05](docs/05-rocm-vs-vulkan.md) |
-| 3 | ROCm wins shallow, loses deep on the same llama.cpp build | +27% @ 244-token prompt · −21% @ 38.7k | [05](docs/05-rocm-vs-vulkan.md) |
-| 4 | Staying on llama.cpp `master` beat every tuning knob | prefill @ 42k: 766.9 → 916.5 tok/s (+19.5%) | [02](docs/02-engines-llamacpp-vs-vllm.md) |
-| 5 | Defaults cost more than tuning did | prefix caching off: TTFT 30–33 s → 1.08 s | [02](docs/02-engines-llamacpp-vs-vllm.md) · [10](docs/10-agent-harness-lessons.md) |
-| 6 | MTP `n_max=2` is the production setup; content type dominates acceptance | acceptance on code runs up to 3× prose | [04](docs/04-speculative-decoding.md) |
-| 7 | Multi-GPU: PP=2 is a capacity lever, TP=2 works on RCCL 2.28.9, the mixed pair dies | 3.6× KV via an uneven layer split | [03](docs/03-multi-gpu.md) |
-| 8 | A power cap does not bound transients | 488 W / 584 W peaks under a 250 W cap | [06](docs/06-power-and-stability.md) |
-| 9 | Same harness, same card: prefill identical, thinking wildly different | Turbo: 335 vs 2048 thinking tokens, −6–8% speed | [07](docs/07-model-qualification.md) |
-| 10 | ComfyUI's default cache will eat all of system RAM | image runs 98–229 s → 25–28 s after the cap | [09](docs/09-comfyui-memory.md) |
-| 11 | Core-19: the careful model solved more, the fast one solved faster | 16/19 vs 9/14 · ~3× faster, ~4.5× cheaper in output tokens | [08](docs/08-agentic-benchmark-core19.md) |
-| 12 | Reasoning traces show *how* they differ — and where the fast model fails its own rules | exact line counts on 91% vs 59%; broke its AABB rule in 3 of 6 poems — and self-approved | [11](docs/11-reasoning-traces-and-sanity-checks.md) |
-| 13 | Chaining n-gram lookup in front of MTP is free speed where agents echo their input | 1.6× production MTP (code edit), 2.9× (copy) | [12](docs/12-prompt-lookup-decoding.md) |
-| 14 | MXFP4 W4A8 is the first thing to actually use RDNA4's fp8 WMMA | 2.6–3.5× prefill; beats llama.cpp on every speed axis at a matched 330 W | [13](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
 
 ![Aggregate decode throughput vs concurrency — one R9700, matched runs at 330 W](data/vllm-mxfp4/concurrency_330w.svg)
 

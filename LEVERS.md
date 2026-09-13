@@ -10,6 +10,8 @@ configurations churn, deltas transfer.
 
 | Lever | Swept | Measured effect | Evidence |
 |---|---|---|---|
+| **Engine**, matched on the same card | llama.cpp (Vulkan) vs vLLM | llama.cpp wins the interactive agent seat via speculation (61.7 tok/s single-stream); vLLM batches far better (28.4 → 346.8 tok/s, 12×) | [02](docs/02-engines-llamacpp-vs-vllm.md) |
+| **Weights format** | MXFP4 W4A8 (fp8 WMMA) vs Q4_K_S GGUF, same hour at 330 W | PP 3.2–3.6×; decode +26–46%; 4.0× concurrency peak (385.8 vs 95.7 tok/s); quality 18/19 Core-19 | [13](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
 | **Power cap** (vLLM) | 250 → 330 W, byte-identical config | PP +13.0 / +14.9 / +14.1 % at 2k / 32k / 60k; decode +7.0–7.1 %; concurrent peak 331.4 → 385.8 tok/s (+16 %) | [13](docs/13-vllm-mxfp4-w4a8-rdna4.md) §6b |
 | **Power cap** (llama.cpp + DFlash2) | 374/330 W → 250 W, at 40k | −8.3 % prefill / −16.0 % decode | [06](docs/06-power-and-stability.md) |
 | **Context depth** | 2.4k → 184k | moves prefill 42 % — more than every software knob combined (±5 % for ubatch / KV type); shallow and deep rankings invert | [02](docs/02-engines-llamacpp-vs-vllm.md) · [05](docs/05-rocm-vs-vulkan.md) |
@@ -26,4 +28,6 @@ configurations churn, deltas transfer.
 
 **Not swept yet, or blocked** (see [OPEN-PROBLEMS.md](OPEN-PROBLEMS.md)): caps above 330 W are
 tooling-clamped on this card (LACT: 375 W → 330 W); `SPEC=7` was unreachable at TP=1;
-heterogeneous text+image concurrency is unmeasured.
+heterogeneous text+image concurrency is unmeasured; and the undervolt / memory-clock cut
+(MCLK 1450 → 1359 MHz, −50 mV) has no throughput numbers yet — only its stability effect is
+documented ([06](docs/06-power-and-stability.md)).
