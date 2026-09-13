@@ -89,6 +89,14 @@ hour with the same harnesses so the comparison is matched on power, harness and 
 transcription** — all three arms hit the 700-token cap. These files measure **wallclock only**; no OCR
 quality conclusion can be drawn from them.
 
+**Core-19 on the heretic MXFP4 build** ([docs/13 §6e](../docs/13-vllm-mxfp4-w4a8-rdna4.md)):
+
+| File | What it is |
+|---|---|
+| `core19_mxfp4_results.tgz` | The exported results tree (per-task `results-*.json`, transcripts, run + attempt-2 metadata) for the 18/19 run. Platform id `r9700-330w`, deliberately distinct from the 250 W `r9700` corpus so neither set's metadata is falsified. |
+| `core19_time.html` | Wall-clock chart vs the Q4_K_S baseline: per-task bars, a speedup-vs-task-length scatter, and the table. Agent minutes, attempt 1 both sides. Offline. |
+| `img_bench2_heretic_mxfp4_nothink.json` | Vision run on the heretic build with thinking disabled: sequential and 5-way concurrent passes, PP/TG/TTFT per image, plus draft acceptance sampled from the server around each pass. |
+
 **The two harnesses calibrate tokens/word differently on the same prose** (0.65 vs 0.86), so a
 nominal "32000" depth is ~55k tokens against vLLM and ~42k against llama.cpp. The deep-decode rows
 therefore *understate* vLLM's advantage rather than flattering it.

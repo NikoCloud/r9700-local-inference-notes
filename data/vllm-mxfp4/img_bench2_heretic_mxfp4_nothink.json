@@ -1,0 +1,156 @@
+{
+  "tag": "heretic_mxfp4_nothink",
+  "model": "Qwen3.8-heretic-PARO",
+  "images": 5,
+  "sequential": {
+    "rows": [
+      {
+        "image": "1-0de11.jpg",
+        "prompt_tokens": 5668,
+        "completion_tokens": 600,
+        "ttft_s": 2.98,
+        "wall_s": 11.98,
+        "pp_tok_s": 1901.6,
+        "tg_tok_s": 66.64,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.83,
+        "chars": 2523,
+        "sample": "Based on the image provided, here is a detailed description of the webtoon page:  **Overall Setting and Mood:** The page depicts a high-stakes archery competition taking place in a large, modern outdo"
+      },
+      {
+        "image": "2-0de11.jpg",
+        "prompt_tokens": 4043,
+        "completion_tokens": 600,
+        "ttft_s": 1.97,
+        "wall_s": 12.45,
+        "pp_tok_s": 2053.6,
+        "tg_tok_s": 57.24,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.88,
+        "chars": 2626,
+        "sample": "This webtoon page is from the Korean webtoon **\"Solo Leveling\"**, specifically featuring the character **Yoo Sanghyun**, a top-tier archer in the Hunter system. The page consists of three distinct pan"
+      },
+      {
+        "image": "3-0de11.jpg",
+        "prompt_tokens": 5618,
+        "completion_tokens": 600,
+        "ttft_s": 2.84,
+        "wall_s": 13.64,
+        "pp_tok_s": 1981.4,
+        "tg_tok_s": 55.54,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.83,
+        "chars": 2703,
+        "sample": "Here is a detailed description of the webtoon page:  **Setting:** The scene takes place in a large, dimly lit indoor space, likely an arena or a grand hall. The background features high ceilings with "
+      },
+      {
+        "image": "4-0de11.jpg",
+        "prompt_tokens": 5443,
+        "completion_tokens": 581,
+        "ttft_s": 2.75,
+        "wall_s": 12.84,
+        "pp_tok_s": 1976.8,
+        "tg_tok_s": 57.62,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.81,
+        "chars": 2610,
+        "sample": "Here is a description of the webtoon page based on the visual information provided:  **Setting:** The scene takes place at a large, outdoor public event, likely a concert or fan gathering. The backgro"
+      },
+      {
+        "image": "5-0de11.jpg",
+        "prompt_tokens": 2793,
+        "completion_tokens": 600,
+        "ttft_s": 1.22,
+        "wall_s": 10.23,
+        "pp_tok_s": 2287.9,
+        "tg_tok_s": 66.56,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.89,
+        "chars": 2531,
+        "sample": "Based on the visual evidence of the webtoon page, here is a detailed description:  **Setting:** The scene takes place at a large, formal event, likely an awards ceremony or a high-stakes competition. "
+      }
+    ],
+    "wall_s": 61.3,
+    "spec": {
+      "windows": 6,
+      "mean_acceptance_length": 3.01,
+      "avg_draft_acceptance_rate_pct": 40.25
+    }
+  },
+  "concurrent": {
+    "rows": [
+      {
+        "image": "1-0de11.jpg",
+        "prompt_tokens": 5668,
+        "completion_tokens": 600,
+        "ttft_s": 4.57,
+        "wall_s": 15.09,
+        "pp_tok_s": 1239.4,
+        "tg_tok_s": 57.03,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.67,
+        "chars": 2373,
+        "sample": "Based on the image provided, here is a detailed description of the webtoon page:  **Overall Page Structure:** The page begins with a standard webtoon credit/title card, followed by three distinct narr"
+      },
+      {
+        "image": "2-0de11.jpg",
+        "prompt_tokens": 4043,
+        "completion_tokens": 600,
+        "ttft_s": 4.58,
+        "wall_s": 19.26,
+        "pp_tok_s": 882.6,
+        "tg_tok_s": 40.87,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.94,
+        "chars": 2651,
+        "sample": "Certainly! Here\u2019s a detailed, panel-by-panel breakdown of this webtoon page:  ---  **Overall Setting & Mood:**  The scene takes place during an archery competition \u2014 likely high-stakes or professional"
+      },
+      {
+        "image": "3-0de11.jpg",
+        "prompt_tokens": 5618,
+        "completion_tokens": 600,
+        "ttft_s": 17.72,
+        "wall_s": 28.06,
+        "pp_tok_s": 317.1,
+        "tg_tok_s": 58.03,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.9,
+        "chars": 2660,
+        "sample": "Here is a detailed description of the webtoon page, broken down by panel and overall mood.  **Overall Mood:** The page conveys a mood of intense focus, high-speed action, and lethal precision. The use"
+      },
+      {
+        "image": "4-0de11.jpg",
+        "prompt_tokens": 5443,
+        "completion_tokens": 600,
+        "ttft_s": 4.58,
+        "wall_s": 18.25,
+        "pp_tok_s": 1188.9,
+        "tg_tok_s": 43.87,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.75,
+        "chars": 2588,
+        "sample": "Here is a description of the webtoon page:  **Setting:** The scene takes place outdoors during the daytime, likely at a large public event or competition. The background features a modern city skyline"
+      },
+      {
+        "image": "5-0de11.jpg",
+        "prompt_tokens": 2793,
+        "completion_tokens": 600,
+        "ttft_s": 0.94,
+        "wall_s": 18.74,
+        "pp_tok_s": 2964.9,
+        "tg_tok_s": 33.71,
+        "reasoning_chars": 0,
+        "tail_distinct": 0.92,
+        "chars": 2516,
+        "sample": "Based on the provided webtoon page, here is a detailed description:  **Overall Mood:** The page conveys a powerful sense of triumph, awe, and celebration. The transition from a dramatic, high-impact m"
+      }
+    ],
+    "wall_s": 28.1,
+    "aggregate_tg_tok_s": 106.9,
+    "spec": {
+      "windows": 2,
+      "mean_acceptance_length": 3.04,
+      "avg_draft_acceptance_rate_pct": 45.85
+    }
+  }
+}

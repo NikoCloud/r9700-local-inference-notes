@@ -119,7 +119,10 @@ ComfyUI on the second card.
     and 4.0× peak concurrent aggregate** (385.8 tok/s at n=24 vs llama.cpp's 95.7, which saturates at n=2). It
     loses on **context capacity** (103k usable, 65k per request, vs 262k), because 19 GB of weights leave ~5 GiB
     of KV — the clearest argument yet for the second card. Raising the cap 250 → 330 W is worth +14% PP and +7%
-    decode on its own; `SPEC=7` is unreachable at TP=1 (it leaves room for a 1,648-token context). On **vision**
+    decode on its own; `SPEC=7` is unreachable at TP=1 (it leaves room for a 1,648-token context). **Quality is
+    settled: a heretic build of this format, rebuilt locally from bf16 + z-lab's rotations in 62 s, scores
+    18/19 (17 pass@1) on Core-19 — matching Donato's stock reference and beating the source Q4_K_S GGUF, at the
+    lowest bit depth of the three, in 1.57× the wall clock.** On **vision**
     it wins wallclock too — five webtoon pages in 75.1 s vs llama.cpp's 91.3 s at a matched image budget, with
     TTFT 1.78 s vs 6.42 s, and it beats llama.cpp's *reduced* budget even while running full native resolution.
     The box now runs **two mutually exclusive productions**: llama on 8080 (context, heretic) and vLLM on 8000

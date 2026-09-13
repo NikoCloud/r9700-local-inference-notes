@@ -353,10 +353,127 @@ of GPU0.
 so it cannot race llama production at boot. Config lives in `~/launch_vllm_prod.sh`. First start after
 a config change recompiles Triton/inductor graphs and takes ~8-9 minutes; later starts reuse the cache.
 
-**The open blocker for making this the primary worker is the model, not the engine:** this is stock
+**RESOLVED in §6e:** a heretic build of this format now exists and scores 18/19 on Core-19. The text
+below described the state before that. This is stock
 Qwen3.8-27B. A heretic or abliterated checkpoint in this format would need building — upstream ships
 `paroquant/build_hybrid.py`, which produces the format from bf16 base weights plus z-lab's rotations
 (400 modules in 91 s), so it is a real path rather than a wait for someone else to publish one.
+
+## 6e. Building a heretic MXFP4 checkpoint, and Core-19 on it
+
+The published checkpoint is stock Qwen3.8-27B, which made it unusable as a production worker
+([12](12-prompt-lookup-decoding.md) explains why heretic is the line). So the format was rebuilt from
+the heretic weights.
+
+### The build
+
+`paroquant/build_hybrid.py` takes bf16 base weights plus z-lab's **trained rotations** and quantizes
+one-shot to MXFP4 — no optimizer, no calibration. Inputs: `trohrbaugh/Qwen3.8-27B-heretic-ara`
+(a67ae100, 52 GiB bf16), `z-lab/Qwen3.8-27B-PARO` (rotations), `z-lab/paroquant @ 9ee635a` plus this
+repo's `paroquant_radiance.patch` (which supplies the ROCm/HIP path — upstream's rotation extension is
+CUDA-only).
+
+**It streams.** `safe_open` materialises one tensor at a time and rotates it on the GPU, so the 55.6 GiB
+CPU-resident requirement in `requant.sh`'s MEMORY note applies to the *optimizer*, not to this path. It
+runs fine in 31 GB.
+
+Pre-flight, checked before spending the download: every architecture parameter identical to z-lab's,
+and **all 400 of z-lab's quantized modules present in the heretic base**, so `assert n_q == 400` could
+not fire. Result:
+
+```
+z-lab quantized modules: 400 | mxfp4 scale rule: ocp
+DONE: 400 modules, worst pseudo round-trip rel 8.47e-07, 62s
+```
+
+8.47e-07 is fp32 round-trip noise — the transform is exact. It says nothing about whether stock-trained
+rotations suit heretic; see the verdict below for why they do.
+
+**Why the rotation transfer was safe, discovered after the fact.** heretic-ara is not a finetune. It is
+[Heretic](https://github.com/p-e-w/heretic) abliteration using **ARA (Arbitrary-Rank Ablation)** on
+layers 26–56, tuned by an Optuna search with `preserve_good_behavior_weight` 0.9432 against
+`steer_bad_behavior_weight` 0.0009 — roughly 1000:1 toward preservation. Its card reports **KL
+divergence 0.0535** from stock with **0/100 refusals** (stock: 99/100). So the outlier distribution
+z-lab's rotations were fitted to on stock *is*, to within rounding, heretic's distribution. A heavy
+finetune (a merge or a NEO-CODE/Cold-Fusion style tune) would not have been a safe base for this.
+
+**What was NOT done:** Launch80's published checkpoint is the **`-ft`** variant — a stage-2 fine-tune of
+weights and the per-block e8m0 exponent bias under the MXFP4 grid, rotations frozen (256 samples × 2
+epochs). On upstream's own ladder that is worth GSM8K 96.96% (one-shot) → 97.60% (fine-tuned, served).
+**Ours is the one-shot**, so everything below is a floor, not a ceiling. The fine-tune needs the
+optimizer's 55.6 GiB CPU-resident footprint; this box has 31 GB and its only swap is **zram** (compressed
+RAM, not disk), so it needs a real disk swapfile first. The GPU side would fit the 16 GB card — after
+capture only one layer (~0.5 GiB) is touched per iteration — so it could run on GPU1 while GPU0 serves.
+
+### Core-19 on the heretic MXFP4 build
+
+Run against the live vLLM endpoint with `core19_external.sh` (no server management — a model switch
+costs 8–9 min of JIT, so the campaign must not restart anything). Effort forced to **xhigh** via a
+`TB_EXTRA_BODY` hook; the GGUF arms used their embedded template, which
+`{%- set resolved_reasoning_effort = reasoning_effort|default('xhigh') %}` — **so effort is matched**.
+
+| | score | pass@1 | quant | bits |
+|---|---|--:|---|--:|
+| **MXFP4 W4A8 (this build, vLLM)** | **18/19** | **17** | paroquant_mxfp4 | 4.25 |
+| stock UD-Q4_K_XL (llama.cpp, Strix Halo, *medium*) | 18/19 | 17 | unsloth dynamic | ~4.5 |
+| heretic Q4_K_S (llama.cpp, R9700) | 17/19 | 16 | K-quant small | ~4.0 |
+
+**It matches Donato's stock reference and beats the source GGUF by one task, at the lowest bit depth of
+the three.** Against the GGUF it *gained* `extract-elf` and `configure-git-webserver` — both genuine
+GGUF failures, no infra involved, the agent ran to completion on both attempts — and *lost*
+`mteb-retrieve`, which is marginal for the whole family (the GGUF needed a retry for it; Turbo failed it
+twice).
+
+**So strict 4-bit did not cost reasoning.** The most economical reading is not that MXFP4 improved the
+model but that **Q4_K_S was costing heretic a task and MXFP4 at 4.25 bpw with rotations is not.**
+
+### Wall clock: 1.57×, and it is a slope
+
+Agent minutes, attempt 1, both sides (container build and verifier excluded from both).
+Chart: [data/vllm-mxfp4/core19_time.html](../data/vllm-mxfp4/core19_time.html).
+
+| | MXFP4 vLLM | Q4_K_S llama.cpp |
+|---|--:|--:|
+| total, 19 tasks | **240.7 min** | 378.1 min |
+| faster / slower / parity | **8 / 10 / 1** | |
+
+| task | ours | baseline | |
+|---|--:|--:|--:|
+| mailman | 17.0 | 68.6 | **4.0×** |
+| cobol-modernization | 16.5 | 45.9 | **2.8×** |
+| headless-terminal | 13.1 | 28.3 | **2.2×** |
+| llm-inference-batching-scheduler | 31.0 | 66.3 | **2.1×** |
+| … | | | |
+| mteb-retrieve | 9.1 | 6.0 | 0.66× |
+| sparql-university | 13.1 | 8.6 | 0.65× |
+| regex-log | 17.6 | 5.7 | **0.32×** |
+
+The aggregate is faster while a *majority of tasks are slower*, because the gain concentrates entirely
+in the long tail. This is §3 and §4 showing up at application level: prefill is 3.2–3.6× and decode is
+~23% slower, and an agent re-prefills its whole context on every step — so a 60-step task pays the
+prefill advantage 60 times while a 3-step task is decode-bound and gives a little back.
+
+### The 65k context window never bound
+
+§6d flagged three tasks whose baseline peaks exceeded the 57,536 summarisation trigger
+(`SUMMARIZATION_FREE_TOKENS = 8000`, absolute, so the trigger is `context_length − 8000`). **None of them
+compacted, because none of them got near it.** Measured peaks this run:
+
+| task | baseline peak | this run |
+|---|--:|--:|
+| mailman | 89,089 | **33,610** (27 steps) |
+| llm-inference-batching-scheduler | 65,936 | **53,727** |
+| cobol-modernization | 60,439 | **33,118** |
+
+Maximum across all 19 was **53,727**, under the trigger. The run simply used less context — `mailman`
+solved it in roughly a third of the baseline's tokens *and* a quarter of the wall clock. So the 65k
+per-request ceiling, which §2 identified as this stack's real weakness, cost nothing on this workload.
+That is a narrower claim than it looks: Core-19 agent contexts run a 10–40k median, and a workload that
+genuinely needs 262k would still be excluded.
+
+**Draft acceptance on agentic work: 55–57%** (mean accepted length ~3.8 of 6), against 40–46% on image
+description in §6c. Agents quote files back, so the drafter hits more often — the same overlap effect
+[12](12-prompt-lookup-decoding.md) measured for n-gram lookup, here in a trained drafter.
 
 ## 7. Setup gotchas (all upstream, all fixed locally)
 
@@ -384,8 +501,11 @@ usable tokens in a serving configuration against production's 262k, with per-req
 65k on one card. That is a direct argument for the second R9700, where weights halve per card and the
 freed memory becomes KV.
 
-Now measured and folded into §6b: the power cap (+14% PP, +7% decode, +16% peak aggregate) and
-`SPEC=7` (not viable at TP=1 — it leaves room for a 1,648-token context). Still open: a heterogeneous text+image concurrency
+Now measured: the power cap (§6b), `SPEC=7` (not viable at TP=1), vision (§6c), and **quality —
+Core-19 18/19 (17 pass@1) on a heretic build of this format, matching Donato's stock reference and
+beating the source GGUF at the lowest bit depth of the three, at 1.57× the wall clock (§6e)**.
+Still open: the `-ft` stage-2 fine-tune (blocked on a disk swapfile; ours is the one-shot, i.e. a
+floor), and a heterogeneous text+image concurrency
 ladder (this is the VL checkpoint — `[radiance.vit] head_dim-72 attention installed`, encoder cache
 budget 16,384, `compile_mm_encoder: False` — and real traffic is not homogeneous); and quality, which
 has had **no** gate at all here. Note this is stock Qwen3.8-27B, **not heretic**, so it is not a

@@ -60,6 +60,9 @@ container started by the upstream launcher (`paroquant/run_paroquant.sh`). They 
 | `vllm_conc2.py` | Concurrency ladder reproducing `harness/conc_test.py`'s method (~70-token prompt, `max_tokens=800`) so the aggregate is **decode** concurrency and comparable with [docs/02](../docs/02-engines-llamacpp-vs-vllm.md). Ladder 1→96, counts reasoning tokens as well as content, records GPU power and physical-vs-sibling CPU load per rung. |
 | `img_bench.py` | Vision wallclock A/B: sends each image as a base64 data URI in the OpenAI vision shape, reports per-image prompt tokens, TTFT (ViT encode + prefill), wallclock, decode and a degeneration guard. Engine-agnostic — same script drives llama.cpp (`--mmproj`) and vLLM. |
 
+| `img_bench2.py` | Vision benchmark with thinking disabled (`chat_template_kwargs {"enable_thinking": false}`) — sequential pass for uncontended PP/TG, then all images at once for concurrency and fairness, with draft acceptance parsed from the server's own SpecDecoding lines. Written after the first vision run truncated: the template defaults to `reasoning_effort=medium`, which spends the output budget on preamble. |
+| `core19_external.sh` | Core-19 against an **already-running** endpoint — no server start/stop, because a vLLM model switch costs 8–9 min of JIT. Pins `--context-length` explicitly rather than letting the runner guess from llama.cpp-shaped metadata vLLM does not emit, and forces reasoning effort through a `TB_EXTRA_BODY` hook added to `terminal_bench.py` (inert unless the env var is set). |
+
 **Launcher overrides these runs depend on** (see [docs/13 §5, §7](../docs/13-vllm-mxfp4-w4a8-rdna4.md)):
 `GPUS=0 TP=1` (auto-detection otherwise picks a mismatched TP=2 across the 32 GB and 16 GB cards),
 `R4D_KEY` matching what setup actually built, `PORT` (8085 for tests; vLLM **production** runs on
