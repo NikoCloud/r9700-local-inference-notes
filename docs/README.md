@@ -1,7 +1,7 @@
 # The docs
 
 Thirteen dated write-ups **in the order they were written** — the numbering is chronological, not a
-reading order. [STATE.md](../STATE.md) has what runs today, [FINDINGS.md](../FINDINGS.md) the
+reading order. [LEVERS.md](../LEVERS.md) has the knob-by-knob deltas, [FINDINGS.md](../FINDINGS.md) the
 one-line-per-discovery ledger, [MISTAKES.md](../MISTAKES.md) the corrections.
 
 **By goal**

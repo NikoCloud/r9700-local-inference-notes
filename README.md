@@ -15,7 +15,7 @@ The most useful part is probably **[MISTAKES.md](MISTAKES.md)**. A lot of this p
 confidently wrong and then finding out why. Those errors are kept, not cleaned up, because the same
 traps will catch the next person.
 
-> **Living notes.** [STATE.md](STATE.md) = what runs today · [FINDINGS.md](FINDINGS.md) = every
+> **Living notes.** [LEVERS.md](LEVERS.md) = what each knob was measured to do · [FINDINGS.md](FINDINGS.md) = every
 > discovery, newest first. Last material update: **2026-09-13**. Everything is dated and measured on
 > one machine — re-check anything you plan to rely on; software on this platform moves weekly.
 
@@ -25,11 +25,11 @@ traps will catch the next person.
 
 | If you want to… | Go to |
 |---|---|
-| Set up one R9700 for local LLMs | [docs/02](docs/02-engines-llamacpp-vs-vllm.md) for the engine + configs, then [STATE.md](STATE.md) for the current production lines |
+| Set up one R9700 for local LLMs | [docs/02](docs/02-engines-llamacpp-vs-vllm.md) for the engine + configs, then [LEVERS.md](LEVERS.md) for what each knob buys |
 | Not re-derive what was already got wrong | [MISTAKES.md](MISTAKES.md) — read before trusting your own first results |
 | Benchmark honestly | [METHODOLOGY.md](METHODOLOGY.md) — 47 rules, each one from an incident |
 | See what is still broken or blocked | [OPEN-PROBLEMS.md](OPEN-PROBLEMS.md) |
-| Know what the machine runs right now | [STATE.md](STATE.md) |
+| Weigh a setting before flipping it (power cap, depth, speculation, caching) | [LEVERS.md](LEVERS.md) — measured deltas per knob, linked to the evidence |
 | Catch up on what's new | [FINDINGS.md](FINDINGS.md) — the ledger, newest first |
 | Pick engines / backends / quants | [docs/02](docs/02-engines-llamacpp-vs-vllm.md), [docs/05](docs/05-rocm-vs-vulkan.md), [docs/13](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
 | Browse the deep-dives | [docs/](docs/) — 13 dated write-ups, indexed in [docs/README.md](docs/README.md) |
@@ -47,7 +47,7 @@ traps will catch the next person.
 | PSU | 1000 W (a larger ATX 3.1 unit is pending; see [docs/06](docs/06-power-and-stability.md)) |
 | OS / drivers | CachyOS (Arch-based), Mesa RADV 26.x, ROCm 7.2 on the host, ROCm 7.14 / 10.0 inside containers |
 | Main engine | llama.cpp `master` @ `434ddbb` built natively for Vulkan, plus a local vision patch ([patches/](patches/)) |
-| Power profile | 250 W cap, undervolt, reduced memory clock (LACT); benchmarks at 330 W noted inline — see [STATE.md](STATE.md) |
+| Power profile | 250 W cap, undervolt, reduced memory clock (LACT); what changing the cap buys: [LEVERS.md](LEVERS.md) |
 
 Workload: two always-on AI agents sharing one llama.cpp server (long, deep contexts, tool use), plus
 ComfyUI on the second card.
@@ -87,7 +87,7 @@ flat. One R9700, 330 W cap, matched harnesses in the same hour ([docs/13 §6b](d
 
 | | |
 |---|---|
-| [STATE.md](STATE.md) | what runs today — the only "current" file |
+| [LEVERS.md](LEVERS.md) | each knob, and what sweeping it was measured to do |
 | [FINDINGS.md](FINDINGS.md) | every discovery, newest first |
 | [MISTAKES.md](MISTAKES.md) | every wrong belief, and what corrected it |
 | [OPEN-PROBLEMS.md](OPEN-PROBLEMS.md) | still broken, unexplained, or blocked |

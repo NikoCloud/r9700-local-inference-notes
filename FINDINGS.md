@@ -1,6 +1,6 @@
 # Findings ledger
 
-One entry per discovery, newest first — this is the repo's stream. **Claim → evidence → link.** Dates: the doc's own date box where it has one, otherwise when the write-up was first committed; some findings were measured days before they were written up. Numbers are as measured then, under the [README](README.md) ground rules. [STATE.md](STATE.md) says what is true *now*; [docs/](docs/) holds the full record.
+One entry per discovery, newest first — this is the repo's stream. **Claim → evidence → link.** Dates: the doc's own date box where it has one, otherwise when the write-up was first committed; some findings were measured days before they were written up. Numbers are as measured then, under the [README](README.md) ground rules. [LEVERS.md](LEVERS.md) collects the knob-by-knob deltas; [docs/](docs/) holds the full record.
 
 ## 2026-09-12 · MXFP4 W4A8 is the first thing to actually use RDNA4's fp8 WMMA
 `vllm` `rdna4` `kernel` `power`

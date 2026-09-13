@@ -98,12 +98,6 @@ def check_staleness(newest_finding):
         warnings.append(
             f"README.md digest date {m.group(1)} is older than newest FINDINGS entry {newest_finding}"
         )
-    sp = os.path.join(ROOT, "STATE.md")
-    if os.path.exists(sp):
-        sm = re.search(r"As of\s*\*{0,2}(\d{4}-\d{2}-\d{2})",
-                       open(sp, encoding="utf-8").read())
-        if sm:
-            print(f"  STATE.md 'as of': {sm.group(1)}")
 
 
 def check_docs_index():
