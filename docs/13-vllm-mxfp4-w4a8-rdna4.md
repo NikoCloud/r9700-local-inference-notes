@@ -86,8 +86,14 @@ What each step costs:
   costs 2.05 GiB of weights. Without it, row 3's config would not have OOM'd at 0.92 at all.
 - **Raising MAXSEQS 8 → 96 halves tokens/GiB** (row 3 → 4: 20,130 → 9,202) *with more KV memory
   available*. This is the hybrid-architecture tax — see §5.
-- **Per-request context caps at 65,536 on one card** (the launcher's own comment: "A TP=1 serve on one
-  32 GB card needs MAXLEN <= 65536"), even though the pool can exceed 200k.
+- ~~**Per-request context caps at 65,536 on one card**~~ — **WRONG, corrected 2026-09-13.** That was
+  upstream's tuning note for *their* config ("A TP=1 serve on one 32 GB card needs MAXLEN <= 65536"),
+  taken as a hardware limit and never tested. **131,072 boots fine at TP=1** — measured: 233,016 KV
+  tokens, 1.78× concurrency at full length, MXFP4 + fp8 KV, `MAXSEQS=2`, **no drafter**. The real
+  constraint is **drafter-or-context**: with DFlash2 loaded, 131,072 needs 5.28 GiB of KV and only 0.90
+  GiB is left, so it refuses. The live counterexample was on the same box the whole time — production
+  llama.cpp serves the same 27B at **262,144** on this card (Q4_K_S + q8_0 KV). See
+  [MISTAKES](../MISTAKES.md).
 
 For comparison, production llama.cpp holds a **262,144-token** pool at `-np 4` in 28.0 GiB under `-kvu`
 ([12](12-prompt-lookup-decoding.md)). Only row 1 — eager, no drafter — gets close, and eager is not a
@@ -356,7 +362,7 @@ of GPU0.
 | port | **8080** | **8000** (vLLM default) |
 | engine | llama.cpp Vulkan `434ddbb` | radiance vLLM 0.27.1, MXFP4 W4A8 |
 | model | heretic Qwen3.8-27B Q4_K_S | **stock** Qwen3.8-27B PARO-MXFP4 |
-| context | **262,144** | 65,536/request, 103k pool |
+| context | **262,144** (Q4_K_S + q8_0 KV) | 65,536/request, 103k pool *as configured* (MXFP4 + fp8 KV + DFlash2, `MAXSEQS=8`); 131,072 / 233k without the drafter |
 | strengths | context, decode, heretic behaviour | PP 3.2-3.6x, TTFT, vision wallclock, 4x concurrency |
 | launch | `systemctl --user start qwen38.service` | `systemctl --user start qwen_vllm.service` |
 
@@ -517,7 +523,7 @@ matters regardless of how much is used) are the owner's hands-on priors on top o
 
 | factor | Qwen's guidance | this serve |
 |---|---|---|
-| allocated context | 262,144 native | **65,536** (TP=1 on one 32 GB card cannot allocate 131,072 — §2) |
+| allocated context | 262,144 native | **65,536 as configured** — ~~not a hardware limit~~; 131,072 boots at TP=1 without the drafter (§2). This run's 65,536 was a choice, not a ceiling |
 | KV dtype | — | **fp8** |
 | temperature, **thinking mode** | **1.0** | **0.7** |
 | top_p, **thinking mode** | **0.95** | 0.95 |
@@ -564,9 +570,12 @@ description in §6c. Agents quote files back, so the drafter hits more often —
 **This whole path is a single-card answer.** Worth stating plainly, because it decides whether any of the
 above applies to a reader.
 
-The forcing function is that one 32 GB card cannot hold a 27B *and* a usable context window. Weights at
-4.25 bpw leave ~5 GiB for KV (§2), and even that only reaches 65,536 per request — half Qwen's advised
-floor (§6e). W4A8 exists to make that arithmetic work at all.
+The forcing function is memory pressure on one 32 GB card — but **stated more carefully than an earlier
+revision of this section managed.** MXFP4 W4A8 is **18.07 GiB resident** (20.12 with the drafter): "4.25
+bpw" covers the 400 quantized projections, while embeddings, `lm_head` and the vision tower stay bf16,
+~6 GB. That is *more* than llama.cpp's heretic Q4_K_S at ~15 GiB, which is how llama.cpp serves
+**262,144** on this same card. What one card can hold is a function of **quant, KV dtype, drafter and
+`MAXSEQS`** — never of the card alone.
 
 **With two cards the problem dissolves.** TP=2 halves weights per card, KV stops being scarce, ≥128k
 becomes allocatable, and there is no memory reason to quantize this hard — plain FP8 W8A8 fits

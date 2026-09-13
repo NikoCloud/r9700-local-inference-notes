@@ -223,6 +223,28 @@ Nobody comes out of this file looking infallible, which is the point.
     absence-of-evidence from the wrong source as grounds to retract. A confident retraction dressed in
     verification language ("checked 2026-09-13", a counter-quote, a commit) is worse than the original error —
     it destroys a correct claim *and* invites the person who was right to doubt themselves.
+- **Published a card-level context ceiling that was a config choice, and never tested it — while a live
+  counterexample ran on the same box.** docs/13, FINDINGS, LEVERS, OPEN-PROBLEMS and the README all carried
+  "a TP=1 serve on one 32 GB card cannot allocate 131,072". The source was a comment in upstream's launcher
+  ("A TP=1 serve on one 32 GB card needs MAXLEN <= 65536") — their tuning note for *their* config, read as
+  hardware physics. **Tested on being challenged: 131,072 boots fine at TP=1** — 233,016 KV tokens, 1.78×
+  concurrency at full length (MXFP4 + fp8 KV, `MAXSEQS=2`, no drafter). The real constraint is
+  **drafter-or-context**: with DFlash2 loaded, 131,072 needs 5.28 GiB of KV against 0.90 available.
+  - **The counterexample was running the entire time.** Production llama.cpp serves the same 27B at
+    **262,144** on that card (Q4_K_S + q8_0 KV). A claim that one card "can't do 131k" was refuted by a
+    server two ports away doing 262k, and it never occurred to me to look, because I was reasoning from a
+    comment instead of from the machine.
+  - **Consequence, not just an error in prose.** Core-19 ran at 65,536 because of this. The stock arm's
+    `mailman` failure is `ContextWindowExceededError` at **65,537 input tokens against a 65,536 limit** — a
+    wall I put there. That result cannot be cleanly attributed to the weights, and the heretic-vs-stock gap
+    is correspondingly softer than the scoreboard suggests.
+  - It also fed a hardware argument. "The second R9700 is a *correctness* requirement" was retracted: one
+    card reaches ≥128k today by dropping the drafter. The second card buys ≥128k *and* speculation *and*
+    headroom — a capacity argument, which is what it always was.
+  - **Rule:** a capacity number is meaningless without **quant, KV dtype, drafter state and `MAXSEQS`**.
+    "One 32 GB card fits X" is never a fact about the card. And an upstream comment is a hypothesis about
+    someone else's configuration — test it before publishing it as a limit, especially when your own box is
+    already disproving it.
 - **Compared our trial time against the baseline's agent time** in the Core-19 wall-clock chart, charging us
   for container builds and verifier runs the baseline column excluded. `fix-ocaml-gc` swung 0.56× → 0.90× on
   that alone. Also reported 2.01× from 15 finished tasks before the slow tail landed; the honest all-19,

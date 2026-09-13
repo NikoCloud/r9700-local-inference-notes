@@ -5,7 +5,7 @@ One entry per discovery, newest first — this is the repo's stream. **Claim →
 ## 2026-09-13 · The TP=1 serve runs at half Qwen's advised context floor, and the degeneration it warns about was observed live
 `vllm` `models` `agents` `quality`
 
-- Qwen's own Qwen3.6-27B card, *Serving* section, `[!Important]`: *"we advise maintaining a context length of at least 128K tokens to preserve thinking capabilities"* (default 262,144). This serve allocates **65,536** — half the advised floor — with `--kv-cache-dtype fp8`. A TP=1 serve on one 32 GB card cannot allocate 131,072, so the deviation is structural, not a setting.
+- Qwen's own Qwen3.6-27B card, *Serving* section, `[!Important]`: *"we advise maintaining a context length of at least 128K tokens to preserve thinking capabilities"* (default 262,144). This serve was configured at **65,536** — half the advised floor — with `--kv-cache-dtype fp8`. **Correction (same day): that was a choice, not a ceiling.** 131,072 boots at TP=1 (233,016 KV tokens, MXFP4 + fp8 KV, `MAXSEQS=2`, no drafter); the real constraint is **drafter-or-context** — with DFlash2 loaded it needs 5.28 GiB and has 0.90. llama.cpp serves the same 27B at 262,144 on this card at Q4_K_S + q8_0 KV. See [MISTAKES](MISTAKES.md).
 - It is a **gradient, not a threshold**: Qwen ships a dial (`presence_penalty` 0–2 "to reduce endless repetition"), and the phrasing *"preserve thinking capabilities"* describes capability that degrades by degree. Repetition remains possible at 262k, just rarer; each increment of KV starvation raises the rate.
 - Observed on the stock arm's Core-19 `mailman` retry: the KV cache traced a sawtooth of ~16k-token generations (~15.5 points of a 103,268-token pool) on a ~4-minute cycle for **57 minutes with zero trajectory progress**, ending in the 3-hour `AgentTimeoutError` — the documented "rambles until token cap" signature.
 - Sampling also deviates: Qwen specifies thinking mode `temperature=1.0` / `top_p=0.95`; the serve applies **0.7** (the instruct-mode value) on thinking-mode requests, in the direction that raises repetition risk. Upstream and fleet-wide — `run_paroquant.sh` records the 1.0 → 0.7 change "across every vllm-switch target". `presence_penalty` sits at 0.0, per spec but leaving the one offered mitigation unused.
@@ -38,7 +38,7 @@ One entry per discovery, newest first — this is the repo's stream. **Claim →
 `kernel` `vllm` `multi-gpu`
 
 - On a 32 GB card a 27B leaves 4–8 GiB for KV and every feature spends it: CUDA graphs ~56k tokens, the DFlash2 drafter ~66k even at util 0.96, and MAXSEQS 8 → 96 halves tokens/GiB (20,130 → 9,202).
-- Per-request context caps at 65,536 on one card; the best KV row (225,280 tokens, eager + no drafter) is not a serving configuration.
+- Per-request context was configured at 65,536 (MXFP4 + fp8 KV + DFlash2, `MAXSEQS=8`); ~~capped on one card~~ — **corrected 2026-09-13**, 131,072 serves without the drafter. Capacity is a function of quant, KV dtype, drafter and `MAXSEQS`, never of the card alone.
 - CHUNK (--max-num-batched-tokens) cannot exceed 8192 — 16384 dies with shared memory Required: 131072, Hardware limit: 65536 (64 KiB of LDS per workgroup), so the obvious deep-concurrency fix is permanently unavailable.
 - One Mamba cache block per decode sequence: 96 sequences exceed the 84 available, so slots and context compete for one budget — a tax pure-attention models don't pay.
 - Auto-detection is dangerous: an 8192 MiB VRAM floor passes the 16 GB card and would pick TP=2 across the mismatched pair — always pass GPUS=0 TP=1.
@@ -52,7 +52,7 @@ One entry per discovery, newest first — this is the repo's stream. **Claim →
 - Safe because heretic-ara is ARA abliteration (KL divergence 0.0535 from stock, 0/100 refusals) — not a finetune — so stock-trained rotations transfer.
 - Ours is the one-shot; the served -ft stage-2 is worth GSM8K 96.96% → 97.60% on upstream's ladder and is blocked on a disk swapfile — everything measured here is a floor.
 - Core-19 wallclock 240.7 vs 378.1 min (1.57×) but 8 faster / 10 slower / 1 parity — the gain is entirely the long tail, and the 65k window never bound (max peak 53,727).
-- The box now runs two mutually exclusive productions: llama.cpp on 8080 (262,144 ctx, heretic) and vLLM on 8000 (65,536/request), Conflicts= in the unit, static so it can't race at boot.
+- The box now runs two mutually exclusive productions: llama.cpp on 8080 (262,144 ctx, heretic Q4_K_S + q8_0 KV) and vLLM on 8000 (65,536/request as configured, MXFP4 + fp8 KV + drafter), Conflicts= in the unit, static so it can't race at boot.
 
 → [docs/13](docs/13-vllm-mxfp4-w4a8-rdna4.md) · [data/vllm-mxfp4](data/vllm-mxfp4)
 
