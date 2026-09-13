@@ -7,6 +7,13 @@
 > `stilldeadcode/vllm-radiance:0.9.3`, **vLLM 0.27.1**, ROCm 7.14, torch 2.11). Production
 > (llama.cpp) was evicted for every run. Nothing here is a production recommendation — this was an
 > academic qualification of the fp8 tensor path.
+>
+> **Whose work this is:** the rotations are [z-lab](https://huggingface.co/z-lab)'s (ParoQuant,
+> [arXiv 2511.10645](https://arxiv.org/abs/2511.10645)); the reference checkpoint is
+> [Launch80](https://huggingface.co/Launch80/Qwen3.8-27B-PARO-MXFP4)'s; the fp8-WMMA kernels, the vLLM
+> plugin and the build tooling are [ggz14](https://codeberg.org/ggz14/radiance-vllm-mxfp4)'s, on
+> [StillDeadcode](https://codeberg.org/StillDeadcode/vllm-radiance)'s image. Everything below is
+> measurement of their work, not a contribution to it.
 
 ## Why this was worth a day
 

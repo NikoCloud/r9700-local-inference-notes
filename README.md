@@ -123,10 +123,39 @@ failure modes.
 
 ## Credits
 
+Almost nothing here is original work. The measurements are ours; the things measured are other
+people's, and several of them are the only reason a result exists at all.
+
+**Every vLLM number in these notes traces back to one chain of work.** It is not a small debt:
+
+- **[z-lab](https://huggingface.co/z-lab)** — **ParoQuant** ([arXiv 2511.10645](https://arxiv.org/abs/2511.10645),
+  ICLR 2026), the reference implementation, and the **trained Givens rotations** in
+  [z-lab/Qwen3.8-27B-PARO](https://huggingface.co/z-lab/Qwen3.8-27B-PARO). Those rotations are load-bearing:
+  training our own on this box left angles at *exactly zero* past layer ~10, so every rotated checkpoint
+  here reuses theirs unchanged.
+- **[Launch80](https://huggingface.co/Launch80)** — [Qwen3.8-27B-PARO-MXFP4](https://huggingface.co/Launch80/Qwen3.8-27B-PARO-MXFP4),
+  the checkpoint that showed MXFP4 W4A8 on RDNA4 was real. It is the reference every vLLM figure in
+  [13](docs/13-vllm-mxfp4-w4a8-rdna4.md) is measured against, and the format we rebuilt a heretic model into.
+  Without that card on Hugging Face we would not have looked at the fp8 path at all.
+- **[ggz14](https://codeberg.org/ggz14/radiance-vllm-mxfp4)** — the hand-written HIP **fp8-WMMA kernels**, the
+  ROCm path for the rotation extension, the vLLM quantization plugin, and `build_hybrid.py` (which rebuilt a
+  27B into this format in 62 s). This is the work that made RDNA4's fp8 tensors usable at all; the gate was
+  never the silicon.
+- **[StillDeadcode](https://codeberg.org/StillDeadcode/vllm-radiance)** — `vllm-radiance`, the container
+  image the whole stack runs inside.
+- **[tcclaviger](https://huggingface.co/tcclaviger/Qwen3.8-27B-DFlash2-FP8)** — the DFlash2-FP8 drafter, the
+  only speculative path these checkpoints have.
+
+**Also:**
+
 - **kyuz0 (Donato)** for the AMD R9700 toolboxes and
-  [terminal-bench-mini](https://github.com/kyuz0/terminal-bench-mini) (Core-19).
-- Model authors: **trohrbaugh** (Qwen3.8-27B heretic), **DavidAU** (Turbo Fable Cold-Fusion),
-  **outsourc-e** (Unleashed), **Unsloth** and the Qwen team.
+  [terminal-bench-mini](https://github.com/kyuz0/terminal-bench-mini) (Core-19) — the benchmark and the
+  reference results most of this repo is calibrated against.
+- **[p-e-w](https://github.com/p-e-w/heretic)** for Heretic, and **timrohrbaugh** for the ARA fork and
+  [Qwen3.8-27B-heretic-ara](https://huggingface.co/trohrbaugh/Qwen3.8-27B-heretic-ara) — KL 0.0535 from stock
+  at 0/100 refusals, which is why stock-trained rotations transfer to it cleanly.
+- Model and quant authors: **DavidAU** (Turbo Fable Cold-Fusion, NEO-CODE), **outsourc-e** (Unleashed),
+  **mradermacher** (imatrix GGUFs), **Unsloth**, and the **Qwen** team.
 - The llama.cpp, vLLM, ROCm, Mesa and ComfyUI projects.
 
 ## License
