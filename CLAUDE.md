@@ -12,7 +12,7 @@ belongs here in the same session. The rules below are for *writing*; the rules f
 | A lever was swept, or its numbers moved (power cap, depth, speculation, backend, caching) | Update that row in [LEVERS.md](LEVERS.md) — swept range + deltas. Effects only; never a "current config" snapshot |
 | Something previously published was wrong | [MISTAKES.md](MISTAKES.md) — strike through and correct; never delete ([METHODOLOGY.md](METHODOLOGY.md) #38) |
 | A problem opened, changed or got resolved | [OPEN-PROBLEMS.md](OPEN-PROBLEMS.md) |
-| A *headline* finding that changes the front page | The relevant digest row in [README.md](README.md), and its "last material update" date |
+| An outlier, a surprise, or a trick worth knowing | A bullet in README's *Standout findings*, or the matching goal row — and bump the "last material update" date |
 
 ## The update checklist
 
@@ -29,7 +29,10 @@ When a finding lands:
    churn, deltas transfer. There is deliberately no "what this box currently runs" file.
 4. **Corrections.** If anything previously published was wrong, add the MISTAKES.md entry in the same
    session. Corrected numbers get an inline strikethrough + pointer at the point of the original claim.
-5. **Digest.** Only headline-level findings touch the README — keep it one line, keep it true.
+5. **Front page.** Curation is the point: if the finding is an outlier, a surprise, or a trick
+   someone would search for, add or update a *Standout findings* bullet in the README — one line,
+   with its number — or the matching goal row. Not everything goes up; pick what a stranger would
+   find remarkable.
 6. **Check.** Run `python scripts/check_docs.py` before pushing. Fix what it flags.
 7. **Commit.** Message style follows the log: `docs/NN §X: <what changed>` or `<FILE>: <what changed>`.
 

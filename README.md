@@ -23,6 +23,20 @@ traps will catch the next person.
 
 ---
 
+## Standout findings
+
+If you read nothing else, these are the outliers.
+
+- **The trick that costs nothing: chain n-gram lookup in front of MTP.** `--spec-type ngram-mod,draft-mtp` needs no model and no extra VRAM, and decodes **123.4 tok/s on code edits / up to 222.8 on copy** where plain MTP does ~77 — 1.6× / 2.9×, holding ~1.5× per stream at 1/2/4 concurrent. ([12](docs/12-prompt-lookup-decoding.md))
+- **The context price of vLLM's speed.** Same single card: llama.cpp keeps **262k** tokens of context; the vLLM config that wins prefill keeps **59k–225k depending on features** (103k with its drafter, 65,536 per request). A 27B's weights leave ~5 GiB for KV — the clearest measured argument for a second card. ([13 §2](docs/13-vllm-mxfp4-w4a8-rdna4.md))
+- **vLLM's "3× slower at depth" was three wrong defaults** — a ≤16k attention kernel, `--enforce-eager`, and prefix caching off. Configured, *unpatched* vLLM 0.27.1 decodes 32.0 tok/s at 35k. ([02](docs/02-engines-llamacpp-vs-vllm.md))
+- **A power cap does not bound transients.** Sub-millisecond peaks of **488 W and 584 W** were measured under a 250 W cap (934 W combined, no crash). ([06](docs/06-power-and-stability.md))
+- **ROCm wins shallow, loses deep** on the same build — +27% at a 244-token prompt, −21% at 38.7k. A shallow benchmark picks the wrong backend. ([05](docs/05-rocm-vs-vulkan.md))
+- **RDNA4's fp8 path is real, kernel to model.** Hand-written kernels reach **225 TF/s (~2.35× the FP16 figure)** with no driver spoofing — the gate was always the libraries — and a heretic build of the W4A8 format, rebuilt locally from bf16 in **62 s**, scores **18/19** on Core-19 (17 pass@1). ([13 §1](docs/13-vllm-mxfp4-w4a8-rdna4.md))
+- **The fast model approves its own mistakes.** In 4 of Turbo's 5 genuine Core-19 failures it declared success on a wrong or missing check — and its own poem review passed rhyme that broke the rule in 3 of 6 poems. ([08](docs/08-agentic-benchmark-core19.md) · [11](docs/11-reasoning-traces-and-sanity-checks.md))
+
+---
+
 ## Start here — pick your goal
 
 | What are you after? | The short answer, from this project | Where |
