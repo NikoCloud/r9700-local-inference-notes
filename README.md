@@ -44,7 +44,7 @@ If you read nothing else, these are the outliers.
 | What are you after? | The short answer, from this project | Where |
 |---|---|---|
 | Fastest token generation, single stream | llama.cpp + MTP `n_max=2`: **61.7 tok/s**; the n-gram→MTP chain adds 1.6× (code edits) to 2.9× (pure copy); DFlash2 is faster only alone (79.0 on code) and loses at 2+ streams | [04](docs/04-speculative-decoding.md) · [12](docs/12-prompt-lookup-decoding.md) |
-| Fastest prefill | vLLM + MXFP4 W4A8 (RDNA4's fp8 WMMA): **2.6–3.5× production**, rising with depth — at a matched 330 W it wins every speed axis | [13](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
+| Fastest prefill, **one card** | vLLM + MXFP4 W4A8 (RDNA4's fp8 WMMA): **2.6–3.5× production**, rising with depth — at a matched 330 W it wins every speed axis. Single-card answer: with two cards, TP=2 removes the memory pressure that motivates 4-bit at all ([13 §6f](docs/13-vllm-mxfp4-w4a8-rdna4.md)) | [13](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
 | Vision / image analysis | vLLM: **75.1 s vs 91.3 s** on the same five pages at a matched image budget; TTFT **1.78 s vs 6.42 s** — still ahead at full native resolution | [13 §6c](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
 | Many users at once | vLLM scales to **385.8 tok/s aggregate at n=24**; llama.cpp plateaus at 95.7 (figure below) | [13 §6b](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
 | Long-context agents, one card | llama.cpp (Vulkan): **262k context**, q8_0 KV, `-kvu`, `-np 4` — the context seat | [02](docs/02-engines-llamacpp-vs-vllm.md) · [12](docs/12-prompt-lookup-decoding.md) |

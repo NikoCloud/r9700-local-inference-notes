@@ -559,6 +559,29 @@ climbing ~15.5 points of the 103,268-token pool (~16k tokens), resetting, and cl
 description in §6c. Agents quote files back, so the drafter hits more often — the same overlap effect
 [12](12-prompt-lookup-decoding.md) measured for n-gram lookup, here in a trained drafter.
 
+## 6f. Who this is actually for: the single-card regime
+
+**This whole path is a single-card answer.** Worth stating plainly, because it decides whether any of the
+above applies to a reader.
+
+The forcing function is that one 32 GB card cannot hold a 27B *and* a usable context window. Weights at
+4.25 bpw leave ~5 GiB for KV (§2), and even that only reaches 65,536 per request — half Qwen's advised
+floor (§6e). W4A8 exists to make that arithmetic work at all.
+
+**With two cards the problem dissolves.** TP=2 halves weights per card, KV stops being scarce, ≥128k
+becomes allocatable, and there is no memory reason to quantize this hard — plain FP8 W8A8 fits
+comfortably and is a higher-quality format. vLLM's TP=2 is also the upstream stack's own production
+configuration, so it is the better-tested path. Nobody with two R9700s needs this.
+
+**What does not dissolve, and is untested here:** the *compute* argument is independent of card count.
+MXFP4's zero-VALU inner loop (§1) is a property of the grid feeding fp8 WMMA, and 4.25 bits/weight is
+less decode traffic than FP8's 8 bits on any number of cards. So on two cards W4A8 would stop being
+*necessary* while possibly remaining *preferable* — a different claim, and one no measurement here
+supports. Treat it as a hypothesis ([METHODOLOGY](../METHODOLOGY.md) #39).
+
+So: if you have one R9700 and want a 27B with real context, this document is the answer. If you have
+two, read [03](03-multi-gpu.md) first and come back only for the prefill numbers.
+
 ## 7. Setup gotchas (all upstream, all fixed locally)
 
 - `setup-paroquant.sh` **rejects this checkpoint**: its validator gates on `quant_method=paroquant`
