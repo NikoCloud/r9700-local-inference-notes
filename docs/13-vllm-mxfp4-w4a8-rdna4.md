@@ -565,6 +565,58 @@ climbing ~15.5 points of the 103,268-token pool (~16k tokens), resetting, and cl
 description in §6c. Agents quote files back, so the drafter hits more often — the same overlap effect
 [12](12-prompt-lookup-decoding.md) measured for n-gram lookup, here in a trained drafter.
 
+### The stock arm, and what separates the two weight sets
+
+The same campaign on Launch80's **stock** MXFP4 checkpoint, identical config, same box, xhigh both:
+
+| | heretic MXFP4 | stock MXFP4 | heretic Q4_K_S (llama.cpp) |
+|---|--:|--:|--:|
+| score | **18/19** | 17/19 | 17/19 |
+| pass@1 | **17** | 16 | 16 |
+| retries needed | 2 | 3 (1 recovered) | 2 |
+| **attempt-1 agent time** | **241.5 min** | **240.8 min** | 378.1 min |
+| vs llama.cpp | **1.57×** | **1.57×** | — |
+| grand total incl. retries | 253.7 min | **471.6 min** | — |
+
+**Per attempt the two weight sets are indistinguishable — 241.5 vs 240.8 minutes, 0.3% apart.** Both are
+exactly 1.57× llama.cpp. So the engine-and-format change buys the wall clock and the weights buy none of
+it; per-task times scatter ±2× in both directions (`break-filter-js-from-html` 23.9 → 4.8 in stock's
+favour, `mailman` 17.0 → 36.6 against) with no direction in aggregate.
+
+**Everything that separates them is failures, retries and turn count** — which is the point, because that
+is what a production run actually costs. Heretic needed 2 retries, stock 3, and stock's grand total is
+**471.6 min against 253.7 — 1.86× — for one fewer task solved.**
+
+### `mailman`: the failure was our context limit, with a stack trace
+
+The single divergence is `mailman`, and the harness logged the mechanism rather than leaving it to
+inference:
+
+```
+litellm.ContextWindowExceededError: This model's maximum context length is 65536 tokens.
+However, you requested 0 output tokens and your prompt contains at least 65537 input tokens
+```
+
+**65,537 against a 65,536 limit.** The agent's context filled, every subsequent call returned HTTP 400,
+terminus-2's fallback and retry path spun against it, and the trial burned to the 3-hour
+`AgentTimeoutError` — 218.5 minutes on one task. An earlier revision of this document called that a
+degeneration loop inferred from a KV sawtooth; the sawtooth was real (~16k-token generations on a
+~4-minute cycle) and is what filled the window, but the proximate cause is a hard context rejection.
+
+**That limit was a configuration choice, not a property of the card** (§2, and
+[MISTAKES](../MISTAKES.md)) — 131,072 serves on this hardware without the drafter. So:
+
+- heretic passed `mailman` in 28 steps and 17.0 min, never approaching the ceiling;
+- stock took 45 steps, crossed it, and could not recover.
+
+Step efficiency is a real difference and it is what decided the outcome. But **a serve configured at
+131,072 would very likely have given stock the task**, which makes the 18/19 vs 17/19 gap softer than the
+scoreboard reads. The honest claim is that heretic reaches answers in fewer steps, not that it reasons
+better.
+
+Chart: [data/vllm-mxfp4/core19_time.html](../data/vllm-mxfp4/core19_time.html) — all three arms, attempt 1,
+agent minutes.
+
 ## 6f. Who this is actually for: the single-card regime
 
 **This whole path is a single-card answer.** Worth stating plainly, because it decides whether any of the

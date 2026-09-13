@@ -2,6 +2,17 @@
 
 One entry per discovery, newest first — this is the repo's stream. **Claim → evidence → link.** Dates: the doc's own date box where it has one, otherwise when the write-up was first committed; some findings were measured days before they were written up. Numbers are as measured then, under the [README](README.md) ground rules. [LEVERS.md](LEVERS.md) collects the knob-by-knob deltas; [docs/](docs/) holds the full record.
 
+## 2026-09-13 · Same format, different weights: a 0.3% dead heat per attempt, decided entirely by retries
+`vllm` `models` `quality` `agents`
+
+- Core-19 on both MXFP4 checkpoints, identical config, one R9700 at 330 W, xhigh: heretic **18/19** (17 pass@1), stock Launch80 **17/19** (16 pass@1), against heretic Q4_K_S on llama.cpp **17/19**.
+- **Attempt-1 agent time is 241.5 vs 240.8 min — 0.3% apart, both exactly 1.57× llama.cpp's 378.1.** The engine-and-format change buys the wall clock; the weights buy none of it. Per-task times scatter ±2× both ways with no aggregate direction.
+- **What separates them is retries.** Heretic needed 2, stock 3 (1 recovered). Grand totals including retries: **253.7 vs 471.6 min — 1.86× — for one fewer task solved.** In production that *is* the cost; it is not noise around the measurement.
+- The single divergence is `mailman`, and it was **our context limit, not the weights**: `ContextWindowExceededError` at **65,537 input tokens against the 65,536 this run was configured with**, then 218.5 min spinning to the 3-hour ceiling. 131,072 serves on this hardware without the drafter, so a correctly-sized serve would likely have given stock the task. Heretic avoided it by solving in 28 steps where stock took 45 — step efficiency is the real difference, not reasoning quality.
+- Capacity claims here previously omitted quant and KV config and were wrong as a result; see [MISTAKES](MISTAKES.md). MXFP4 is **18.07 GiB resident vs Q4_K_S's ~15 GiB** — "4.25 bpw" covers 400 projections while embeddings, `lm_head` and the vision tower stay bf16.
+
+→ [docs/13 §6e](docs/13-vllm-mxfp4-w4a8-rdna4.md) · [chart](data/vllm-mxfp4/core19_time.html) · [data/vllm-mxfp4](data/vllm-mxfp4)
+
 ## 2026-09-13 · The TP=1 serve runs at half Qwen's advised context floor, and the degeneration it warns about was observed live
 `vllm` `models` `agents` `quality`
 

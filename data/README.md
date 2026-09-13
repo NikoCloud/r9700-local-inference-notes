@@ -94,7 +94,8 @@ quality conclusion can be drawn from them.
 | File | What it is |
 |---|---|
 | `core19_mxfp4_results.tgz` | The exported results tree (per-task `results-*.json`, transcripts, run + attempt-2 metadata) for the 18/19 run. Platform id `r9700-330w`, deliberately distinct from the 250 W `r9700` corpus so neither set's metadata is falsified. |
-| `core19_time.html` | Wall-clock chart vs the Q4_K_S baseline: per-task bars, a speedup-vs-task-length scatter, and the table. Agent minutes, attempt 1 both sides. Offline. |
+| `core19_time.html` | Wall-clock chart, **three arms**: heretic MXFP4, stock MXFP4, heretic Q4_K_S. Per-task bars, speedup-vs-task-length scatter, table. Agent minutes, attempt 1 for all three. Offline. |
+| `core19_stock_mxfp4_results.tgz` | Exported results tree for the **stock** Launch80 arm (17/19). Same platform id `r9700-330w`, same config as the heretic arm — the only variable is the weights. |
 | `img_bench2_heretic_mxfp4_nothink.json` | Vision run on the heretic build with thinking disabled: sequential and 5-way concurrent passes, PP/TG/TTFT per image, plus draft acceptance sampled from the server around each pass. |
 
 **The two harnesses calibrate tokens/word differently on the same prose** (0.65 vs 0.86), so a

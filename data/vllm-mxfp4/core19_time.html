@@ -1,9 +1,9 @@
-<title>Core-19 wall clock: MXFP4 vLLM vs GGUF llama.cpp</title>
+<title>Core-19 wall clock: three arms on one R9700</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-:root{--bg:#fbfaf7;--fg:#1d1f23;--mut:#6b6f76;--line:#e3e1dc;--card:#fff;--ours:#2f6fb3;--base:#b5562b;--good:#2e7d52}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--fg:#e8e6e1;--mut:#9aa0a6;--line:#2c3036;--card:#1c1f23;--ours:#6ea3e0;--base:#e08a5c;--good:#5fbb8a}}
-:root[data-theme="dark"]{--bg:#15171a;--fg:#e8e6e1;--mut:#9aa0a6;--line:#2c3036;--card:#1c1f23;--ours:#6ea3e0;--base:#e08a5c;--good:#5fbb8a}
+:root{--bg:#fbfaf7;--fg:#1d1f23;--mut:#6b6f76;--line:#e3e1dc;--card:#fff;--ours:#2f6fb3;--stock:#7a5ea8;--base:#b5562b;--good:#2e7d52}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--fg:#e8e6e1;--mut:#9aa0a6;--line:#2c3036;--card:#1c1f23;--ours:#6ea3e0;--stock:#a98fd0;--base:#e08a5c;--good:#5fbb8a}}
+:root[data-theme="dark"]{--bg:#15171a;--fg:#e8e6e1;--mut:#9aa0a6;--line:#2c3036;--card:#1c1f23;--ours:#6ea3e0;--stock:#a98fd0;--base:#e08a5c;--good:#5fbb8a}
 body{background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0}
 main{max-width:1040px;margin:0 auto;padding:26px 20px 60px}
 h1{font-size:21px;margin:0 0 4px}h2{font-size:15px;margin:28px 0 6px}
@@ -20,15 +20,18 @@ th:first-child,td:first-child{text-align:left}th{color:var(--mut);font-size:12px
 b.ours{color:var(--ours)}b.base{color:var(--base)}b.good{color:var(--good)}
 </style>
 <main>
-<h1>Core-19 wall clock — MXFP4 W4A8 (vLLM) vs Q4_K_S (llama.cpp)</h1>
-<p class="sub">Same heretic weights, same box, same tasks, reasoning effort xhigh on both.
-<b class="ours">MXFP4 / vLLM, one R9700, 330&nbsp;W</b> vs <b class="base">Q4_K_S / llama.cpp, attempt&nbsp;1</b>.
-Agent minutes, excluding container build and verifier time. All 19 tasks, attempt 1 only. Final score 18/19 (17 pass@1). 2026-09-12.</p>
+<h1>Core-19 wall clock — three arms, one R9700 at 330 W</h1>
+<p class="sub">One R9700 at 330&nbsp;W, same 19 tasks, reasoning effort xhigh on all three.
+<b class="ours">heretic MXFP4 (vLLM)</b> &middot; <b style="color:var(--stock)">stock MXFP4 (vLLM)</b> &middot;
+<b class="base">heretic Q4_K_S (llama.cpp)</b>. Agent minutes, <b>attempt&nbsp;1 only</b>, container build and
+verifier excluded from all three. Scores: heretic MXFP4 <b>18/19</b> (17 pass@1) &middot; stock MXFP4 <b>17/19</b>
+(16 pass@1) &middot; Q4_K_S <b>17/19</b> (16 pass@1). 2026-09-12/13.</p>
 
 <h2>Minutes per task (sorted by baseline duration)</h2>
 <div class="legend">
-<span><span class="sw" style="background:var(--ours)"></span>MXFP4 vLLM</span>
-<span><span class="sw" style="background:var(--base)"></span>Q4_K_S llama.cpp (a1)</span>
+<span><span class="sw" style="background:var(--ours)"></span>heretic MXFP4 (vLLM)</span>
+<span><span class="sw" style="background:var(--stock)"></span>stock MXFP4 (vLLM)</span>
+<span><span class="sw" style="background:var(--base)"></span>heretic Q4_K_S (llama.cpp)</span>
 <span>speedup annotated at right; <b class="good">green</b> = faster</span>
 </div>
 <div class="wrap"><svg id="bars"></svg></div>
@@ -40,46 +43,56 @@ so tasks that accumulate context gain, while short decode-bound tasks lose a lit
 
 <h2>The numbers</h2>
 <div class="wrap"><table id="tbl"></table></div>
-<p class="note"><b>Reading it:</b> the speedup is a <i>slope</i>, not a constant. The four longest baseline tasks run <b class="good">2.0&ndash;3.8&times;</b> faster; tasks under ~6 baseline minutes are at or below parity. Totals: <b>240.7 min vs 378.1 min</b>, or <b>1.57&times;</b> &mdash; faster on 8 tasks, slower on 10, parity on 1. Both columns are <b>agent</b> minutes on attempt 1 (container build and verifier excluded from both). <b>mailman</b> is the extreme: 68.6 &rarr; 17.0 min, solved in 27 steps at a 33,610-token peak against the baseline&rsquo;s 89,089 &mdash; so the 65k window never bound, and nothing summarised (max peak across all 19 was 53,727). <b>extract-elf</b> and <b>configure-git-webserver</b> are baseline <i>failures</i>; we pass both, so those baseline bars are time spent losing. Final score <b>18/19</b> (17 pass@1) vs the GGUF&rsquo;s 17/19 and stock UD-Q4_K_XL&rsquo;s 18/19.</p>
+<p class="note"><b>Reading it:</b> the two MXFP4 arms total <b>241.5</b> and <b>240.8</b> agent-minutes
+against llama.cpp's <b>378.1</b> — both exactly <b>1.57&times;</b>, and <b>0.997&times; of each other</b>. The
+engine-and-format change buys the wall clock; the weights buy none of it. The speedup is a <i>slope</i>, not a
+constant: the longest baseline tasks run 2.0&ndash;3.8&times; faster while tasks under ~6 baseline minutes sit at
+or below parity, because an agent re-prefills its whole context every step and prefill is where this stack wins.
+<b>mailman</b> is the divergence — heretic 17.0 min and a pass, stock 36.6 min and a fail, then a retry that hit
+<code>ContextWindowExceededError</code> at 65,537 tokens against the 65,536 limit <b>this run was configured
+with</b> and burned the 3-hour ceiling (218.5 min total). That limit was our choice, not the card's: 131,072
+serves on this hardware without the drafter (<a href="../../MISTAKES.md">MISTAKES</a>), so the heretic-vs-stock
+gap is softer than the scores suggest. <b>extract-elf</b> and <b>configure-git-webserver</b> are llama.cpp
+<i>failures</i> that both MXFP4 arms pass, so those baseline bars are time spent losing.</p>
 </main>
 <script>
 const D=[
- ["mailman",16.98,68.55,true],
- ["llm-inference-batching-scheduler",31.01,66.25,true],
- ["extract-elf",33.62,59.59,false],
- ["cobol-modernization",16.53,45.85,true],
- ["headless-terminal",13.09,28.25,true],
- ["build-cython-ext",24.62,23.25,true],
- ["break-filter-js-from-html",23.88,19.69,true],
- ["fix-ocaml-gc",13.72,12.33,true],
- ["overfull-hbox",5.12,9.97,true],
- ["sparql-university",13.11,8.57,true],
- ["configure-git-webserver",7.7,6.47,false],
- ["sqlite-with-gcov",4.77,6.01,true],
- ["mteb-retrieve",9.07,5.99,true],
- ["regex-log",17.63,5.7,true],
- ["nginx-request-logging",2.53,3.8,true],
- ["git-leak-recovery",2.42,2.69,true],
- ["pypi-server",2.31,2.05,true],
- ["fix-git",1.44,1.93,true],
- ["openssl-selfsigned-cert",1.11,1.2,true],
+ ["mailman",16.98,36.56,68.55,true],
+ ["llm-inference-batching-scheduler",31.01,32.92,66.25,true],
+ ["extract-elf",33.62,15.46,59.59,false],
+ ["cobol-modernization",16.53,24.42,45.85,true],
+ ["headless-terminal",13.09,9.95,28.25,true],
+ ["build-cython-ext",24.62,25.68,23.25,true],
+ ["break-filter-js-from-html",23.88,4.78,19.69,true],
+ ["fix-ocaml-gc",13.72,15.49,12.33,true],
+ ["overfull-hbox",5.12,9.72,9.97,true],
+ ["sparql-university",13.11,8.72,8.57,true],
+ ["configure-git-webserver",7.7,7.15,6.47,false],
+ ["sqlite-with-gcov",4.77,4.91,6.01,true],
+ ["mteb-retrieve",9.07,11.25,5.99,true],
+ ["regex-log",17.63,23.71,5.7,true],
+ ["nginx-request-logging",2.53,3.65,3.8,true],
+ ["git-leak-recovery",3.28,2.02,2.69,true],
+ ["pypi-server",2.31,1.96,2.05,true],
+ ["fix-git",1.44,1.51,1.93,true],
+ ["openssl-selfsigned-cert",1.11,0.92,1.2,true],
 ];
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
 function bars(){
- const W=1000,L=210,R=92,T=16,B=30,rowH=26,H=T+B+D.length*rowH;
- const max=Math.max(...D.map(d=>Math.max(d[1],d[2])));
+ const W=1000,L=210,R=104,T=16,B=30,rowH=30,H=T+B+D.length*rowH;
+ const max=Math.max(...D.map(d=>Math.max(d[1],d[2],d[3])));
  const x=v=>L+(W-L-R)*v/max;
  let s="";
  for(let g=0;g<=max;g+=10){s+=`<line x1="${x(g)}" x2="${x(g)}" y1="${T}" y2="${H-B}" stroke="var(--line)"/><text x="${x(g)}" y="${H-B+16}" text-anchor="middle">${g}</text>`;}
- s+=`<text x="${L}" y="${H-B+16}" text-anchor="middle"></text>`;
  D.forEach((d,i)=>{
-  const y=T+i*rowH, h=8;
-  s+=`<text class="lab" x="${L-8}" y="${y+14}" text-anchor="end">${d[0]}</text>`;
-  s+=`<rect x="${L}" y="${y+3}" width="${x(d[2])-L}" height="${h}" fill="var(--base)" opacity="${d[3]?1:.55}"><title>baseline ${d[2]} min${d[3]?"":" (FAILED)"}</title></rect>`;
-  s+=`<rect x="${L}" y="${y+13}" width="${x(d[1])-L}" height="${h}" fill="var(--ours)"><title>ours ${d[1]} min</title></rect>`;
-  const sp=d[2]/d[1];
-  s+=`<text x="${W-R+8}" y="${y+15}" fill="${sp>=1.05?css('--good'):css('--mut')}">${sp.toFixed(1)}x</text>`;
+  const y=T+i*rowH, h=6;
+  s+=`<text class="lab" x="${L-8}" y="${y+16}" text-anchor="end">${d[0]}</text>`;
+  s+=`<rect x="${L}" y="${y+2}" width="${x(d[3])-L}" height="${h}" fill="var(--base)" opacity="${d[4]?1:.55}"><title>llama.cpp Q4_K_S ${d[3]} min${d[4]?"":" (FAILED)"}</title></rect>`;
+  s+=`<rect x="${L}" y="${y+10}" width="${x(d[1])-L}" height="${h}" fill="var(--ours)"><title>heretic MXFP4 ${d[1]} min</title></rect>`;
+  s+=`<rect x="${L}" y="${y+18}" width="${x(d[2])-L}" height="${h}" fill="var(--stock)"><title>stock MXFP4 ${d[2]} min</title></rect>`;
+  const sp=d[3]/d[1];
+  s+=`<text x="${W-R+8}" y="${y+17}" fill="${sp>=1.05?css('--good'):css('--mut')}">${sp.toFixed(1)}x</text>`;
  });
  const el=document.getElementById("bars");el.setAttribute("viewBox",`0 0 ${W} ${H}`);el.innerHTML=s;
 }
@@ -91,25 +104,23 @@ function scat(){
  let s="";
  for(let g=0;g<=ymax;g+=1){s+=`<line x1="${L}" x2="${W-R}" y1="${y(g)}" y2="${y(g)}" stroke="var(--line)"/><text x="${L-8}" y="${y(g)+4}" text-anchor="end">${g}x</text>`;}
  for(let g=0;g<=xmax;g+=10){s+=`<text x="${x(g)}" y="${H-B+18}" text-anchor="middle">${g}</text>`;}
- s+=`<text x="${(W)/2}" y="${H-6}" text-anchor="middle">baseline task length (agent minutes)</text>`;
+ s+=`<text x="${W/2}" y="${H-6}" text-anchor="middle">llama.cpp Q4_K_S task length (agent minutes)</text>`;
  s+=`<line x1="${L}" x2="${W-R}" y1="${y(1)}" y2="${y(1)}" stroke="var(--mut)" stroke-dasharray="4 4"/>`;
  s+=`<text x="${W-R-4}" y="${y(1)-5}" text-anchor="end">parity</text>`;
  D.forEach(d=>{
-  const sp=d[2]/d[1];
-  s+=`<circle cx="${x(Math.min(d[2],xmax))}" cy="${y(Math.min(sp,ymax))}" r="5" fill="${sp>=1.05?css('--good'):css('--base')}" opacity=".85"><title>${d[0]}: ${d[2]} min baseline, ${sp.toFixed(2)}x</title></circle>`;
- });
- ["mailman","cobol-modernization","llm-inference-batching-scheduler"].forEach(n=>{
-  const d=D.find(r=>r[0]===n), sp=d[2]/d[1];
-  const px=x(d[2]), right=px>(W*0.62);
-  s+=`<text x="${right?px-9:px+9}" y="${y(sp)+4}" class="lab" text-anchor="${right?'end':'start'}">${n}</text>`;
+  const bx=x(Math.min(d[3],xmax));
+  [[d[1],'--ours','heretic'],[d[2],'--stock','stock']].forEach(([v,col,nm])=>{
+   const sp=d[3]/v;
+   s+=`<circle cx="${bx}" cy="${y(Math.min(sp,ymax))}" r="4.5" fill="${css(col)}" opacity=".8"><title>${nm} — ${d[0]}: ${d[3]} min baseline, ${sp.toFixed(2)}x</title></circle>`;
+  });
  });
  const el=document.getElementById("scat");el.setAttribute("viewBox",`0 0 ${W} ${H}`);el.innerHTML=s;
 }
 
 document.getElementById("tbl").innerHTML =
- `<tr><th>task</th><th>MXFP4 vLLM (min)</th><th>Q4_K_S a1 (min)</th><th>speedup</th><th>baseline outcome</th></tr>`+
- D.map(d=>`<tr><td>${d[0]}</td><td>${d[1].toFixed(2)}</td><td>${d[2].toFixed(2)}</td><td>${(d[2]/d[1]).toFixed(2)}x</td><td>${d[3]?"pass":"<b>fail</b>"}</td></tr>`).join("")+
- `<tr><td><b>total</b></td><td><b>${D.reduce((a,d)=>a+d[1],0).toFixed(1)}</b></td><td><b>${D.reduce((a,d)=>a+d[2],0).toFixed(1)}</b></td><td><b>${(D.reduce((a,d)=>a+d[2],0)/D.reduce((a,d)=>a+d[1],0)).toFixed(2)}x</b></td><td></td></tr>`;
+ `<tr><th>task</th><th>heretic MXFP4</th><th>stock MXFP4</th><th>llama.cpp Q4_K_S</th><th>MXFP4 speedup</th><th>llama outcome</th></tr>`+
+ D.map(d=>`<tr><td>${d[0]}</td><td>${d[1].toFixed(2)}</td><td>${d[2].toFixed(2)}</td><td>${d[3].toFixed(2)}</td><td>${(d[3]/d[1]).toFixed(2)}x</td><td>${d[4]?"pass":"<b>fail</b>"}</td></tr>`).join("")+
+ `<tr><td><b>total</b></td><td><b>${D.reduce((a,d)=>a+d[1],0).toFixed(1)}</b></td><td><b>${D.reduce((a,d)=>a+d[2],0).toFixed(1)}</b></td><td><b>${D.reduce((a,d)=>a+d[3],0).toFixed(1)}</b></td><td><b>${(D.reduce((a,d)=>a+d[3],0)/D.reduce((a,d)=>a+d[1],0)).toFixed(2)}x</b></td><td></td></tr>`;
 bars();scat();
 </script>
 </main>
