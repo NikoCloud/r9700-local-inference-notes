@@ -28,6 +28,6 @@ configurations churn, deltas transfer.
 
 **Not swept yet, or blocked** (see [OPEN-PROBLEMS.md](OPEN-PROBLEMS.md)): caps above 330 W are
 tooling-clamped on this card (LACT: 375 W → 330 W); `SPEC=7` was unreachable at TP=1;
-heterogeneous text+image concurrency is unmeasured; and the undervolt / memory-clock cut
+heterogeneous text+image concurrency is unmeasured; **context *allocation* against Qwen's advised 128K floor is unswept** (this box can only reach 65,536 at TP=1 — see [FINDINGS](FINDINGS.md) 2026-09-13); and the undervolt / memory-clock cut
 (MCLK 1450 → 1359 MHz, −50 mV) has no throughput numbers yet — only its stability effect is
 documented ([06](docs/06-power-and-stability.md)).

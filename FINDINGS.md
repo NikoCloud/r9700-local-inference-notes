@@ -2,6 +2,17 @@
 
 One entry per discovery, newest first — this is the repo's stream. **Claim → evidence → link.** Dates: the doc's own date box where it has one, otherwise when the write-up was first committed; some findings were measured days before they were written up. Numbers are as measured then, under the [README](README.md) ground rules. [LEVERS.md](LEVERS.md) collects the knob-by-knob deltas; [docs/](docs/) holds the full record.
 
+## 2026-09-13 · The TP=1 serve runs at half Qwen's advised context floor, and the degeneration it warns about was observed live
+`vllm` `models` `agents` `quality`
+
+- Qwen's own Qwen3.6-27B card, *Serving* section, `[!Important]`: *"we advise maintaining a context length of at least 128K tokens to preserve thinking capabilities"* (default 262,144). This serve allocates **65,536** — half the advised floor — with `--kv-cache-dtype fp8`. A TP=1 serve on one 32 GB card cannot allocate 131,072, so the deviation is structural, not a setting.
+- It is a **gradient, not a threshold**: Qwen ships a dial (`presence_penalty` 0–2 "to reduce endless repetition"), and the phrasing *"preserve thinking capabilities"* describes capability that degrades by degree. Repetition remains possible at 262k, just rarer; each increment of KV starvation raises the rate.
+- Observed on the stock arm's Core-19 `mailman` retry: the KV cache traced a sawtooth of ~16k-token generations (~15.5 points of a 103,268-token pool) on a ~4-minute cycle for **57 minutes with zero trajectory progress**, ending in the 3-hour `AgentTimeoutError` — the documented "rambles until token cap" signature.
+- Sampling also deviates: Qwen specifies thinking mode `temperature=1.0` / `top_p=0.95`; the serve applies **0.7** (the instruct-mode value) on thinking-mode requests, in the direction that raises repetition risk. Upstream and fleet-wide — `run_paroquant.sh` records the 1.0 → 0.7 change "across every vllm-switch target". `presence_penalty` sits at 0.0, per spec but leaving the one offered mitigation unused.
+- Consequence: **the second R9700 is a correctness requirement, not a capacity upgrade** — TP=2 halves weights per card and is the only route to this family's advised allocation on this hardware. Results from this serve carry that asterisk, which makes heretic's 18/19 a floor rather than a ceiling.
+
+→ [docs/13 §6e](docs/13-vllm-mxfp4-w4a8-rdna4.md) · [OPEN-PROBLEMS](OPEN-PROBLEMS.md)
+
 ## 2026-09-12 · MXFP4 W4A8 is the first thing to actually use RDNA4's fp8 WMMA
 `vllm` `rdna4` `kernel` `power`
 

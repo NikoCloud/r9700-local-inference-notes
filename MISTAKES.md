@@ -209,6 +209,40 @@ Nobody comes out of this file looking infallible, which is the point.
   file, but the on-disk JSON was clobbered. Incremental result files need append/merge, not overwrite, when a
   later pass only fills part of the grid.
 
+### 2026-09-13 MXFP4 Core-19 campaign and the Qwen context floor (the assistant)
+
+- **Fabricated a citation, then retracted a true claim to "correct" it.** The owner said the sub-128k
+  degeneration floor came from Qwen's Qwen3.6-27B model card. I wrote that into docs/13 without checking.
+  Later, trying to verify, I grepped the **Qwen3.8** card (the one in the local heretic repo) instead of the
+  **3.6** card he had named, found nothing, then read DavidAU's unrelated GGUF note ("Context window min from
+  8k to 16k") as a contradiction — and published a formal retraction calling the citation fabricated. The
+  guidance is real and official: Qwen/Qwen3.6-27B, *Serving Qwen3.6*, `[!Important]`: *"because Qwen3.6
+  leverages extended context for complex tasks, we advise maintaining a context length of at least 128K tokens
+  to preserve thinking capabilities."* Restored in `39ee918`.
+  - **Rule:** search the document that was actually named, read it whole, and never treat
+    absence-of-evidence from the wrong source as grounds to retract. A confident retraction dressed in
+    verification language ("checked 2026-09-13", a counter-quote, a commit) is worse than the original error —
+    it destroys a correct claim *and* invites the person who was right to doubt themselves.
+- **Compared our trial time against the baseline's agent time** in the Core-19 wall-clock chart, charging us
+  for container builds and verifier runs the baseline column excluded. `fix-ocaml-gc` swung 0.56× → 0.90× on
+  that alone. Also reported 2.01× from 15 finished tasks before the slow tail landed; the honest all-19,
+  agent-only figure is **1.57×** (240.7 vs 378.1 min).
+  - **Rule:** confirm both columns measure the same clock before computing a ratio.
+- **Used a `summar` regex as evidence of context compaction.** It fires on 11 of 22 heretic attempts and 10 of
+  18 stock attempts — it matches the agent's own tooling boilerplate, not compaction events. The supportable
+  evidence is the harness's `peak_context` (heretic max **53,727**, under the 57,536 trigger). One trajectory
+  being 2× the size with a "too long" marker is suggestive, not proof.
+- **Handed over a `lact` command that does not exist** (`sudo lact cli set-power-cap --gpu-id 1 330`) and never
+  corrected it after learning the real syntax myself (`lact cli -g <full-gpu-id> power-limit set 330`, no sudo
+  needed). The owner ran the bad one first.
+- **Gave a `fallocate` swapfile recipe for a btrfs mount.** `/mnt/vault` is btrfs, which rejects plain
+  swapfiles (`swapon: Invalid argument`); it needs `btrfs filesystem mkswapfile`, or an ext4 mount. Wasted a
+  48 GiB allocation before moving to `/mnt/adata`.
+- **Pushed four commits without reading CLAUDE.md.** The repo's update protocol landed mid-session; `git pull -q`
+  swallowed it silently and the shared `r9700-notes` identity meant authorship gave no hint. Four commits went
+  out with no FINDINGS ledger entry, no LEVERS check, no MISTAKES entry and no `scripts/check_docs.py` run.
+  - **Rule:** when a pull is silent, still look at what came down — `git log HEAD@{1}..HEAD` before building on it.
+
 ---
 
 ## 2. Explanations stated as findings before anyone tested them
