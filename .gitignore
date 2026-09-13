@@ -1,0 +1,6 @@
+# Agent scratch space — never commit
+.agent/
+
+# Python bytecode
+__pycache__/
+*.pyc
