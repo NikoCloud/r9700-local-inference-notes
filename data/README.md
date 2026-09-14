@@ -115,6 +115,28 @@ therefore *understate* vLLM's advantage rather than flattering it.
   [docs/13 §2](../docs/13-vllm-mxfp4-w4a8-rdna4.md) rather than in these files; they come from the
   server's startup log, not the harness.
 
+## `9b-paro-mxfp4/`: the 2026-09-14 60-agent fan-out campaign ([docs/14](../docs/14-vllm-9b-mxfp4-60-agent-fanout.md))
+
+Qwen3.5-9B heretic, MXFP4 W4A8 + ParoQuant rotations + grafted MTP head, served by vLLM on the
+16 GB card. Harnesses: `vllm_conc2.py` (ladders/rungs), `vllm_ab2.py` (depth profile),
+`img_bench2.py` (vision), `swarm_desc.py` (60-worker image swarm), `mtp_vs_ns.py` (comparison).
+Machine-specific paths are generalised; values are untouched.
+
+| File | Contents |
+|---|---|
+| `vllm_conc2_h9_tdp350_ladder.json` / `_rungs.json` | MTP serve, 350 W: ladder 1→96 (800-token streams) and 30/60/90 rungs — the n=60 straggler spread (14–76 tok/s) lives in the rungs |
+| `vllm_conc2_h9_tdp250_ladder.json` / `_rungs.json` | MTP serve at 250 W (TDP-flat proof) |
+| `vllm_conc2_h9ns_ladder.json` / `_rungs.json` | No-spec serve: the 1,915.5 tok/s @ n=60, symmetric 32–32 spread |
+| `vllm_ab2_h9ns_ab2.json` / `vllm_ab2_h9_tdp350_ab2.json` | Depth profile 8k/16k/28k, prose vs code edit — code prefill to 222,971 tok/s @ 28k (n-gram) |
+| `img_bench2_h9_tdp250_vision.json` | 16-image vision bench: 16/16, seq 3,820 PP / 93.1 TG, concurrent 439.0 agg / 5.30× |
+| `swarm_134img_w60.json` | **The 134-image / 60-worker swarm: 31.7 s wall, 134/134, 644.8 tok/s agg — includes all 134 per-image rows with the generated descriptions** |
+| `v1_mtp_rungs.json`, `vllm_conc2_h9v2_mtp_rungs.json`, `vllm_conc2_h9v3_mtp_rungs.json`, `vllm_conc2_h9v4_mtp_rungs.json`, `vllm_conc2_h9_final_n60.json` | The v1→v4 tuning battery (util/chunk/cap), one boot each — the chunk-2048 tail cliff (0.56) is the v4 row |
+| `pwr_both.log` | Per-card power sampler output (374 W ceiling run): 9070 XT natural draw 283 W median / 382 W max under n=95 |
+
+Two pool figures (MTP 110,649; no-spec 273,881) come from serve startup logs, not committed JSON —
+the MTP serve instance was stopped and its log rotated; the no-spec figure was re-verified against
+the live serve on 2026-09-14.
+
 ## `traces/`: full reasoning and answers
 
 JSONL, one record per model call: model/condition, label, prompt, stats, checks, full `reasoning` and `answer`.

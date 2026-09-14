@@ -18,7 +18,7 @@ confidently wrong and then finding out why. Those errors are kept, not cleaned u
 traps will catch the next person.
 
 > **Living notes.** [LEVERS.md](LEVERS.md) = what each knob was measured to do · [FINDINGS.md](FINDINGS.md) = every
-> discovery, newest first. Last material update: **2026-09-13**. Everything is dated and measured on
+> discovery, newest first. Last material update: **2026-09-14**. Everything is dated and measured on
 > one machine — re-check anything you plan to rely on; software on this platform moves weekly.
 
 ---
@@ -27,6 +27,7 @@ traps will catch the next person.
 
 If you read nothing else, these are the outliers.
 
+- **The drafter is the bottleneck at scale.** 60 concurrent streams, 9B on the 16 GB card: with the MTP drafter off, **1,915.5 tok/s aggregate vs 862.1 with it on — 2.22×** — per-stream spread collapses 5.3× → 1.00× (the drafter's verification overhead and draft-acceptance variance create stragglers that double the makespan, 55.7 s vs 25.1 s), and the KV pool is **2.4×** (273,881 vs 110,649 tokens). The crossover is at n ≈ 8–16: below it the drafter still wins (+34% single-stream). The real workload: **134 vision tasks described by 60 workers in 31.7 s, 134/134, zero failures.** ([14](docs/14-vllm-9b-mxfp4-60-agent-fanout.md))
 - **The trick that costs nothing: chain n-gram lookup in front of MTP.** Without speculation, a 27B at Q4 does **~23–35 tok/s** on this card (34.8 in the matched test; 23.3 at 184k depth). Adding `--spec-type ngram-mod,draft-mtp` — no extra model, no VRAM — decodes **123.4 tok/s on code edits / up to 222.8 on copy**: 1.6× / 2.9× over production MTP, **~3.5–6× over plain decode**, holding ~1.5× per stream at 1/2/4 concurrent. It surfaces in exactly the workflows agents produce — quoted input, repeated code. ([12](docs/12-prompt-lookup-decoding.md))
 - **The fastest drafter solo is worse than no drafter at all with two users.** DFlash2 `n_max=4` gives the best single-stream figure measured on this card — **79.1 tok/s** — and at two streams it drops to **29.7/stream, below the 31.1 you get with speculation switched off entirely**, while holding **4.65 GB more VRAM** (30.8 vs 26.2 GB). MTP `n_max=2` wins the shape that matters here (two agents on one server) at **42.2/stream, 79.1 aggregate**. Content swings it too: draft acceptance runs **0.88 on code vs 0.51 on prose**, so a drafter tuned on one looks broken on the other. Benchmark one stream, deploy the wrong thing. ([04](docs/04-speculative-decoding.md))
 - **"Fits on one card" is meaningless without the quant, the KV dtype and the drafter.** Same 27B, same R9700, three answers: llama.cpp at **Q4_K_S + q8_0 KV** serves **262,144**; vLLM at **MXFP4 W4A8 + fp8 KV, no drafter** serves **131,072** (233,016-token pool); add the DFlash2 drafter and 131,072 refuses — it needs 5.28 GiB of KV and has 0.90. MXFP4 is also *heavier resident* than Q4_K_S (18.07 vs ~15 GiB) because embeddings, `lm_head` and the vision tower stay bf16; "4.25 bpw" describes 400 projections, not the checkpoint. We published a card-level ceiling here and it was wrong — see [MISTAKES](MISTAKES.md). ([13 §2](docs/13-vllm-mxfp4-w4a8-rdna4.md))
@@ -48,6 +49,7 @@ If you read nothing else, these are the outliers.
 | Fastest prefill, **one card** | vLLM + MXFP4 W4A8 (RDNA4's fp8 WMMA): **2.6–3.5× production**, rising with depth — at a matched 330 W it wins every speed axis. Single-card answer: with two cards, TP=2 removes the memory pressure that motivates 4-bit at all ([13 §6f](docs/13-vllm-mxfp4-w4a8-rdna4.md)) | [13](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
 | Vision / image analysis | vLLM: **75.1 s vs 91.3 s** on the same five pages at a matched image budget; TTFT **1.78 s vs 6.42 s** — still ahead at full native resolution | [13 §6c](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
 | Many users at once | vLLM scales to **385.8 tok/s aggregate at n=24**; llama.cpp plateaus at 95.7 (figure below) | [13 §6b](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
+| 60-agent fan-out, 16 GB card | vLLM no-spec 9B: **1,915.5 tok/s @ n=60** (drafter on: 862.1), 273,881-token pool, **134 vision tasks in 31.7 s at 60 workers** — drop speculation above n ≈ 16 | [14](docs/14-vllm-9b-mxfp4-60-agent-fanout.md) |
 | Long-context agents, one card | llama.cpp (Vulkan): **262k context**, q8_0 KV, `-kvu`, `-np 4` — the context seat | [02](docs/02-engines-llamacpp-vs-vllm.md) · [12](docs/12-prompt-lookup-decoding.md) |
 | Quiet box / solar / capped power | what caps cost: llama.cpp −8.3% prefill / −16% decode (→ 250 W); vLLM only −1.9–2.8% decode (→ 225 W); lifting 250 → 330 W buys ~+14% prefill / +7% decode | [06](docs/06-power-and-stability.md) · [13 §6b](docs/13-vllm-mxfp4-w4a8-rdna4.md) |
 | A second GPU | PP=2 with an uneven layer split: **3.6× the KV cache**; TP=2 works on RCCL 2.28.9; the mixed pair dies in a Tensile GEMM | [03](docs/03-multi-gpu.md) |
@@ -96,7 +98,7 @@ flat. One R9700, 330 W cap, matched harnesses in the same hour ([docs/13 §6b](d
 | [MISTAKES.md](MISTAKES.md) | every wrong belief, and what corrected it |
 | [OPEN-PROBLEMS.md](OPEN-PROBLEMS.md) | still broken, unexplained, or blocked |
 | [METHODOLOGY.md](METHODOLOGY.md) | measurement rules, learned the hard way |
-| [docs/](docs/) | 13 dated deep-dives — index in [docs/README.md](docs/README.md) |
+| [docs/](docs/) | 14 dated deep-dives — index in [docs/README.md](docs/README.md) |
 | [scripts/](scripts/) | the benchmark harnesses, sanitised ([README](scripts/README.md)) |
 | [data/](data/) | raw results and offline interactive charts ([README](data/README.md)) |
 | [patches/](patches/) | the local llama.cpp patch: vision + speculative decoding |

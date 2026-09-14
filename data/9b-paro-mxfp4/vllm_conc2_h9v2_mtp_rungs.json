@@ -1,0 +1,55 @@
+{
+  "tag": "h9v2_mtp_rungs",
+  "maxtok": 800,
+  "method": "conc_test.py",
+  "rows": [
+    {
+      "n": 30,
+      "ok": 30,
+      "failed": 0,
+      "per_stream_mean": 44.91,
+      "per_stream_min": 23.79,
+      "per_stream_max": 76.65,
+      "aggregate": 713.6,
+      "wall_s": 33.6,
+      "prompt_tokens": 71,
+      "tail_distinct_min": 0.74,
+      "gpu_power_w": null,
+      "cpu_phys_max": 97.7,
+      "cpu_sib_max": 0.1,
+      "cpu_mean_all": 7.6
+    },
+    {
+      "n": 60,
+      "ok": 60,
+      "failed": 0,
+      "per_stream_mean": 31.57,
+      "per_stream_min": 12.37,
+      "per_stream_max": 79.78,
+      "aggregate": 742.0,
+      "wall_s": 64.7,
+      "prompt_tokens": 71,
+      "tail_distinct_min": 0.69,
+      "gpu_power_w": null,
+      "cpu_phys_max": 84.8,
+      "cpu_sib_max": 0.2,
+      "cpu_mean_all": 7.7
+    },
+    {
+      "n": 90,
+      "ok": 90,
+      "failed": 0,
+      "per_stream_mean": 24.37,
+      "per_stream_min": 8.3,
+      "per_stream_max": 79.73,
+      "aggregate": 746.9,
+      "wall_s": 96.4,
+      "prompt_tokens": 71,
+      "tail_distinct_min": 0.64,
+      "gpu_power_w": null,
+      "cpu_phys_max": 89.1,
+      "cpu_sib_max": 0.1,
+      "cpu_mean_all": 7.7
+    }
+  ]
+}

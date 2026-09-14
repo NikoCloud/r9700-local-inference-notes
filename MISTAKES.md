@@ -56,11 +56,27 @@ Nobody comes out of this file looking infallible, which is the point.
   the new one.
 - **"fp8 KV costs 42% of decode."** True at a 35,840 context cap, only 17% at 8,192. Quote the matched
   number, not the dramatic one.
+- **A two-card power comparison that read the wrong card for two whole runs.** The power sampler read
+  `rocm-smi GPU[0]` believing it was the 9070 XT — but on this box rocm-smi's `GPU[0]` is the **R9700**
+  (the two tools' device indices are inverted relative to each other). Both per-cap power logs therefore
+  logged the *other card's* draw while it served chat: a "331 W peak under the 350 W cap" (transient
+  impossible at that cap) and a "250 W run that drew 329–356 W". Both readings were void; the throughput
+  numbers from the same runs stood. Caught by cross-checking against the cap — then verified by device ID
+  (DID 0x7551 = R9700, 0x7550 = 9070 XT) and a pinned-cap control (at 231 W the correct card pinned
+  227–231 W under load, proving the cap is enforced). **Rule:** in a multi-card rig, identify the device
+  by its device ID, not by a positional index, and cross-check any power figure against the cap it
+  supposedly obeyed. ([docs/14 §5](docs/14-vllm-9b-mxfp4-60-agent-fanout.md))
 
 ### Harness bugs that returned clean-looking wrong answers
 
 - **Decode measured over an 80-token window.** Startup transients dominated. A real 2.9 tok/s
   reading was nearly dismissed as an artifact. Decode is now measured over 320+ tokens.
+- **`tail_distinct` read as repetition when it was prompt convergence.** A 60-concurrent harness run
+  sends *identical* prompts at temperature 0, so all streams converge on a common ending and the
+  distinct-token ratio collapses (0.54–0.68) with no repetition happening. It nearly flagged a healthy
+  no-spec serve as degenerate. Re-run with diverse prompts at temperature ≥ 0.7: the same serve gave
+  0.74–0.95 with coherent output. **Rule:** tail-distinct is a prompt-design variable before it is a
+  model-quality signal — diagnose the prompts before blaming the model. ([docs/14 §4](docs/14-vllm-9b-mxfp4-60-agent-fanout.md))
 - **Prompt sizes estimated by characters-per-token.** It missed by up to 70% on filler text, three
   separate times. One apparent TTFT "win" was just a smaller prompt. Sizes now come from the
   server's `/tokenize`.

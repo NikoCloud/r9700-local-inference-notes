@@ -1,6 +1,6 @@
 # The docs
 
-Thirteen dated write-ups **in the order they were written** — the numbering is chronological, not a
+Fourteen dated write-ups **in the order they were written** — the numbering is chronological, not a
 reading order. [LEVERS.md](../LEVERS.md) has the knob-by-knob deltas, [FINDINGS.md](../FINDINGS.md) the
 one-line-per-discovery ledger, [MISTAKES.md](../MISTAKES.md) the corrections.
 
@@ -11,9 +11,10 @@ one-line-per-discovery ledger, [MISTAKES.md](../MISTAKES.md) the corrections.
 | The machine and its traps | [01](01-hardware-and-software.md) |
 | Engine and backend choice | [02](02-engines-llamacpp-vs-vllm.md), [05](05-rocm-vs-vulkan.md), [13](13-vllm-mxfp4-w4a8-rdna4.md) |
 | Two GPUs | [03](03-multi-gpu.md) |
-| Speculative decoding | [04](04-speculative-decoding.md), [12](12-prompt-lookup-decoding.md) |
+| Speculative decoding | [04](04-speculative-decoding.md), [12](12-prompt-lookup-decoding.md), [14](14-vllm-9b-mxfp4-60-agent-fanout.md) |
 | Power and stability | [06](06-power-and-stability.md) |
 | Models and quality | [07](07-model-qualification.md), [08](08-agentic-benchmark-core19.md), [11](11-reasoning-traces-and-sanity-checks.md) |
+| Many agents on one card / vision at scale | [14](14-vllm-9b-mxfp4-60-agent-fanout.md) |
 | Neighbours on the same box | [09](09-comfyui-memory.md), [10](10-agent-harness-lessons.md) |
 
 **All docs**
@@ -33,6 +34,7 @@ one-line-per-discovery ledger, [MISTAKES.md](../MISTAKES.md) the corrections.
 | [11](11-reasoning-traces-and-sanity-checks.md) | Sanity checks, a reasoning-loop A/B, and what the traces show |
 | [12](12-prompt-lookup-decoding.md) | Prompt-lookup (n-gram) decoding, chaining it in front of MTP, the production switch |
 | [13](13-vllm-mxfp4-w4a8-rdna4.md) | MXFP4 W4A8 on RDNA4's fp8 WMMA via vLLM: kernels, KV budgets, depth, concurrency, hard limits |
+| [14](14-vllm-9b-mxfp4-60-agent-fanout.md) | A 9B on the 16 GB card for 60-agent fan-out: the drafter doubles makespan at n=60 (no-spec 2.22×, 2.4× pool), the chunk cliff, TDP is not a lever, and 134 vision tasks in 31.7 s |
 
 ---
 

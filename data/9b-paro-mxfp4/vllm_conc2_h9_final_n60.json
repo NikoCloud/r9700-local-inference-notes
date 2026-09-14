@@ -1,0 +1,39 @@
+{
+  "tag": "h9_final_n60",
+  "maxtok": 800,
+  "method": "conc_test.py",
+  "rows": [
+    {
+      "n": 30,
+      "ok": 30,
+      "failed": 0,
+      "per_stream_mean": 48.44,
+      "per_stream_min": 24.92,
+      "per_stream_max": 75.16,
+      "aggregate": 747.6,
+      "wall_s": 32.1,
+      "prompt_tokens": 71,
+      "tail_distinct_min": 0.73,
+      "gpu_power_w": 13.0,
+      "cpu_phys_max": 86.0,
+      "cpu_sib_max": 0.2,
+      "cpu_mean_all": 7.7
+    },
+    {
+      "n": 60,
+      "ok": 60,
+      "failed": 0,
+      "per_stream_mean": 33.33,
+      "per_stream_min": 14.25,
+      "per_stream_max": 75.39,
+      "aggregate": 854.6,
+      "wall_s": 56.2,
+      "prompt_tokens": 71,
+      "tail_distinct_min": 0.73,
+      "gpu_power_w": 7.0,
+      "cpu_phys_max": 87.2,
+      "cpu_sib_max": 0.2,
+      "cpu_mean_all": 7.7
+    }
+  ]
+}

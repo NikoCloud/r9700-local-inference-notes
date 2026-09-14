@@ -2,6 +2,54 @@
 
 One entry per discovery, newest first — this is the repo's stream. **Claim → evidence → link.** Dates: the doc's own date box where it has one, otherwise when the write-up was first committed; some findings were measured days before they were written up. Numbers are as measured then, under the [README](README.md) ground rules. [LEVERS.md](LEVERS.md) collects the knob-by-knob deltas; [docs/](docs/) holds the full record.
 
+## 2026-09-14 · Dropping the drafter doubled the 60-agent throughput — the knee is at n ≈ 8–16
+`vllm` `spec-decode` `concurrency` `9b`
+
+- MTP vs no-spec, co-measured same serve (9B heretic PARO-MXFP4, 16 GB card, 350 W, 800-token streams): single stream MTP wins **+34%** (104.3 vs 77.9 tok/s); the crossover lands between n=8 (0.81×) and n=16 (**1.36×**).
+- At **n=60: no-spec 1,915.5 vs MTP 862.1 tok/s — 2.22×**, and the per-stream spread is **1.00× (32–32) vs 5.3× (14–76)**: MTP's verification overhead plus draft-acceptance variance (~57% at mean length 2.1) creates stragglers that double the makespan — **55.7 s vs 25.1 s** for the same tokens. Peak is n=64: 1,988.7 vs 888.6; by n=90 the no-spec pool saturates and the ratio falls to 1.69×.
+- The drafter's second cost is memory: no-spec KV pool **273,881 vs 110,649 fp8 tokens (2.4×)** — the guaranteed per-agent context floor at 60 concurrent rises from 1,844 to 4,564 tokens.
+- The standing serve for 60-agent fan-out is now no-spec; MTP is kept for interactive low-concurrency use, where it wins.
+
+→ [docs/14](docs/14-vllm-9b-mxfp4-60-agent-fanout.md) · [data/9b-paro-mxfp4](data/9b-paro-mxfp4)
+
+## 2026-09-14 · 134 vision tasks in 31.7 s: the 60-agent workload, for real
+`vllm` `vision` `agents` `9b`
+
+- 134 rendered images described by **60 concurrent workers** against the standing no-spec serve: **31.7 s wall, 134/134, zero failures**, 644.8 tok/s aggregate (20,424 completion tokens), **93% slot utilization** (4.23 img/s vs 4.55 theoretical).
+- 134/60 = 2.23 waves, overlapped by the scheduler — makespan sits between two and three sequential waves (first completion 3.3 s, last stream 23.4 s). Per-stream decode median 13.57 tok/s; TTFT max 8.84 s (first-wave queueing).
+- The aggregate (644.8) is far under the synthetic-text n=60 figure (1,915.5) by construction: outputs are 150 tokens, not 800, so fixed per-stream costs dominate the 13 s wall — a vision workload is a different shape, not a regression.
+- Vision bench proper: 16/16, mean prefill 3,820 tok/s (encoding included), mean decode 93.1 tok/s, TTFT 0.11–0.40 s (first request 8.74 s = one-time kernel JIT), concurrent 439.0 tok/s at 5.30× wall-clock speedup.
+
+→ [docs/14 §7](docs/14-vllm-9b-mxfp4-60-agent-fanout.md) · [data/9b-paro-mxfp4](data/9b-paro-mxfp4) (`swarm_134img_w60.json` carries all 134 descriptions)
+
+## 2026-09-14 · TDP is not a perf lever on bandwidth-bound decode — and two power logs read the wrong card
+`power` `vllm` `9b`
+
+- Ladder peaks (agg tok/s, n=64) by cap, co-measured on the same serve: 231 W → 881.5 · 250 W → 881.7 · 350 W → 888.6 · 374 W → 893.3. **Floor→ceiling = +1.3% — inside boot noise.** At n=90: +1.8%.
+- The card's natural draw under full load is **283 W median / 382 W max** (per-card sampler at the 374 W cap, n=95) — it never approaches the operating cap, so a cap is a **PSU-safety dial for the dual-card rig** (transients, both cards loaded), not a performance choice.
+- **Correction:** the first two per-cap power logs read `rocm-smi GPU[0]`, which on this box is the **R9700, not the 9070 XT** (rocm-smi's device indices are inverted relative to the power tool's). Their power readings — a "331 W peak at the 350 W cap" and a "250 W run that drew 329–356 W" — were the *other card serving chat*, and are void. The throughput numbers from those runs stand; the power column above comes from runs that sampled the correct device. [MISTAKES](MISTAKES.md).
+
+→ [docs/14 §5](docs/14-vllm-9b-mxfp4-60-agent-fanout.md) · [data/9b-paro-mxfp4](data/9b-paro-mxfp4) (`pwr_both.log`)
+
+## 2026-09-14 · The chunk-size cliff: 4096→2048 collapses tail-distinct for nothing
+`vllm` `kernel` `9b`
+
+- On the hybrid Gated-DeltaNet model, tuning `--max-num-batched-tokens` boot by boot (one boot each, n=60 re-measured): 8192→4096 never moved tail-distinct; **4096→2048 collapsed it 0.70 → 0.56, reproducible bit-for-bit across two runs** — for a pool delta of 110,649 → 103,028 tokens that is inside boot-to-boot noise (the same v3 config booted at 101,199 then 110,649).
+- Mechanism (hypothesis, labelled): the chunked scan is numerically sensitive to chunk boundaries, drifting token choices over long generations. Rule: **chunk ≥ 4096** on this architecture; and treat any same-config boot delta under ~10% as noise.
+- Four boot gates preceded the tuning: donor config `float16` rejected by the R4D dtype gate (→ bfloat16); **R4D hard-requires gqa=6 — the 9B's 16q/4kv (gqa 4) forces the unified-attention backend**; `compile_sizes` padding 8→9 under MTP (→ empty list); and the graph profiler's *estimated* CUDA-graph reservation (3.65 GiB vs 2.25 actual) ate the KV pool at util 0.92 (→ disable the estimate).
+
+→ [docs/14 §2–3](docs/14-vllm-9b-mxfp4-60-agent-fanout.md) · [data/9b-paro-mxfp4](data/9b-paro-mxfp4) (tuning battery `v1_mtp_rungs` → `h9v4_mtp_rungs`)
+
+## 2026-09-14 · A 9B heretic PARO-MXFP4 build with the MTP head re-attached
+`vllm` `models` `build` `9b`
+
+- ParoQuant rotations (z-lab, krot=8) grafted onto an abliterated 9B — abliteration, not a finetune, which is why stock-trained rotations transfer (27B precedent [13 §1](docs/13-vllm-mxfp4-w4a8-rdna4.md)): **200/200 modules** (32× MLP, 24× linear-attn, 8× full-attn), preflight zero missing.
+- The abliterated checkpoint had dropped its MTP head (760 tensors vs 775 base); the 15 `mtp.*` tensors were grafted back from Base shards — **243.3M params, exactly the Base↔heretic tensor delta**, confirming the MTP block was never abliterated.
+- Build **243 s**, worst pseudo round-trip **5.71e-07** (fp32 noise; the 27B was 8.47e-07). Output 1,575 tensors = 200×5 quantized + 575 passthrough + 15 MTP, 8.55 GB.
+- Prefix caching is the fan-out multiplier: a second 55,254-token prefill on a shared prefix ran **58,350 vs 3,860 tok/s cold — 15×**. A shared system prompt is paid once, not 60×. Code-edit prefill runs to **222,971 tok/s at 28k depth** (n-gram, [12](docs/12-prompt-lookup-decoding.md)) — agent workloads are code-heavy, so real traffic gets the fast prefill.
+
+→ [docs/14 §1, §6](docs/14-vllm-9b-mxfp4-60-agent-fanout.md) · [data/9b-paro-mxfp4](data/9b-paro-mxfp4)
+
 ## 2026-09-13 · Same format, different weights: a 0.3% dead heat per attempt, decided entirely by retries
 `vllm` `models` `quality` `agents`
 
