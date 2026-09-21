@@ -281,6 +281,34 @@ Nobody comes out of this file looking infallible, which is the point.
   out with no FINDINGS ledger entry, no LEVERS check, no MISTAKES entry and no `scripts/check_docs.py` run.
   - **Rule:** when a pull is silent, still look at what came down — `git log HEAD@{1}..HEAD` before building on it.
 
+### A stale compile cache replayed byte-identical numbers across different configs
+
+- **"turboquant_k8v4 needs the same OOM regardless of chunk size or GPU_UTIL."** Three consecutive
+  attempts at different `CHUNK`/`GPU_UTIL` settings produced the exact same `Tried to allocate 398.00
+  MiB... 0 bytes is free` — looked like a deterministic, config-independent floor.
+  - **What happened:** `kv_cache_memory_bytes` and `GPU_UTIL` genuinely don't affect the compile-graph
+    hash (confirmed in vLLM's own `CacheConfig.compute_hash`), but the test harness kept reusing the
+    same host-mounted `torch_compile_cache`/`triton` cache directory across config changes that *do*
+    affect it (`CHUNK` changes compiled shapes). Three "measurements" were one cudagraph capture,
+    replayed.
+  - **Caught by:** clearing the cache directory (via a throwaway root container — the files are
+    root-owned from inside the image) and re-running; the numbers immediately changed (398 MiB → 1.94
+    GiB → 4.64 GiB, tracking chunk size properly for the first time).
+  - **Rule:** any parameter that changes compiled kernel shapes needs a cache clear before its effect
+    can be trusted, even if the parameter itself is "just" a memory-sizing knob.
+
+### A readiness check that raced the container's own creation
+
+- **A five-variant sweep "failed" in under a minute.** A `wait_ready()` loop checked
+  `docker ps --format ... | grep NAME` on its very first iteration, with no grace period after
+  backgrounding the `docker run`. Every variant's container hadn't been created yet at that instant, so
+  every variant was marked crashed within seconds and the sweep moved on, burning through all five
+  configs with zero valid data.
+  - **Caught by:** the containers' own logs showed real progress (patches applied, kernels compiling)
+    well past when the sweep had already declared them dead.
+  - **Rule:** a "not yet running" check needs a grace period distinct from a "crashed" check; conflating
+    them turns every slow boot into a false failure.
+
 ---
 
 ## 2. Explanations stated as findings before anyone tested them

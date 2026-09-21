@@ -28,6 +28,7 @@ configurations churn, deltas transfer.
 | **ComfyUI cache cap** | default → `--cache-ram 2 4` | 98–229 s → 25–28 s per image; anonymous RAM ~29 GB (incl. swap) → 6.9 GB | [09](docs/09-comfyui-memory.md) |
 | **Power cap** (bandwidth-bound decode, 9B) | 231 → 374 W, same serve | peak aggregate +1.3 % @ n=64, +1.8 % @ n=90 — boot noise. TDP is not a perf lever here; the cap is a PSU-safety dial for the dual-card rig (natural draw 283 W median / 382 W max at full load) | [14](docs/14-vllm-9b-mxfp4-60-agent-fanout.md) |
 | **Chunk size** (`--max-num-batched-tokens`, hybrid GDN model) | 8192 → 4096 → 2048 | 8192→4096: no tail change. **4096→2048: tail-distinct 0.70 → 0.56 (cliff, reproducible)** for a pool delta inside boot noise. Chunk ≥ 4096 | [14](docs/14-vllm-9b-mxfp4-60-agent-fanout.md) |
+| **TurboQuant KV decode split count** (`tq_max_kv_splits_for_cuda_graph`) | 32 → 64 → 128 → 256 → 512, at depth 60k | 32→128: **10.0 → 11.3 tok/s (+13%)**, confirmed on repeat boots (<0.3% spread); 128/256/512 plateau (statistically indistinguishable). Depth-2k cost drifts down monotonically with split count (21.3→20.5, 32→512) for no benefit past 128 — **128 is the practical setting**, not 256/512 | [15](docs/15-turboquant-kv-quant-gfx1201.md) §3 |
 
 **Not swept yet, or blocked** (see [OPEN-PROBLEMS.md](OPEN-PROBLEMS.md)): caps above 330 W are
 tooling-clamped on this card (LACT: 375 W → 330 W); `SPEC=7` was unreachable at TP=1;

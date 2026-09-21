@@ -1,0 +1,42 @@
+{
+  "tag": "verify_stock_aiter_fp8_v2",
+  "gen": 512,
+  "rows": [
+    {
+      "depth": 2000,
+      "task": "prose",
+      "prompt_tokens": 3443,
+      "completion_tokens": 512,
+      "prefill_tok_s": 2203.1,
+      "decode_tok_s": 22.25,
+      "tail_distinct_ratio": 0.78
+    },
+    {
+      "depth": 2000,
+      "task": "code_edit",
+      "prompt_tokens": 3538,
+      "completion_tokens": 321,
+      "prefill_tok_s": 19576.9,
+      "decode_tok_s": 22.14,
+      "tail_distinct_ratio": 0.88
+    },
+    {
+      "depth": 60000,
+      "task": "prose",
+      "prompt_tokens": 101997,
+      "completion_tokens": 512,
+      "prefill_tok_s": 1729.1,
+      "decode_tok_s": 19.84,
+      "tail_distinct_ratio": 0.84
+    },
+    {
+      "depth": 60000,
+      "task": "code_edit",
+      "prompt_tokens": 102092,
+      "completion_tokens": 272,
+      "prefill_tok_s": 67303.5,
+      "decode_tok_s": 19.89,
+      "tail_distinct_ratio": 0.9
+    }
+  ]
+}

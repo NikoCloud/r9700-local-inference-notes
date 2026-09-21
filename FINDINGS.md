@@ -2,6 +2,17 @@
 
 One entry per discovery, newest first — this is the repo's stream. **Claim → evidence → link.** Dates: the doc's own date box where it has one, otherwise when the write-up was first committed; some findings were measured days before they were written up. Numbers are as measured then, under the [README](README.md) ground rules. [LEVERS.md](LEVERS.md) collects the knob-by-knob deltas; [docs/](docs/) holds the full record.
 
+## 2026-09-20 · TurboQuant's crash on gfx1201 was a disabled flash-attn path, not the rotation quant
+`vllm` `turboquant` `rocm` `gfx1201`
+
+- Four independent bugs stood between "TurboQuant boots" and "TurboQuant serves at depth": R4D rejects the KV dtype outright; a hardcoded `compile_sizes` fights cudagraph padding under MTP; MTP + TurboQuant is a hard upstream block (`TurboQuantMetadata` isn't in vLLM's spec-decode metadata allowlist for `num_speculative_tokens > 1`); and the real crash — `fa_utils.py` only routes AITER's Triton flash-attn to `gfx1250`, so gfx1201 silently falls to an uninstalled upstream `flash_attn` package, forcing a dense `O(q_len·seq_len)` SDPA fallback that OOMs (~4.6 GiB at depth 32,000) instead of flash-attention's `O(1)`.
+- Fixed locally (`scripts/turboquant-gfx1201/patch_turboquant_flash_attn.py`): try AITER unconditionally, fall back to upstream `flash_attn` only on `ImportError`. Confirmed serving cleanly through depth 120,000 (target 262,144) with correct output.
+- A real vLLM PR for the upstream gate was prepared and validated (`ruff` clean, tested on this hardware) then discarded — the same gfx1250-only-gate pattern recurs elsewhere in vLLM's own codebase, so it reads as a known gap, not a novel finding.
+- Even fixed, decode-vs-depth is steep: **21.4 → 13.6 → 10.0 → 6.6 tok/s** at depth 2k/32k/60k/120k (turboquant_k8v4, default splits) vs fp8's **22.3 → 20.8 → 19.8** over the same range. `tq_max_kv_splits_for_cuda_graph` 32→128 recovers **~13%** at depth 60k (10.0→11.3, confirmed on repeat boots, <0.3% spread) and plateaus there — the rest is per-token value-dequant cost (scattered scale/zero-point reads), not yet fixed at the kernel level.
+- **R4D's fp8 advantage isn't in the attention kernel** — R4D vs stock `ROCM_AITER_UNIFIED_ATTN`, same fp8 dtype: 22.29/19.78 vs 22.25/19.84 (2k/60k depth), indistinguishable. R4D's edge for this model lives in GDN-layer acceleration and MXFP4 weight quant, not KV-cache attention.
+
+→ [docs/15](docs/15-turboquant-kv-quant-gfx1201.md) · [data/turboquant-gfx1201](data/turboquant-gfx1201)
+
 ## 2026-09-14 · Dropping the drafter doubled the 60-agent throughput — the knee is at n ≈ 8–16
 `vllm` `spec-decode` `concurrency` `9b`
 

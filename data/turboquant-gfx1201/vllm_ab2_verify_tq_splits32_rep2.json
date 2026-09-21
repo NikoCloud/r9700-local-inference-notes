@@ -1,0 +1,42 @@
+{
+  "tag": "verify_tq_splits32_rep2",
+  "gen": 512,
+  "rows": [
+    {
+      "depth": 2000,
+      "task": "prose",
+      "prompt_tokens": 3443,
+      "completion_tokens": 512,
+      "prefill_tok_s": 1397.8,
+      "decode_tok_s": 21.34,
+      "tail_distinct_ratio": 0.84
+    },
+    {
+      "depth": 2000,
+      "task": "code_edit",
+      "prompt_tokens": 3538,
+      "completion_tokens": 214,
+      "prefill_tok_s": 7121.3,
+      "decode_tok_s": 21.29,
+      "tail_distinct_ratio": 0.91
+    },
+    {
+      "depth": 60000,
+      "task": "prose",
+      "prompt_tokens": 101997,
+      "completion_tokens": 512,
+      "prefill_tok_s": 1505.8,
+      "decode_tok_s": 10.01,
+      "tail_distinct_ratio": 0.92
+    },
+    {
+      "depth": 60000,
+      "task": "code_edit",
+      "prompt_tokens": 102092,
+      "completion_tokens": 215,
+      "prefill_tok_s": 194806.6,
+      "decode_tok_s": 10.04,
+      "tail_distinct_ratio": 0.91
+    }
+  ]
+}

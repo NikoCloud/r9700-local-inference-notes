@@ -35,6 +35,7 @@ one-line-per-discovery ledger, [MISTAKES.md](../MISTAKES.md) the corrections.
 | [12](12-prompt-lookup-decoding.md) | Prompt-lookup (n-gram) decoding, chaining it in front of MTP, the production switch |
 | [13](13-vllm-mxfp4-w4a8-rdna4.md) | MXFP4 W4A8 on RDNA4's fp8 WMMA via vLLM: kernels, KV budgets, depth, concurrency, hard limits |
 | [14](14-vllm-9b-mxfp4-60-agent-fanout.md) | A 9B on the 16 GB card for 60-agent fan-out: the drafter doubles makespan at n=60 (no-spec 2.22×, 2.4× pool), the chunk cliff, TDP is not a lever, and 134 vision tasks in 31.7 s |
+| [15](15-turboquant-kv-quant-gfx1201.md) | TurboQuant KV quantization on gfx1201: four bugs before the crash (a disabled flash-attn path, not the rotation quant), the split-count lever, and R4D's fp8 edge isn't in the attention kernel |
 
 ---
 

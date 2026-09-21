@@ -1,0 +1,42 @@
+{
+  "tag": "nospec_turboquant_k8v4_262k_splits512",
+  "gen": 512,
+  "rows": [
+    {
+      "depth": 2000,
+      "task": "prose",
+      "prompt_tokens": 3443,
+      "completion_tokens": 512,
+      "prefill_tok_s": 1392.5,
+      "decode_tok_s": 20.5,
+      "tail_distinct_ratio": 0.74
+    },
+    {
+      "depth": 2000,
+      "task": "code_edit",
+      "prompt_tokens": 3538,
+      "completion_tokens": 319,
+      "prefill_tok_s": 7151.7,
+      "decode_tok_s": 20.43,
+      "tail_distinct_ratio": 0.88
+    },
+    {
+      "depth": 60000,
+      "task": "prose",
+      "prompt_tokens": 101997,
+      "completion_tokens": 512,
+      "prefill_tok_s": 1518.0,
+      "decode_tok_s": 11.34,
+      "tail_distinct_ratio": 0.79
+    },
+    {
+      "depth": 60000,
+      "task": "code_edit",
+      "prompt_tokens": 102092,
+      "completion_tokens": 319,
+      "prefill_tok_s": 195271.4,
+      "decode_tok_s": 11.37,
+      "tail_distinct_ratio": 0.88
+    }
+  ]
+}
